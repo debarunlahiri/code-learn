@@ -1,7 +1,7 @@
 # Java Multithreading & Concurrency - Complete Guide (Basics to Advanced)
 
-> **Target:** Interview preparation for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
-> **Covers:** Threads, Synchronization, Locks, ExecutorService, CompletableFuture, Concurrent Collections, and Virtual Threads.
+**Target:** Interview preparation for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
+**Covers:** Threads, Synchronization, Locks, ExecutorService, CompletableFuture, Concurrent Collections, and Virtual Threads.
 
 ---
 

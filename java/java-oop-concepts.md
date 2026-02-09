@@ -1,7 +1,7 @@
 # Core Java OOP Concepts - Complete Guide (Basics to Advanced)
 
-> **Target:** Interview preparation for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
-> **Covers:** All four pillars of OOP, SOLID principles, design patterns basics, and tricky interview scenarios.
+**Target:** Interview preparation for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
+**Covers:** All four pillars of OOP, SOLID principles, design patterns basics, and tricky interview scenarios.
 
 ---
 

@@ -1,7 +1,7 @@
 # Java Stream API - Complete Guide (Basics to Advanced)
 
-> **Target:** Interview preparation for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
-> **Java Version:** 8+ (Stream API was introduced in Java 8)
+**Target:** Interview preparation for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
+**Java Version:** 8+ (Stream API was introduced in Java 8)
 
 ---
 

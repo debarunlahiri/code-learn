@@ -1,7 +1,7 @@
 # Java 8+ Features - Complete Guide (Basics to Advanced)
 
-> **Target:** Interview preparation for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
-> **Covers:** Lambda, Functional Interfaces, Method References, Optional, Date/Time API, and features from Java 9 to 21.
+**Target:** Interview preparation for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
+**Covers:** Lambda, Functional Interfaces, Method References, Optional, Date/Time API, and features from Java 9 to 21.
 
 ---
 
