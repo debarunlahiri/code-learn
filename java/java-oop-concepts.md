@@ -1,37 +1,37 @@
 # Core Java OOP Concepts - Complete Guide (Basics to Advanced)
 
-**Target:** Interview preparation for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
-**Covers:** All four pillars of OOP, SOLID principles, design patterns basics, and tricky interview scenarios.
+**Target:** Skill enhancement for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
+**Covers:** All four pillars of OOP, SOLID principles, design patterns basics, and tricky technical scenarios.
 
----
+--
 
 ## Table of Contents
 
-1. [What is OOP?](#1-what-is-oop)
-2. [Classes and Objects](#2-classes-and-objects)
-3. [Constructors](#3-constructors)
-4. [Encapsulation](#4-encapsulation)
-5. [Inheritance](#5-inheritance)
-6. [Polymorphism](#6-polymorphism)
-7. [Abstraction](#7-abstraction)
-8. [Interfaces](#8-interfaces)
-9. [Abstract Class vs Interface](#9-abstract-class-vs-interface)
-10. [The `this` and `super` Keywords](#10-the-this-and-super-keywords)
-11. [The `static` Keyword](#11-the-static-keyword)
-12. [The `final` Keyword](#12-the-final-keyword)
-13. [Object Class and Its Methods](#13-object-class-and-its-methods)
-14. [Type Casting (Upcasting & Downcasting)](#14-type-casting-upcasting--downcasting)
-15. [Composition vs Inheritance](#15-composition-vs-inheritance)
-16. [SOLID Principles](#16-solid-principles)
-17. [Coupling and Cohesion](#17-coupling-and-cohesion)
-18. [Association, Aggregation, Composition](#18-association-aggregation-composition)
-19. [Immutable Classes](#19-immutable-classes)
-20. [Marker Interfaces](#20-marker-interfaces)
-21. [Sealed Classes (Java 17+)](#21-sealed-classes-java-17)
-22. [Records (Java 16+)](#22-records-java-16)
-23. [Interview Questions & Answers](#23-interview-questions--answers)
+1. [What is OOP?](#what-is-oop)
+2. [Classes and Objects](#classes-and-objects)
+3. [Constructors](#constructors)
+4. [Encapsulation](#encapsulation)
+5. [Inheritance](#inheritance)
+6. [Polymorphism](#polymorphism)
+7. [Abstraction](#abstraction)
+8. [Interfaces](#interfaces)
+9. [Abstract Class vs Interface](#abstract-class-vs-interface)
+10. [The `this` and `super` Keywords](#the-this-and-super-keywords)
+11. [The `static` Keyword](#the-static-keyword)
+12. [The `final` Keyword](#the-final-keyword)
+13. [Object Class and Its Methods](#object-class-and-its-methods)
+14. [Type Casting (Upcasting & Downcasting)](#type-casting-upcasting-downcasting)
+15. [Composition vs Inheritance](#composition-vs-inheritance)
+16. [SOLID Principles](#solid-principles)
+17. [Coupling and Cohesion](#coupling-and-cohesion)
+18. [Association, Aggregation, Composition](#association-aggregation-composition)
+19. [Immutable Classes](#immutable-classes)
+20. [Marker Interfaces](#marker-interfaces)
+21. [Sealed Classes (Java 17+)](#sealed-classes-java-17)
+22. [Records (Java 16+)](#records-java-16)
+23. [Key Topics & Explanations](#key-topics-explanations)
 
----
+--
 
 ## 1. What is OOP?
 
@@ -40,7 +40,7 @@
 ### Four Pillars of OOP
 
 | Pillar            | Purpose                                                   |
-|-------------------|-----------------------------------------------------------|
+|----------|------------------------------|
 | **Encapsulation** | Bundling data + methods, hiding internal state            |
 | **Inheritance**   | Reusing code by deriving new classes from existing ones   |
 | **Polymorphism**  | One interface, multiple implementations                   |
@@ -49,14 +49,14 @@
 ### OOP vs Procedural Programming
 
 | Feature           | OOP                              | Procedural                      |
-|-------------------|----------------------------------|---------------------------------|
+|----------|-----------------|-----------------|
 | **Focus**         | Objects                          | Functions/Procedures            |
 | **Data**          | Encapsulated in objects          | Shared/global                   |
 | **Reusability**   | High (inheritance, composition)  | Low (copy-paste)                |
 | **Security**      | Data hiding via access modifiers | No built-in data hiding         |
 | **Example**       | Java, C++, Python                | C, Pascal                       |
 
----
+--
 
 ## 2. Classes and Objects
 
@@ -106,7 +106,7 @@ emp2.displayInfo(); // Sneha | Age: 25 | Salary: 45000.0
 3. The **constructor** is executed.
 4. A **reference** to the object is returned and stored in the variable on the **stack**.
 
----
+--
 
 ## 3. Constructors
 
@@ -171,7 +171,7 @@ public class Person {
 - `this()` must be the **first statement** in a constructor.
 - A constructor **cannot** be `abstract`, `static`, `final`, or `synchronized`.
 
----
+--
 
 ## 4. Encapsulation
 
@@ -218,7 +218,7 @@ public class BankAccount {
 ### Access Modifiers
 
 | Modifier      | Class | Package | Subclass | World |
-|---------------|-------|---------|----------|-------|
+|--------|----|-----|-----|----|
 | `private`     | ✅    | ❌      | ❌       | ❌    |
 | `default`     | ✅    | ✅      | ❌       | ❌    |
 | `protected`   | ✅    | ✅      | ✅       | ❌    |
@@ -231,7 +231,7 @@ public class BankAccount {
 - **Flexibility** — internal implementation can change without affecting external code.
 - **Read-only / Write-only** — provide only getter or only setter.
 
----
+--
 
 ## 5. Inheritance
 
@@ -342,7 +342,7 @@ a.sound(); // Woof Woof! (runtime polymorphism)
 ### 5.6 Overriding Rules
 
 | Rule | Description |
-|------|-------------|
+|---|-------|
 | **Method signature** | Must be exactly the same |
 | **Return type** | Same or covariant (subtype) |
 | **Access modifier** | Same or wider (not narrower) |
@@ -384,7 +384,7 @@ class Dog extends Animal {
 }
 ```
 
----
+--
 
 ## 6. Polymorphism
 
@@ -495,7 +495,7 @@ for (Shape s : shapes) {
 ### 6.3 Overloading vs Overriding
 
 | Feature           | Overloading                    | Overriding                      |
-|-------------------|--------------------------------|---------------------------------|
+|----------|----------------|-----------------|
 | **When**          | Compile-time                   | Runtime                         |
 | **Where**         | Same class                     | Parent-child classes            |
 | **Method name**   | Same                           | Same                            |
@@ -505,7 +505,7 @@ for (Shape s : shapes) {
 | **static**        | Can be overloaded              | Cannot be overridden            |
 | **Binding**       | Static (early) binding         | Dynamic (late) binding          |
 
-### 6.4 Tricky Interview Scenario
+### 6.4 Tricky Technical Review Scenario
 
 ```java
 class Parent {
@@ -528,7 +528,7 @@ Parent p = new Child();
 p.show("Hello");  // Parent-Object (reference type is Parent, which only has show(Object))
 ```
 
----
+--
 
 ## 7. Abstraction
 
@@ -598,7 +598,7 @@ car.displayBrand();   // Brand: Maruti
 ### 7.2 Abstract Class Rules
 
 | Rule | Description |
-|------|-------------|
+|---|-------|
 | Cannot be instantiated | `new AbstractClass()` → compile error |
 | Can have constructors | Called via `super()` from subclass |
 | Can have abstract methods | Must be implemented by concrete subclass |
@@ -607,7 +607,7 @@ car.displayBrand();   // Brand: Maruti
 | Can have `static` methods | Yes |
 | Subclass must implement all abstract methods | Or be declared abstract itself |
 
----
+--
 
 ## 8. Interfaces
 
@@ -737,12 +737,12 @@ class C implements A, B {
 }
 ```
 
----
+--
 
 ## 9. Abstract Class vs Interface
 
 | Feature                    | Abstract Class                  | Interface                        |
-|----------------------------|---------------------------------|----------------------------------|
+|--------------|-----------------|-----------------|
 | **Methods**                | Abstract + concrete             | Abstract + default + static + private |
 | **Fields**                 | Any type                        | Only `public static final`       |
 | **Constructors**           | Yes                             | No                               |
@@ -758,7 +758,7 @@ class C implements A, B {
 - **Interface:** When unrelated classes share a capability.
   - Example: `Flyable` → `Bird`, `Airplane`, `Drone` (no common state)
 
----
+--
 
 ## 10. The `this` and `super` Keywords
 
@@ -831,7 +831,7 @@ class Dog extends Animal {
 - `super()` is implicitly called if not written explicitly.
 - `this` and `super` **cannot** be used in `static` context.
 
----
+--
 
 ## 11. The `static` Keyword
 
@@ -916,13 +916,13 @@ inner.display();
 ### 11.5 Static Rules
 
 | Rule | Description |
-|------|-------------|
+|---|-------|
 | Static method cannot access non-static members | No `this` or instance variables |
 | Non-static method CAN access static members | Works fine |
 | Static method cannot be overridden | Can be hidden (method hiding) |
 | Static method cannot use `this` or `super` | No instance context |
 
----
+--
 
 ## 12. The `final` Keyword
 
@@ -986,7 +986,7 @@ final class ImmutablePoint {
 
 **Examples of final classes in Java:** `String`, `Integer`, `Double`, all wrapper classes.
 
----
+--
 
 ## 13. Object Class and Its Methods
 
@@ -1025,7 +1025,7 @@ public class Employee {
 ### 13.2 equals() and hashCode() Contract
 
 | Rule | Description |
-|------|-------------|
+|---|-------|
 | If `a.equals(b)` is true | Then `a.hashCode() == b.hashCode()` must be true |
 | If `a.hashCode() == b.hashCode()` | `a.equals(b)` may or may not be true (collision) |
 | If `a.equals(b)` is false | `hashCode` may or may not be equal |
@@ -1055,7 +1055,7 @@ System.out.println(s3 == s4);      // true (String pool — same reference)
 // wait(), notify(), notifyAll() — for thread synchronization
 ```
 
----
+--
 
 ## 14. Type Casting (Upcasting & Downcasting)
 
@@ -1108,7 +1108,7 @@ if (a instanceof Dog d) {
 }
 ```
 
----
+--
 
 ## 15. Composition vs Inheritance
 
@@ -1147,7 +1147,7 @@ class Car {
 ### When to Use
 
 | Use Inheritance When | Use Composition When |
-|----------------------|----------------------|
+|-----------|-----------|
 | True IS-A relationship | HAS-A relationship |
 | `Dog` IS-A `Animal` | `Car` HAS-A `Engine` |
 | Need to override behavior | Need to use behavior |
@@ -1155,7 +1155,7 @@ class Car {
 
 > **Rule of thumb:** "Favor composition over inheritance" — Gang of Four
 
----
+--
 
 ## 16. SOLID Principles
 
@@ -1344,7 +1344,7 @@ UserService service = new UserService(new MySQLDatabase());
 UserService service2 = new UserService(new MongoDatabase());
 ```
 
----
+--
 
 ## 17. Coupling and Cohesion
 
@@ -1353,7 +1353,7 @@ UserService service2 = new UserService(new MongoDatabase());
 How much one class depends on another.
 
 | Type | Description | Example |
-|------|-------------|---------|
+|---|-------|-----|
 | **Tight coupling** | Classes are heavily dependent | Directly creating objects inside |
 | **Loose coupling** | Classes interact through interfaces | Dependency injection |
 
@@ -1394,7 +1394,7 @@ class EmailService {
 }
 ```
 
----
+--
 
 ## 18. Association, Aggregation, Composition
 
@@ -1461,12 +1461,12 @@ class Room {
 ### Summary
 
 | Relationship | Strength | Lifecycle | Example |
-|-------------|----------|-----------|---------|
+|-------|-----|------|-----|
 | **Association** | Weak | Independent | Teacher ↔ Student |
 | **Aggregation** | Medium | Independent | Department → Employee |
 | **Composition** | Strong | Dependent | House → Room |
 
----
+--
 
 ## 19. Immutable Classes
 
@@ -1523,7 +1523,7 @@ System.out.println(student.getSubjects()); // [Math, Science] — not affected!
 - **No side effects** — predictable behavior.
 - **String** is the most common example of an immutable class.
 
----
+--
 
 ## 20. Marker Interfaces
 
@@ -1551,13 +1551,13 @@ if (obj instanceof Auditable) {
 ### Marker Interface vs Annotation
 
 | Feature | Marker Interface | Annotation |
-|---------|-----------------|------------|
+|-----|---------|------|
 | **Type checking** | Compile-time (instanceof) | Runtime (reflection) |
 | **Polymorphism** | Yes (can be used as type) | No |
 | **Modern approach** | Older pattern | Preferred in modern Java |
 | **Example** | `Serializable` | `@Entity`, `@Override` |
 
----
+--
 
 ## 21. Sealed Classes (Java 17+)
 
@@ -1604,7 +1604,7 @@ double getArea(Shape shape) {
 }
 ```
 
----
+--
 
 ## 22. Records (Java 16+)
 
@@ -1673,35 +1673,35 @@ System.out.println(emp);            // Employee[name=Rahul, age=28]
 - Fields are implicitly `final` — immutable.
 - Cannot declare instance fields outside the header.
 
----
+--
 
-## 23. Interview Questions & Answers
+## 23. Key Topics & Explanations
 
-### Q1: What are the four pillars of OOP?
+### Topic 1: What are the four pillars of OOP?
 
 **Answer:** Encapsulation (data hiding), Inheritance (code reuse), Polymorphism (many forms), Abstraction (hiding complexity). Encapsulation bundles data and methods; Inheritance allows child classes to reuse parent code; Polymorphism allows the same method to behave differently; Abstraction hides implementation details.
 
----
+--
 
-### Q2: Can we create an object of an abstract class?
+### Topic 2: Can we create an object of an abstract class?
 
 **Answer:** No, we cannot instantiate an abstract class directly. But we can create a reference of an abstract class pointing to a concrete subclass object: `Animal a = new Dog();`. We can also use anonymous inner classes: `Animal a = new Animal() { void sound() { } };`.
 
----
+--
 
-### Q3: What is the difference between `==` and `equals()`?
+### Topic 3: What is the difference between `==` and `equals()`?
 
 **Answer:** `==` compares **references** (memory addresses) — checks if two variables point to the same object. `equals()` compares **content/logical equality** — checks if two objects are meaningfully equal. For `String`, `equals()` compares character sequences. Always override `equals()` in custom classes for logical comparison.
 
----
+--
 
-### Q4: Why do we need to override `hashCode()` when we override `equals()`?
+### Topic 4: Why do we need to override `hashCode()` when we override `equals()`?
 
 **Answer:** The contract states: if two objects are equal (`equals()` returns true), they must have the same `hashCode()`. `HashMap` and `HashSet` use `hashCode()` to determine the bucket. If `hashCode()` is not overridden, two logically equal objects may end up in different buckets, causing lookup failures.
 
----
+--
 
-### Q5: Can a constructor be private?
+### Topic 5: Can a constructor be private?
 
 **Answer:** Yes. Private constructors are used in:
 - **Singleton pattern** — only one instance allowed.
@@ -1719,9 +1719,9 @@ class Singleton {
 }
 ```
 
----
+--
 
-### Q6: What is method hiding?
+### Topic 6: What is method hiding?
 
 **Answer:** When a subclass defines a `static` method with the same signature as a `static` method in the parent class, it's called method hiding (not overriding). The method called depends on the **reference type**, not the object type.
 
@@ -1737,9 +1737,9 @@ Parent p = new Child();
 p.show(); // "Parent" — based on reference type (method hiding)
 ```
 
----
+--
 
-### Q7: What is covariant return type?
+### Topic 7: What is covariant return type?
 
 **Answer:** A subclass can override a method and return a **subtype** of the original return type.
 
@@ -1753,39 +1753,39 @@ class Dog extends Animal {
 }
 ```
 
----
+--
 
-### Q8: Can we override a private or static method?
+### Topic 8: Can we override a private or static method?
 
 **Answer:**
 - **Private methods:** No. They are not visible to subclasses, so there's nothing to override.
 - **Static methods:** No. They belong to the class, not instances. A subclass can define the same static method (method hiding), but it's not overriding.
 
----
+--
 
-### Q9: What is the difference between aggregation and composition?
+### Topic 9: What is the difference between aggregation and composition?
 
 **Answer:**
 - **Aggregation:** Weak relationship. Child can exist independently. Example: Department has Employees — employees exist even if department is deleted.
 - **Composition:** Strong relationship. Child cannot exist without parent. Example: House has Rooms — rooms are destroyed when house is destroyed.
 
----
+--
 
-### Q10: What is an immutable class? How do you create one?
+### Topic 10: What is an immutable class? How do you create one?
 
 **Answer:** An immutable class is one whose state cannot be changed after creation. Steps: (1) Make class `final`, (2) Make all fields `private final`, (3) No setters, (4) Initialize via constructor, (5) Return defensive copies of mutable fields. Example: `String`, `Integer`, `LocalDate`.
 
----
+--
 
-### Q11: What is the diamond problem? How does Java solve it?
+### Topic 11: What is the diamond problem? How does Java solve it?
 
 **Answer:** The diamond problem occurs when a class inherits from two classes that have a method with the same signature. Java solves this by:
 - **Not allowing multiple inheritance with classes** (only single `extends`).
 - **Allowing multiple inheritance with interfaces**. If two interfaces have the same default method, the implementing class must override it explicitly.
 
----
+--
 
-### Q12: What is the difference between shallow copy and deep copy?
+### Topic 12: What is the difference between shallow copy and deep copy?
 
 **Answer:**
 - **Shallow copy:** Copies the object but shares references to nested objects. Changes to nested objects affect both copies.
@@ -1800,9 +1800,9 @@ Employee deepCopy = new Employee(original.getName(),
     new Address(original.getAddress().getCity())); // new nested objects
 ```
 
----
+--
 
-### Q13: Can an interface extend another interface?
+### Topic 13: Can an interface extend another interface?
 
 **Answer:** Yes. An interface can extend **multiple** interfaces.
 
@@ -1812,9 +1812,9 @@ interface B { void methodB(); }
 interface C extends A, B { void methodC(); } // extends both A and B
 ```
 
----
+--
 
-### Q14: What is the order of execution: static block, instance block, constructor?
+### Topic 14: What is the order of execution: static block, instance block, constructor?
 
 **Answer:**
 1. **Static block** — when class is loaded (once).
@@ -1830,20 +1830,20 @@ class Demo {
 // Output: 1. Static block → 2. Instance block → 3. Constructor
 ```
 
----
+--
 
-### Q15: What is the difference between `String`, `StringBuilder`, and `StringBuffer`?
+### Topic 15: What is the difference between `String`, `StringBuilder`, and `StringBuffer`?
 
 **Answer:**
 
 | Feature | String | StringBuilder | StringBuffer |
-|---------|--------|---------------|--------------|
+|-----|----|--------|-------|
 | **Mutability** | Immutable | Mutable | Mutable |
 | **Thread-safe** | Yes (immutable) | No | Yes (synchronized) |
 | **Performance** | Slow for concatenation | Fast | Slower than StringBuilder |
 | **When to use** | Few modifications | Single-threaded string manipulation | Multi-threaded string manipulation |
 
----
+--
 
 ## Quick Reference
 
@@ -1872,6 +1872,6 @@ Access Modifiers (narrow → wide):
 private → default → protected → public
 ```
 
----
+--
 
 > **Tip:** WITCH companies heavily focus on OOP concepts, especially the four pillars, SOLID principles, `equals()`/`hashCode()`, immutability, and abstract class vs interface. Make sure you can explain each with real-world examples.

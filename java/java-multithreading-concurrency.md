@@ -1,37 +1,37 @@
 # Java Multithreading & Concurrency - Complete Guide (Basics to Advanced)
 
-**Target:** Interview preparation for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
+**Target:** Skill enhancement for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
 **Covers:** Threads, Synchronization, Locks, ExecutorService, CompletableFuture, Concurrent Collections, and Virtual Threads.
 
----
+--
 
 ## Table of Contents
 
-1. [What is Multithreading?](#1-what-is-multithreading)
-2. [Creating Threads](#2-creating-threads)
-3. [Thread Lifecycle (States)](#3-thread-lifecycle-states)
-4. [Thread Methods](#4-thread-methods)
-5. [Thread Priority and Daemon Threads](#5-thread-priority-and-daemon-threads)
-6. [Synchronization](#6-synchronization)
-7. [Inter-Thread Communication (wait, notify, notifyAll)](#7-inter-thread-communication-wait-notify-notifyall)
-8. [Deadlock, Livelock, Starvation](#8-deadlock-livelock-starvation)
-9. [volatile Keyword](#9-volatile-keyword)
-10. [ThreadLocal](#10-threadlocal)
-11. [Locks (ReentrantLock, ReadWriteLock)](#11-locks-reentrantlock-readwritelock)
-12. [Executor Framework](#12-executor-framework)
-13. [Callable and Future](#13-callable-and-future)
-14. [CompletableFuture](#14-completablefuture)
-15. [Fork/Join Framework](#15-forkjoin-framework)
-16. [Concurrent Collections](#16-concurrent-collections)
-17. [Atomic Variables](#17-atomic-variables)
-18. [CountDownLatch, CyclicBarrier, Semaphore](#18-countdownlatch-cyclicbarrier-semaphore)
-19. [BlockingQueue](#19-blockingqueue)
-20. [Producer-Consumer Problem](#20-producer-consumer-problem)
-21. [Virtual Threads (Java 21)](#21-virtual-threads-java-21)
-22. [Common Coding Problems](#22-common-coding-problems)
-23. [Interview Questions & Answers](#23-interview-questions--answers)
+1. [What is Multithreading?](#what-is-multithreading)
+2. [Creating Threads](#creating-threads)
+3. [Thread Lifecycle (States)](#thread-lifecycle-states)
+4. [Thread Methods](#thread-methods)
+5. [Thread Priority and Daemon Threads](#thread-priority-and-daemon-threads)
+6. [Synchronization](#synchronization)
+7. [Inter-Thread Communication (wait, notify, notifyAll)](#inter-thread-communication-wait-notify-notifyall)
+8. [Deadlock, Livelock, Starvation](#deadlock-livelock-starvation)
+9. [volatile Keyword](#volatile-keyword)
+10. [ThreadLocal](#threadlocal)
+11. [Locks (ReentrantLock, ReadWriteLock)](#locks-reentrantlock-readwritelock)
+12. [Executor Framework](#executor-framework)
+13. [Callable and Future](#callable-and-future)
+14. [CompletableFuture](#completablefuture)
+15. [Fork/Join Framework](#forkjoin-framework)
+16. [Concurrent Collections](#concurrent-collections)
+17. [Atomic Variables](#atomic-variables)
+18. [CountDownLatch, CyclicBarrier, Semaphore](#countdownlatch-cyclicbarrier-semaphore)
+19. [BlockingQueue](#blockingqueue)
+20. [Producer-Consumer Problem](#producer-consumer-problem)
+21. [Virtual Threads (Java 21)](#virtual-threads-java-21)
+22. [Common Coding Challenges](#common-coding-challenges)
+23. [Key Topics & Explanations](#key-topics-explanations)
 
----
+--
 
 ## 1. What is Multithreading?
 
@@ -40,7 +40,7 @@
 ### Key Concepts
 
 | Term | Definition |
-|------|-----------|
+|---|------|
 | **Process** | An independent program in execution with its own memory space |
 | **Thread** | A lightweight sub-process, the smallest unit of execution within a process |
 | **Concurrency** | Multiple tasks making progress (may not be simultaneous) |
@@ -71,7 +71,7 @@ Process Memory:
     └── Native method stack
 ```
 
----
+--
 
 ## 2. Creating Threads
 
@@ -130,7 +130,7 @@ System.out.println(result); // 42
 ### 2.4 Thread vs Runnable vs Callable
 
 | Feature | Thread | Runnable | Callable |
-|---------|--------|----------|----------|
+|-----|----|-----|-----|
 | **Type** | Class (extends) | Interface (implements) | Interface (implements) |
 | **Method** | `run()` | `run()` | `call()` |
 | **Return value** | No | No | Yes |
@@ -138,7 +138,7 @@ System.out.println(result); // 42
 | **Multiple inheritance** | No (already extends Thread) | Yes ✅ | Yes ✅ |
 | **Preferred** | No | Yes ✅ | Yes (when result needed) ✅ |
 
----
+--
 
 ## 3. Thread Lifecycle (States)
 
@@ -161,7 +161,7 @@ System.out.println(result); // 42
 ### Thread States (Thread.State enum)
 
 | State | Description |
-|-------|-------------|
+|----|-------|
 | **NEW** | Thread created but `start()` not yet called |
 | **RUNNABLE** | Thread is ready to run or currently running |
 | **BLOCKED** | Waiting to acquire a monitor lock (synchronized) |
@@ -187,7 +187,7 @@ t.join();
 System.out.println(t.getState()); // TERMINATED
 ```
 
----
+--
 
 ## 4. Thread Methods
 
@@ -270,7 +270,7 @@ t.setName("Worker-1");
 t.start();
 ```
 
----
+--
 
 ## 5. Thread Priority and Daemon Threads
 
@@ -312,7 +312,7 @@ daemon.start();
 - A thread created by a daemon thread is also a daemon thread.
 - `main` thread is a **non-daemon** thread.
 
----
+--
 
 ## 6. Synchronization
 
@@ -400,14 +400,14 @@ class Counter {
 ### 6.5 Synchronized Rules
 
 | Rule | Description |
-|------|-------------|
+|---|-------|
 | **Instance synchronized** | Locks on `this` — different instances have different locks |
 | **Static synchronized** | Locks on `Class` object — shared across all instances |
 | **Reentrant** | A thread can acquire the same lock multiple times |
 | **No lock on read** | Reads without synchronization may see stale values |
 | **Performance** | Synchronization has overhead — use only when needed |
 
----
+--
 
 ## 7. Inter-Thread Communication (wait, notify, notifyAll)
 
@@ -494,14 +494,14 @@ synchronized (lock) {
 ### 7.6 wait() vs sleep()
 
 | Feature | wait() | sleep() |
-|---------|--------|---------|
+|-----|----|-----|
 | **Class** | Object | Thread |
 | **Lock** | Releases lock ✅ | Does NOT release lock ❌ |
 | **Where** | Inside synchronized block | Anywhere |
 | **Wakeup** | notify/notifyAll or timeout | After specified time |
 | **Purpose** | Inter-thread communication | Pause execution |
 
----
+--
 
 ## 8. Deadlock, Livelock, Starvation
 
@@ -576,7 +576,7 @@ A thread is perpetually denied access to a resource because other threads keep a
 - Caused by thread priority issues or unfair locks.
 - Solution: Use fair locks (`new ReentrantLock(true)`).
 
----
+--
 
 ## 9. volatile Keyword
 
@@ -621,7 +621,7 @@ class Flag {
 ### volatile vs synchronized
 
 | Feature | volatile | synchronized |
-|---------|----------|-------------|
+|-----|-----|-------|
 | **Visibility** | Yes ✅ | Yes ✅ |
 | **Atomicity** | No ❌ | Yes ✅ |
 | **Use case** | Simple flags, single read/write | Compound operations (check-then-act) |
@@ -636,7 +636,7 @@ count++; // NOT atomic: read → increment → write (race condition still possi
 // Use synchronized or AtomicInteger for count++
 ```
 
----
+--
 
 ## 10. ThreadLocal
 
@@ -685,7 +685,7 @@ try {
 }
 ```
 
----
+--
 
 ## 11. Locks (ReentrantLock, ReadWriteLock)
 
@@ -788,7 +788,7 @@ class Cache {
 ### 11.5 ReentrantLock vs synchronized
 
 | Feature | synchronized | ReentrantLock |
-|---------|-------------|---------------|
+|-----|-------|--------|
 | **Lock/Unlock** | Automatic | Manual (lock/unlock) |
 | **tryLock** | No | Yes ✅ |
 | **Timeout** | No | Yes ✅ |
@@ -798,7 +798,7 @@ class Cache {
 | **Performance** | Similar | Similar (slightly more flexible) |
 | **Simplicity** | Simpler ✅ | More verbose |
 
----
+--
 
 ## 12. Executor Framework
 
@@ -936,7 +936,7 @@ ThreadPoolExecutor executor = new ThreadPoolExecutor(
 // DiscardOldestPolicy — discards oldest task in queue
 ```
 
----
+--
 
 ## 13. Callable and Future
 
@@ -986,7 +986,7 @@ Integer result = future.get(5, TimeUnit.SECONDS); // throws TimeoutException if 
 
 **Solution:** Use `CompletableFuture` (Java 8+).
 
----
+--
 
 ## 14. CompletableFuture
 
@@ -1138,11 +1138,11 @@ UserProfile profile = profileFuture.get();
 ### 14.8 thenApply vs thenCompose
 
 | Method | Analogy | Returns | Use When |
-|--------|---------|---------|----------|
+|----|-----|-----|-----|
 | `thenApply` | `map()` | `CompletableFuture<R>` | Synchronous transformation |
 | `thenCompose` | `flatMap()` | `CompletableFuture<R>` (flattened) | Async transformation (returns CF) |
 
----
+--
 
 ## 15. Fork/Join Framework
 
@@ -1234,7 +1234,7 @@ class SortTask extends RecursiveAction {
 }
 ```
 
----
+--
 
 ## 16. Concurrent Collections
 
@@ -1293,7 +1293,7 @@ sortedMap.put("Apple", 5);
 System.out.println(sortedMap); // {Apple=5, Banana=2} — sorted
 ```
 
----
+--
 
 ## 17. Atomic Variables
 
@@ -1308,7 +1308,7 @@ AtomicInteger counter = new AtomicInteger(0);
 
 counter.incrementAndGet();  // ++counter (returns new value)
 counter.getAndIncrement();  // counter++ (returns old value)
-counter.decrementAndGet();  // --counter
+counter.decrementAndGet();  // -counter
 counter.addAndGet(5);       // counter += 5
 counter.get();              // read
 counter.set(10);            // write
@@ -1350,14 +1350,14 @@ long sum = adder.sum(); // get current sum
 ### 17.4 When to Use What
 
 | Scenario | Solution |
-|----------|----------|
+|-----|-----|
 | Simple counter | `AtomicInteger` |
 | High-contention counter | `LongAdder` |
 | Boolean flag | `AtomicBoolean` or `volatile boolean` |
 | Reference swap | `AtomicReference` |
 | Complex operations | `synchronized` or `ReentrantLock` |
 
----
+--
 
 ## 18. CountDownLatch, CyclicBarrier, Semaphore
 
@@ -1424,7 +1424,7 @@ for (int i = 1; i <= 3; i++) {
 ### 18.3 CountDownLatch vs CyclicBarrier
 
 | Feature | CountDownLatch | CyclicBarrier |
-|---------|---------------|---------------|
+|-----|--------|--------|
 | **Reusable** | No (one-time) | Yes ✅ |
 | **Who waits** | One thread waits for N | N threads wait for each other |
 | **Count** | Decremented by `countDown()` | Automatically managed |
@@ -1471,7 +1471,7 @@ if (semaphore.tryAcquire(5, TimeUnit.SECONDS)) {
 }
 ```
 
----
+--
 
 ## 19. BlockingQueue
 
@@ -1480,7 +1480,7 @@ A thread-safe queue that **blocks** when trying to dequeue from an empty queue o
 ### 19.1 Types
 
 | Implementation | Bounded | Ordering | Notes |
-|---------------|---------|----------|-------|
+|--------|-----|-----|----|
 | `ArrayBlockingQueue` | Yes | FIFO | Fixed capacity |
 | `LinkedBlockingQueue` | Optional | FIFO | Optionally bounded |
 | `PriorityBlockingQueue` | No | Priority | Unbounded |
@@ -1490,7 +1490,7 @@ A thread-safe queue that **blocks** when trying to dequeue from an empty queue o
 ### 19.2 Key Methods
 
 | Operation | Blocks | Throws Exception | Returns Special Value | Times Out |
-|-----------|--------|------------------|-----------------------|-----------|
+|------|----|---------|------------|------|
 | **Insert** | `put(e)` | `add(e)` | `offer(e)` | `offer(e, time, unit)` |
 | **Remove** | `take()` | `remove()` | `poll()` | `poll(time, unit)` |
 | **Examine** | N/A | `element()` | `peek()` | N/A |
@@ -1505,7 +1505,7 @@ queue.put("item"); // blocks if queue is full
 String item = queue.take(); // blocks if queue is empty
 ```
 
----
+--
 
 ## 20. Producer-Consumer Problem
 
@@ -1584,7 +1584,7 @@ class Buffer {
 }
 ```
 
----
+--
 
 ## 21. Virtual Threads (Java 21)
 
@@ -1593,7 +1593,7 @@ Virtual threads are **lightweight threads** managed by the JVM, not the OS. They
 ### 21.1 Platform Threads vs Virtual Threads
 
 | Feature | Platform Thread | Virtual Thread |
-|---------|----------------|----------------|
+|-----|--------|--------|
 | **Managed by** | OS | JVM |
 | **Memory** | ~1 MB stack | ~few KB |
 | **Creation cost** | Expensive | Cheap |
@@ -1683,9 +1683,9 @@ try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
 }
 ```
 
----
+--
 
-## 22. Common Coding Problems
+## 22. Common Coding Challenges
 
 ### Problem 1: Print numbers 1-10 using two threads alternately
 
@@ -1730,7 +1730,7 @@ new Thread(() -> { try { printer.printEven(); } catch (Exception e) {} }).start(
 ### Problem 2: Implement a thread-safe Singleton
 
 ```java
-// Double-Checked Locking (most asked in interviews)
+// Double-Checked Locking (most asked in technical reviews)
 class Singleton {
     private static volatile Singleton instance;
 
@@ -1862,99 +1862,99 @@ class FizzBuzz {
 }
 ```
 
----
+--
 
-## 23. Interview Questions & Answers
+## 23. Key Topics & Explanations
 
-### Q1: What is the difference between a process and a thread?
+### Topic 1: What is the difference between a process and a thread?
 
 **Answer:** A process is an independent program with its own memory space (heap, stack, code). A thread is a lightweight unit of execution within a process. Threads share the process's heap memory but have their own stack. Creating a thread is cheaper than creating a process. Threads within the same process can communicate via shared memory; processes need IPC (Inter-Process Communication).
 
----
+--
 
-### Q2: What is the difference between `start()` and `run()`?
+### Topic 2: What is the difference between `start()` and `run()`?
 
 **Answer:** `start()` creates a **new thread** and then calls `run()` on that new thread. `run()` simply executes the method in the **current thread** — no new thread is created. Always use `start()` to achieve multithreading.
 
----
+--
 
-### Q3: What is a race condition?
+### Topic 3: What is a race condition?
 
 **Answer:** A race condition occurs when two or more threads access shared data concurrently, and the final result depends on the timing/order of execution. For example, `count++` is not atomic (read → modify → write) — two threads may read the same value and both write the same incremented value, losing one update. Fix with `synchronized`, `AtomicInteger`, or `Lock`.
 
----
+--
 
-### Q4: What is a deadlock? How to prevent it?
+### Topic 4: What is a deadlock? How to prevent it?
 
 **Answer:** Deadlock occurs when two or more threads are blocked forever, each waiting for a lock held by the other. Four conditions for deadlock: (1) Mutual exclusion, (2) Hold and wait, (3) No preemption, (4) Circular wait. Prevention: (1) Lock ordering — always acquire locks in the same order, (2) Use `tryLock()` with timeout, (3) Avoid nested locks, (4) Use higher-level concurrency utilities.
 
----
+--
 
-### Q5: What is the difference between `synchronized` and `ReentrantLock`?
+### Topic 5: What is the difference between `synchronized` and `ReentrantLock`?
 
 **Answer:** `synchronized` is a keyword with automatic lock/unlock; `ReentrantLock` is a class requiring manual lock/unlock. ReentrantLock offers: `tryLock()` (non-blocking), timeout, fair locking, `lockInterruptibly()`, and multiple `Condition` objects. Use `synchronized` for simplicity; use `ReentrantLock` when you need advanced features.
 
----
+--
 
-### Q6: What is the difference between `wait()` and `sleep()`?
+### Topic 6: What is the difference between `wait()` and `sleep()`?
 
 **Answer:** `wait()` is called on an Object inside a synchronized block — it **releases the lock** and waits until notified. `sleep()` is called on Thread — it **does NOT release the lock** and pauses for a specified time. `wait()` is for inter-thread communication; `sleep()` is for pausing execution.
 
----
+--
 
-### Q7: What is `volatile`? When to use it?
+### Topic 7: What is `volatile`? When to use it?
 
 **Answer:** `volatile` ensures that a variable is always read from and written to **main memory**, not from thread-local cache. It provides **visibility** but NOT **atomicity**. Use for simple flags (boolean) that are read by one thread and written by another. Don't use for compound operations like `count++` — use `AtomicInteger` or `synchronized` instead.
 
----
+--
 
-### Q8: What is the difference between `Callable` and `Runnable`?
+### Topic 8: What is the difference between `Callable` and `Runnable`?
 
 **Answer:** `Runnable.run()` returns `void` and cannot throw checked exceptions. `Callable.call()` returns a value and can throw checked exceptions. `Callable` is used with `ExecutorService.submit()` which returns a `Future` to retrieve the result.
 
----
+--
 
-### Q9: What is `CompletableFuture`? How is it better than `Future`?
+### Topic 9: What is `CompletableFuture`? How is it better than `Future`?
 
 **Answer:** `CompletableFuture` (Java 8) is an enhanced `Future` that supports: (1) Non-blocking callbacks (`thenApply`, `thenAccept`), (2) Chaining operations, (3) Combining multiple futures (`thenCombine`, `allOf`, `anyOf`), (4) Exception handling (`exceptionally`, `handle`). `Future.get()` is blocking with no callback support.
 
----
+--
 
-### Q10: What is a thread pool? Why use it?
+### Topic 10: What is a thread pool? Why use it?
 
 **Answer:** A thread pool is a collection of pre-created, reusable threads. Benefits: (1) Avoids the overhead of creating/destroying threads for each task, (2) Controls the maximum number of concurrent threads, (3) Provides task queuing. Use `ExecutorService` (`Executors.newFixedThreadPool()`, etc.) instead of manually creating threads.
 
----
+--
 
-### Q11: What is the difference between `ConcurrentHashMap` and `Hashtable`?
+### Topic 11: What is the difference between `ConcurrentHashMap` and `Hashtable`?
 
 **Answer:** Both are thread-safe, but `ConcurrentHashMap` uses fine-grained locking (bucket-level in Java 8+) allowing multiple threads to read/write concurrently. `Hashtable` synchronizes every method (full lock) — only one thread can access at a time. `ConcurrentHashMap` doesn't allow null keys/values. `Hashtable` is legacy — always use `ConcurrentHashMap`.
 
----
+--
 
-### Q12: What is `ThreadLocal`?
+### Topic 12: What is `ThreadLocal`?
 
 **Answer:** `ThreadLocal` provides thread-specific variables — each thread has its own independent copy. Common uses: `SimpleDateFormat` (not thread-safe), database connections, user context in web apps. Always call `remove()` after use to prevent memory leaks, especially in thread pools where threads are reused.
 
----
+--
 
-### Q13: What are virtual threads? (Java 21)
+### Topic 13: What are virtual threads? (Java 21)
 
 **Answer:** Virtual threads are lightweight threads managed by the JVM (not OS). They use only a few KB of memory (vs ~1 MB for platform threads), allowing millions of concurrent threads. When a virtual thread blocks (I/O), it's unmounted from the carrier (platform) thread, which can then run other virtual threads. Ideal for I/O-bound tasks like web servers and database queries. Not suitable for CPU-bound tasks.
 
----
+--
 
-### Q14: What is the difference between `CountDownLatch` and `CyclicBarrier`?
+### Topic 14: What is the difference between `CountDownLatch` and `CyclicBarrier`?
 
 **Answer:** `CountDownLatch` is one-time use — one thread waits for N events (countDown). `CyclicBarrier` is reusable — N threads wait for each other at a barrier point, then all proceed together. Use `CountDownLatch` when one thread waits for others to finish; use `CyclicBarrier` when threads need to synchronize at checkpoints.
 
----
+--
 
-### Q15: How does `AtomicInteger` work internally?
+### Topic 15: How does `AtomicInteger` work internally?
 
 **Answer:** `AtomicInteger` uses **Compare-And-Swap (CAS)** operations — a CPU-level atomic instruction. CAS takes three values: memory location, expected value, and new value. It atomically checks if the current value equals the expected value, and if so, updates it. If not (another thread changed it), it retries. This is lock-free and faster than synchronization under low contention.
 
----
+--
 
 ## Quick Reference Cheat Sheet
 
@@ -2002,6 +2002,6 @@ CompletableFuture:
 └── exceptionally / handle — error handling
 ```
 
----
+--
 
-> **Tip:** For WITCH interviews, focus on: thread creation (Runnable vs Callable), synchronized vs Lock, wait/notify, deadlock (with code example), volatile, ExecutorService, and CompletableFuture basics. HashMap internal working + ConcurrentHashMap is the most crossover topic between Collections and Multithreading. Singleton pattern with double-checked locking is almost always asked.
+> **Tip:** For WITCH technical reviews, focus on: thread creation (Runnable vs Callable), synchronized vs Lock, wait/notify, deadlock (with code example), volatile, ExecutorService, and CompletableFuture basics. HashMap internal working + ConcurrentHashMap is the most crossover topic between Collections and Multithreading. Singleton pattern with double-checked locking is almost always asked.

@@ -1,31 +1,31 @@
 # Java Stream API - Complete Guide (Basics to Advanced)
 
-**Target:** Interview preparation for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
+**Target:** Skill enhancement for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
 **Java Version:** 8+ (Stream API was introduced in Java 8)
 
----
+--
 
 ## Table of Contents
 
-1. [What is Stream API?](#1-what-is-stream-api)
-2. [Stream vs Collection](#2-stream-vs-collection)
-3. [Creating Streams](#3-creating-streams)
-4. [Intermediate Operations](#4-intermediate-operations)
-5. [Terminal Operations](#5-terminal-operations)
-6. [Collectors in Depth](#6-collectors-in-depth)
-7. [Primitive Streams](#7-primitive-streams)
-8. [FlatMap - Flattening Nested Structures](#8-flatmap---flattening-nested-structures)
-9. [Sorting with Streams](#9-sorting-with-streams)
-10. [Grouping and Partitioning](#10-grouping-and-partitioning)
-11. [Reducing and Summarizing](#11-reducing-and-summarizing)
-12. [Optional with Streams](#12-optional-with-streams)
-13. [Parallel Streams](#13-parallel-streams)
-14. [Stream Pipeline Internals (Lazy Evaluation)](#14-stream-pipeline-internals-lazy-evaluation)
-15. [Common Coding Problems Using Streams](#15-common-coding-problems-using-streams)
-16. [Interview Questions & Answers](#16-interview-questions--answers)
-17. [Common Mistakes & Best Practices](#17-common-mistakes--best-practices)
+1. [What is Stream API?](#what-is-stream-api)
+2. [Stream vs Collection](#stream-vs-collection)
+3. [Creating Streams](#creating-streams)
+4. [Intermediate Operations](#intermediate-operations)
+5. [Terminal Operations](#terminal-operations)
+6. [Collectors in Depth](#collectors-in-depth)
+7. [Primitive Streams](#primitive-streams)
+8. [FlatMap - Flattening Nested Structures](#flatmap---flattening-nested-structures)
+9. [Sorting with Streams](#sorting-with-streams)
+10. [Grouping and Partitioning](#grouping-and-partitioning)
+11. [Reducing and Summarizing](#reducing-and-summarizing)
+12. [Optional with Streams](#optional-with-streams)
+13. [Parallel Streams](#parallel-streams)
+14. [Stream Pipeline Internals (Lazy Evaluation)](#stream-pipeline-internals-lazy-evaluation)
+15. [Common Coding Challenges Using Streams](#common-coding-challenges-using-streams)
+16. [Key Topics & Explanations](#key-topics-explanations)
+17. [Common Mistakes & Best Practices](#common-mistakes-best-practices)
 
----
+--
 
 ## 1. What is Stream API?
 
@@ -55,19 +55,19 @@ System.out.println(result); // [AMIT]
 ### Key Characteristics
 
 | Feature              | Description                                      |
-|----------------------|--------------------------------------------------|
+|-----------|-------------------------|
 | **Not a data structure** | Does not store elements                      |
 | **Functional style**     | Uses lambda expressions and method references|
 | **Lazy**                 | Intermediate operations are lazy             |
 | **Possibly unbounded**   | Can work with infinite streams               |
 | **Consumable**           | A stream can be traversed only once          |
 
----
+--
 
 ## 2. Stream vs Collection
 
 | Feature            | Collection                     | Stream                              |
-|--------------------|--------------------------------|-------------------------------------|
+|----------|----------------|-------------------|
 | **Storage**        | Stores all elements in memory  | Does NOT store elements             |
 | **Iteration**      | External (for-each, iterator)  | Internal (handled by stream)        |
 | **Traversal**      | Can be traversed multiple times| Can be traversed **only once**      |
@@ -85,7 +85,7 @@ for (String name : names) {
 names.stream().forEach(System.out::println);
 ```
 
----
+--
 
 ## 3. Creating Streams
 
@@ -171,7 +171,7 @@ IntStream range = IntStream.range(1, 5);       // 1, 2, 3, 4
 IntStream rangeClosed = IntStream.rangeClosed(1, 5); // 1, 2, 3, 4, 5
 ```
 
----
+--
 
 ## 4. Intermediate Operations
 
@@ -212,7 +212,7 @@ List<Integer> lengths = names.stream()
 
 ### 4.3 flatMap(Function)
 
-Flattens nested structures (covered in detail in [Section 8](#8-flatmap---flattening-nested-structures)).
+Flattens nested structures (covered in detail in [Section 8](#section-8)).
 
 ```java
 List<List<Integer>> nested = Arrays.asList(
@@ -342,7 +342,7 @@ List<Integer> result = nums.stream()
 // [4, 5, 6]
 ```
 
----
+--
 
 ## 5. Terminal Operations
 
@@ -367,7 +367,7 @@ names.parallelStream().forEachOrdered(System.out::println);
 
 ### 5.3 collect(Collector)
 
-The most commonly used terminal operation. Covered in detail in [Section 6](#6-collectors-in-depth).
+The most commonly used terminal operation. Covered in detail in [Section 6](#section-6).
 
 ```java
 List<String> list = names.stream()
@@ -445,7 +445,7 @@ boolean allLong = names.stream().allMatch(n -> n.length() > 3);             // d
 boolean noneEmpty = names.stream().noneMatch(String::isEmpty);              // true
 ```
 
----
+--
 
 ## 6. Collectors in Depth
 
@@ -546,14 +546,14 @@ List<String> unmodifiableList = names.stream()
         ));
 ```
 
----
+--
 
 ## 7. Primitive Streams
 
 Java provides specialized streams for primitives to avoid **autoboxing overhead**.
 
 | Stream Type   | For Primitive | Wrapper Equivalent |
-|---------------|---------------|--------------------|
+|--------|--------|----------|
 | `IntStream`   | `int`         | `Stream<Integer>`  |
 | `LongStream`  | `long`        | `Stream<Long>`     |
 | `DoubleStream`| `double`      | `Stream<Double>`   |
@@ -588,7 +588,7 @@ Stream<Integer> boxed = IntStream.rangeClosed(1, 5).boxed();
 IntStream unboxed = Arrays.asList(1, 2, 3).stream().mapToInt(Integer::intValue);
 ```
 
----
+--
 
 ## 8. FlatMap - Flattening Nested Structures
 
@@ -650,7 +650,7 @@ Set<String> allSubjects = students.stream()
 ### 8.4 map() vs flatMap()
 
 | `map()`                                    | `flatMap()`                                   |
-|--------------------------------------------|-----------------------------------------------|
+|----------------------|------------------------|
 | One-to-one transformation                  | One-to-many transformation                    |
 | Returns `Stream<Stream<T>>` for nested     | Returns `Stream<T>` (flattened)               |
 | Does NOT flatten                           | Flattens the result                           |
@@ -665,7 +665,7 @@ Stream<String> flatMapped = departments.stream()
         .flatMap(List::stream);
 ```
 
----
+--
 
 ## 9. Sorting with Streams
 
@@ -741,7 +741,7 @@ List<String> sorted2 = withNulls.stream()
 // [Amit, Rahul, Sneha, null, null]
 ```
 
----
+--
 
 ## 10. Grouping and Partitioning
 
@@ -821,12 +821,12 @@ Map<Boolean, Long> countPartitioned = employees.stream()
 ### 10.5 groupingBy vs partitioningBy
 
 | `groupingBy`                          | `partitioningBy`                      |
-|---------------------------------------|---------------------------------------|
+|--------------------|--------------------|
 | Groups by any classifier function     | Groups by a predicate (true/false)    |
 | Can have N groups                     | Always exactly 2 groups               |
 | Key type is the classifier's return   | Key type is always `Boolean`          |
 
----
+--
 
 ## 11. Reducing and Summarizing
 
@@ -887,7 +887,7 @@ System.out.println("Min Salary: " + salaryStats.getMin());
 System.out.println("Count: " + salaryStats.getCount());
 ```
 
----
+--
 
 ## 12. Optional with Streams
 
@@ -948,7 +948,7 @@ List<String> values = optionals.stream()
 // [A, B]
 ```
 
----
+--
 
 ## 13. Parallel Streams
 
@@ -1029,7 +1029,7 @@ List<Integer> result = customPool.submit(() ->
 customPool.shutdown();
 ```
 
----
+--
 
 ## 14. Stream Pipeline Internals (Lazy Evaluation)
 
@@ -1087,7 +1087,7 @@ Optional<String> first = names.stream()
 // Output:
 // Checking: Rahul
 // Checking: Amit
-// Checking: Sneha    <-- stops here, doesn't check Priya and Karan
+// Checking: Sneha    <- stops here, doesn't check Priya and Karan
 ```
 
 Short-circuit operations: `findFirst()`, `findAny()`, `anyMatch()`, `allMatch()`, `noneMatch()`, `limit()`
@@ -1102,11 +1102,11 @@ stream.forEach(System.out::println); // Works fine
 stream.forEach(System.out::println); // IllegalStateException: stream has already been operated upon
 ```
 
----
+--
 
-## 15. Common Coding Problems Using Streams
+## 15. Common Coding Challenges Using Streams
 
-These are the most frequently asked coding problems in WITCH company interviews.
+These are the most frequently asked coding problems in WITCH company technical reviews.
 
 ### Problem 1: Find the second highest number
 
@@ -1353,74 +1353,74 @@ boolean isPalindrome(String str) {
 }
 ```
 
----
+--
 
-## 16. Interview Questions & Answers
+## 16. Key Topics & Explanations
 
-### Q1: What is the difference between `map()` and `flatMap()`?
+### Topic 1: What is the difference between `map()` and `flatMap()`?
 
 **Answer:** `map()` applies a function to each element and wraps the result in a stream (one-to-one). `flatMap()` applies a function that returns a stream for each element and then flattens all the streams into a single stream (one-to-many). Use `flatMap()` when each element maps to multiple elements (e.g., list of lists).
 
----
+--
 
-### Q2: What is lazy evaluation in streams?
+### Topic 2: What is lazy evaluation in streams?
 
 **Answer:** Intermediate operations (filter, map, sorted, etc.) are not executed immediately. They are only executed when a terminal operation (collect, forEach, count, etc.) is invoked. This allows the stream to optimize the pipeline — for example, if `findFirst()` is used, the stream stops processing after finding the first match.
 
----
+--
 
-### Q3: Can we reuse a stream?
+### Topic 3: Can we reuse a stream?
 
 **Answer:** No. A stream can be consumed only once. Calling a terminal operation on an already consumed stream throws `IllegalStateException`. You need to create a new stream from the source.
 
----
+--
 
-### Q4: What is the difference between `findFirst()` and `findAny()`?
+### Topic 4: What is the difference between `findFirst()` and `findAny()`?
 
 **Answer:**
 - `findFirst()` returns the **first element** in encounter order. Deterministic.
 - `findAny()` returns **any element** and is non-deterministic. It performs better in **parallel streams** because it doesn't need to maintain order.
 
----
+--
 
-### Q5: What is the difference between `Collection.stream()` and `Collection.parallelStream()`?
+### Topic 5: What is the difference between `Collection.stream()` and `Collection.parallelStream()`?
 
 **Answer:** `stream()` creates a sequential stream that processes elements one by one on a single thread. `parallelStream()` creates a parallel stream that splits the data and processes chunks on multiple threads using the ForkJoinPool. Parallel streams are faster for large datasets with CPU-intensive operations but have overhead for small datasets.
 
----
+--
 
-### Q6: What is the difference between `reduce()` and `collect()`?
+### Topic 6: What is the difference between `reduce()` and `collect()`?
 
 **Answer:**
 - `reduce()` combines elements into a single immutable value (sum, max, concatenation). It creates new intermediate values at each step.
 - `collect()` is a mutable reduction — it accumulates elements into a mutable container (List, Set, Map, StringBuilder). It's more efficient for building collections.
 
----
+--
 
-### Q7: What happens if `toMap()` encounters duplicate keys?
+### Topic 7: What happens if `toMap()` encounters duplicate keys?
 
 **Answer:** It throws `IllegalStateException`. To handle duplicates, provide a merge function:
 ```java
 Collectors.toMap(keyMapper, valueMapper, (v1, v2) -> v1) // keep first
 ```
 
----
+--
 
-### Q8: What is the difference between `peek()` and `map()`?
+### Topic 8: What is the difference between `peek()` and `map()`?
 
 **Answer:**
 - `peek()` takes a `Consumer` (returns void) — used for side effects like logging. It does not transform elements.
 - `map()` takes a `Function` — transforms each element to a new value.
 
----
+--
 
-### Q9: How does `sorted()` work in a stream pipeline?
+### Topic 9: How does `sorted()` work in a stream pipeline?
 
 **Answer:** `sorted()` is a **stateful intermediate operation**. It needs to see all elements before it can sort, so it acts as a barrier in the pipeline. It buffers all elements, sorts them, and then passes them downstream. This breaks the one-element-at-a-time processing pattern.
 
----
+--
 
-### Q10: What is the difference between `Stream.of()` and `Arrays.stream()`?
+### Topic 10: What is the difference between `Stream.of()` and `Arrays.stream()`?
 
 **Answer:**
 - `Stream.of(array)` treats the entire array as a single element (creates `Stream<int[]>` for primitive arrays).
@@ -1432,9 +1432,9 @@ Stream.of(arr);         // Stream<int[]> — single element!
 Arrays.stream(arr);     // IntStream — three elements
 ```
 
----
+--
 
-### Q11: What are stateful vs stateless intermediate operations?
+### Topic 11: What are stateful vs stateless intermediate operations?
 
 **Answer:**
 - **Stateless:** Each element is processed independently — `filter()`, `map()`, `flatMap()`, `peek()`
@@ -1442,9 +1442,9 @@ Arrays.stream(arr);     // IntStream — three elements
 
 Stateful operations may need to process the entire stream before producing results and can be less efficient in parallel streams.
 
----
+--
 
-### Q12: Why should we avoid using `forEach()` to collect results?
+### Topic 12: Why should we avoid using `forEach()` to collect results?
 
 **Answer:** Using `forEach()` with an external mutable collection is not thread-safe in parallel streams and is considered bad practice. Use `collect()` instead, which is designed for mutable reduction and handles parallel execution correctly.
 
@@ -1457,9 +1457,9 @@ stream.forEach(result::add);
 List<String> result = stream.collect(Collectors.toList());
 ```
 
----
+--
 
-### Q13: What is `Collectors.teeing()`? (Java 12+)
+### Topic 13: What is `Collectors.teeing()`? (Java 12+)
 
 **Answer:** `teeing()` allows you to apply two collectors simultaneously and merge their results.
 
@@ -1473,9 +1473,9 @@ var result = numbers.stream()
         ));
 ```
 
----
+--
 
-### Q14: What is the default thread pool size for parallel streams?
+### Topic 14: What is the default thread pool size for parallel streams?
 
 **Answer:** Parallel streams use the common `ForkJoinPool` with a default parallelism level of `Runtime.getRuntime().availableProcessors() - 1`. You can change it with:
 ```java
@@ -1483,15 +1483,15 @@ System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "10")
 ```
 Or use a custom ForkJoinPool.
 
----
+--
 
-### Q15: What is the difference between `Stream.iterate()` and `Stream.generate()`?
+### Topic 15: What is the difference between `Stream.iterate()` and `Stream.generate()`?
 
 **Answer:**
 - `iterate(seed, unaryOperator)` produces a sequence where each element depends on the previous one (e.g., 0, 2, 4, 6...).
 - `generate(supplier)` produces elements independently — each call to the supplier is independent (e.g., random numbers).
 
----
+--
 
 ## 17. Common Mistakes & Best Practices
 
@@ -1547,7 +1547,7 @@ smallList.stream().forEach(item -> saveToDatabase(item)); // BETTER
 ### Best Practices Summary
 
 | Practice | Description |
-|----------|-------------|
+|-----|-------|
 | **Prefer `collect()` over `forEach()`** | For building results, always use collect |
 | **Use method references** | `String::toUpperCase` instead of `s -> s.toUpperCase()` |
 | **Avoid side effects** | Stream operations should be stateless |
@@ -1557,7 +1557,7 @@ smallList.stream().forEach(item -> saveToDatabase(item)); // BETTER
 | **Use `toList()` (Java 16+)** | `stream.toList()` instead of `collect(Collectors.toList())` |
 | **Profile before parallelizing** | Measure if parallel actually improves performance |
 
----
+--
 
 ## Quick Reference Cheat Sheet
 
@@ -1580,6 +1580,6 @@ INTERMEDIATE (Lazy):          TERMINAL (Eager):
 └── flatMapToInt/Long/Double  └── noneMatch(Predicate)
 ```
 
----
+--
 
-> **Tip:** Practice these examples in your IDE. Most WITCH company interviews ask 3-5 stream-based coding questions. Focus on `filter`, `map`, `collect`, `groupingBy`, `reduce`, and `flatMap` — these cover 90% of interview questions.
+> **Tip:** Practice these examples in your IDE. Most WITCH company technical reviews ask 3-5 stream-based coding topics. Focus on `filter`, `map`, `collect`, `groupingBy`, `reduce`, and `flatMap` — these cover 90% of technical review topics.

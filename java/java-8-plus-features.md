@@ -1,31 +1,31 @@
 # Java 8+ Features - Complete Guide (Basics to Advanced)
 
-**Target:** Interview preparation for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
+**Target:** Skill enhancement for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
 **Covers:** Lambda, Functional Interfaces, Method References, Optional, Date/Time API, and features from Java 9 to 21.
 
----
+--
 
 ## Table of Contents
 
-1. [Lambda Expressions](#1-lambda-expressions)
-2. [Functional Interfaces](#2-functional-interfaces)
-3. [Built-in Functional Interfaces](#3-built-in-functional-interfaces)
-4. [Method References](#4-method-references)
-5. [Optional](#5-optional)
-6. [Default and Static Methods in Interfaces](#6-default-and-static-methods-in-interfaces)
-7. [Date and Time API (java.time)](#7-date-and-time-api-javatime)
-8. [Nashorn JavaScript Engine (Java 8, Removed in 15)](#8-nashorn-javascript-engine)
-9. [Java 9 Features](#9-java-9-features)
-10. [Java 10 Features](#10-java-10-features)
-11. [Java 11 Features](#11-java-11-features)
-12. [Java 12-13 Features](#12-java-12-13-features)
-13. [Java 14 Features](#13-java-14-features)
-14. [Java 15-16 Features](#14-java-15-16-features)
-15. [Java 17 Features (LTS)](#15-java-17-features-lts)
-16. [Java 18-21 Features](#16-java-18-21-features)
-17. [Interview Questions & Answers](#17-interview-questions--answers)
+1. [Lambda Expressions](#lambda-expressions)
+2. [Functional Interfaces](#functional-interfaces)
+3. [Built-in Functional Interfaces](#built-in-functional-interfaces)
+4. [Method References](#method-references)
+5. [Optional](#optional)
+6. [Default and Static Methods in Interfaces](#default-and-static-methods-in-interfaces)
+7. [Date and Time API (java.time)](#date-and-time-api-javatime)
+8. [Nashorn JavaScript Engine (Java 8, Removed in 15)](#nashorn-javascript-engine-java-8-removed-in-15)
+9. [Java 9 Features](#java-9-features)
+10. [Java 10 Features](#java-10-features)
+11. [Java 11 Features](#java-11-features)
+12. [Java 12-13 Features](#java-12-13-features)
+13. [Java 14 Features](#java-14-features)
+14. [Java 15-16 Features](#java-15-16-features)
+15. [Java 17 Features (LTS)](#java-17-features-lts)
+16. [Java 18-21 Features](#java-18-21-features)
+17. [Key Topics & Explanations](#key-topics-explanations)
 
----
+--
 
 ## 1. Lambda Expressions
 
@@ -101,14 +101,14 @@ nums.stream()
 ### 1.4 Lambda vs Anonymous Inner Class
 
 | Feature | Lambda | Anonymous Inner Class |
-|---------|--------|-----------------------|
+|-----|----|------------|
 | **Syntax** | Concise | Verbose |
 | **`this` keyword** | Refers to enclosing class | Refers to anonymous class itself |
 | **Type** | Must be a functional interface | Can be any interface/abstract class |
 | **Compilation** | Uses `invokedynamic` | Generates a separate `.class` file |
 | **State** | Cannot have instance variables | Can have instance variables |
 
----
+--
 
 ## 2. Functional Interfaces
 
@@ -148,7 +148,7 @@ interface Greeting {
 }
 ```
 
----
+--
 
 ## 3. Built-in Functional Interfaces
 
@@ -270,7 +270,7 @@ System.out.println(max.apply(5, 3)); // 5
 ### 3.7 Complete Reference Table
 
 | Interface | Method | Input → Output | Example |
-|-----------|--------|----------------|---------|
+|------|----|--------|-----|
 | `Predicate<T>` | `test(T)` | `T → boolean` | Filter condition |
 | `Function<T,R>` | `apply(T)` | `T → R` | Transform/map |
 | `Consumer<T>` | `accept(T)` | `T → void` | forEach action |
@@ -281,7 +281,7 @@ System.out.println(max.apply(5, 3)); // 5
 | `BiPredicate<T,U>` | `test(T,U)` | `(T,U) → boolean` | Two-arg condition |
 | `BiConsumer<T,U>` | `accept(T,U)` | `(T,U) → void` | Map.forEach |
 
----
+--
 
 ## 4. Method References
 
@@ -342,7 +342,7 @@ List<Employee> employees = names.stream()
         .collect(Collectors.toList());
 ```
 
----
+--
 
 ## 5. Optional
 
@@ -456,7 +456,7 @@ String val2 = opt.orElseGet(() -> expensiveCall()); // lazy — runs only when n
 
 **Rule:** Use `orElseGet` when the default value is expensive to compute.
 
----
+--
 
 ## 6. Default and Static Methods in Interfaces
 
@@ -519,7 +519,7 @@ Validator email = Validator.emailValidator();
 System.out.println(email.validate("test@mail.com")); // true
 ```
 
----
+--
 
 ## 7. Date and Time API (java.time)
 
@@ -528,7 +528,7 @@ Introduced in Java 8 to replace the problematic `java.util.Date` and `java.util.
 ### Why New API?
 
 | Old API Problem | New API Solution |
-|----------------|-----------------|
+|--------|---------|
 | `Date` is mutable | All classes are **immutable** |
 | Not thread-safe | **Thread-safe** |
 | Poor API design | Clean, fluent API |
@@ -688,7 +688,7 @@ Calendar cal = Calendar.getInstance();
 LocalDateTime ldt = LocalDateTime.ofInstant(cal.toInstant(), ZoneId.systemDefault());
 ```
 
----
+--
 
 ## 8. Nashorn JavaScript Engine
 
@@ -701,9 +701,9 @@ engine.eval("print('Hello from JavaScript')");
 engine.eval("var x = 10 + 20; print(x)"); // 30
 ```
 
-> **Note:** Replaced by GraalVM's JavaScript engine. Rarely asked in interviews.
+> **Note:** Replaced by GraalVM's JavaScript engine. Rarely asked in technical reviews.
 
----
+--
 
 ## 9. Java 9 Features
 
@@ -815,7 +815,7 @@ jshell> System.out.println(x * 2);
 jshell> /exit
 ```
 
----
+--
 
 ## 10. Java 10 Features
 
@@ -868,7 +868,7 @@ List<String> unmodifiable = names.stream()
         .collect(Collectors.toUnmodifiableList());
 ```
 
----
+--
 
 ## 11. Java 11 Features (LTS)
 
@@ -950,7 +950,7 @@ System.out.println(opt.isEmpty()); // true (opposite of isPresent)
 java HelloWorld.java
 ```
 
----
+--
 
 ## 12. Java 12-13 Features
 
@@ -1038,7 +1038,7 @@ String sql = """
     """;
 ```
 
----
+--
 
 ## 13. Java 14 Features
 
@@ -1086,7 +1086,7 @@ System.out.println(p);         // Point[x=3, y=4]
 // Auto-generated: constructor, getters, equals, hashCode, toString
 ```
 
----
+--
 
 ## 14. Java 15-16 Features
 
@@ -1132,7 +1132,7 @@ List<String> list = names.stream()
 
 > **Note:** `toList()` returns an **unmodifiable** list, while `Collectors.toList()` returns a **modifiable** list.
 
----
+--
 
 ## 15. Java 17 Features (LTS)
 
@@ -1165,7 +1165,7 @@ RandomGenerator rng = RandomGenerator.of("L128X256MixRandom");
 int random = rng.nextInt(100);
 ```
 
----
+--
 
 ## 16. Java 18-21 Features
 
@@ -1173,7 +1173,7 @@ int random = rng.nextInt(100);
 
 ```bash
 # Start a simple HTTP file server
-jwebserver --port 8080
+jwebserver -port 8080
 ```
 
 ### 16.2 UTF-8 by Default (Java 18)
@@ -1278,11 +1278,11 @@ String json = STR."""
     """;
 ```
 
----
+--
 
-## 17. Interview Questions & Answers
+## 17. Key Topics & Explanations
 
-### Q1: What are the main features introduced in Java 8?
+### Topic 1: What are the main features introduced in Java 8?
 
 **Answer:**
 - Lambda expressions
@@ -1294,15 +1294,15 @@ String json = STR."""
 - New Date/Time API (`java.time`)
 - Nashorn JavaScript engine
 
----
+--
 
-### Q2: What is the difference between `Predicate` and `Function`?
+### Topic 2: What is the difference between `Predicate` and `Function`?
 
 **Answer:** `Predicate<T>` takes one argument and returns `boolean` (`test()` method) — used for filtering/conditions. `Function<T, R>` takes one argument and returns a result of a different type (`apply()` method) — used for transformations/mapping.
 
----
+--
 
-### Q3: What is the difference between `map()` and `flatMap()` in Optional?
+### Topic 3: What is the difference between `map()` and `flatMap()` in Optional?
 
 **Answer:**
 - `map()` wraps the result in an Optional: `Optional<String>` → `Optional<Optional<String>>` if the function returns Optional.
@@ -1314,15 +1314,15 @@ Optional<Optional<String>> mapped = name.map(n -> Optional.of(n.toUpperCase()));
 Optional<String> flatMapped = name.flatMap(n -> Optional.of(n.toUpperCase()));
 ```
 
----
+--
 
-### Q4: What is effectively final?
+### Topic 4: What is effectively final?
 
 **Answer:** A variable that is not declared `final` but is never reassigned after initialization. Lambdas can only capture local variables that are final or effectively final. This restriction exists because lambdas may execute on a different thread, and allowing mutation would cause concurrency issues.
 
----
+--
 
-### Q5: What is the difference between `orElse()` and `orElseGet()`?
+### Topic 5: What is the difference between `orElse()` and `orElseGet()`?
 
 **Answer:**
 - `orElse(value)` — always evaluates the argument, even if Optional has a value.
@@ -1330,21 +1330,21 @@ Optional<String> flatMapped = name.flatMap(n -> Optional.of(n.toUpperCase()));
 
 Use `orElseGet()` when the default value is expensive to compute.
 
----
+--
 
-### Q6: Why was the new Date/Time API introduced?
+### Topic 6: Why was the new Date/Time API introduced?
 
 **Answer:** The old `java.util.Date` had many problems: mutable (not thread-safe), poor API design (months start from 0, year from 1900), no timezone support, and `SimpleDateFormat` is not thread-safe. The new `java.time` API is immutable, thread-safe, has a clean fluent API, and proper timezone support.
 
----
+--
 
-### Q7: What is the difference between `var` and explicit type declaration?
+### Topic 7: What is the difference between `var` and explicit type declaration?
 
 **Answer:** `var` is just syntactic sugar — the compiler infers the type at compile time. There is **no runtime difference**. The inferred type is fixed and cannot change. `var` improves readability for complex generic types but should be avoided when the type is not obvious from the right-hand side.
 
----
+--
 
-### Q8: What are the four types of method references?
+### Topic 8: What are the four types of method references?
 
 **Answer:**
 1. **Static method:** `Integer::parseInt` → `s -> Integer.parseInt(s)`
@@ -1352,23 +1352,23 @@ Use `orElseGet()` when the default value is expensive to compute.
 3. **Instance method of arbitrary object:** `String::toUpperCase` → `s -> s.toUpperCase()`
 4. **Constructor:** `ArrayList::new` → `() -> new ArrayList<>()`
 
----
+--
 
-### Q9: What is the difference between `Stream.toList()` (Java 16) and `Collectors.toList()`?
+### Topic 9: What is the difference between `Stream.toList()` (Java 16) and `Collectors.toList()`?
 
 **Answer:**
 - `Stream.toList()` returns an **unmodifiable** list. Adding/removing elements throws `UnsupportedOperationException`.
 - `Collectors.toList()` returns a **modifiable** `ArrayList`.
 
----
+--
 
-### Q10: What are virtual threads? (Java 21)
+### Topic 10: What are virtual threads? (Java 21)
 
 **Answer:** Virtual threads are lightweight threads managed by the JVM (not the OS). They allow creating millions of threads without the overhead of platform threads. Ideal for I/O-bound tasks (HTTP calls, DB queries). They use the same `Thread` API but are much cheaper to create and block. Created via `Thread.ofVirtual()` or `Executors.newVirtualThreadPerTaskExecutor()`.
 
----
+--
 
-### Q11: What is the difference between `Comparable` and `Comparator`?
+### Topic 11: What is the difference between `Comparable` and `Comparator`?
 
 **Answer:**
 - `Comparable<T>` — defines natural ordering inside the class itself (`compareTo()` method). A class can have only one natural ordering.
@@ -1384,13 +1384,13 @@ class Employee implements Comparable<Employee> {
 Comparator<Employee> bySalary = Comparator.comparingDouble(Employee::getSalary);
 ```
 
----
+--
 
-### Q12: What is a default method conflict? How is it resolved?
+### Topic 12: What is a default method conflict? How is it resolved?
 
 **Answer:** When a class implements two interfaces that have the same default method, the compiler forces the class to override the method and explicitly choose which version to use (or provide its own implementation) using `InterfaceName.super.methodName()`.
 
----
+--
 
 ## Version Summary Cheat Sheet
 
@@ -1412,6 +1412,6 @@ Java 21 (LTS) → Virtual threads (standard), Record patterns, Sequenced collect
                  Pattern matching switch (standard), String templates (preview)
 ```
 
----
+--
 
-> **Tip:** For WITCH interviews, focus heavily on Java 8 features (Lambda, Streams, Optional, Functional Interfaces). Java 11 and 17 features are increasingly asked. Virtual threads (Java 21) is a hot topic for senior-level interviews.
+> **Tip:** For WITCH technical reviews, focus heavily on Java 8 features (Lambda, Streams, Optional, Functional Interfaces). Java 11 and 17 features are increasingly asked. Virtual threads (Java 21) is a hot topic for senior-level technical reviews.

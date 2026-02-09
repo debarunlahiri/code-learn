@@ -1,39 +1,39 @@
 # Java Collections Framework - Complete Guide (Basics to Advanced)
 
-**Target:** Interview preparation for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
-**Covers:** List, Set, Map, Queue, Deque, internal workings, performance, and tricky interview scenarios.
+**Target:** Skill enhancement for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
+**Covers:** List, Set, Map, Queue, Deque, internal workings, performance, and tricky technical scenarios.
 
----
+--
 
 ## Table of Contents
 
-1. [Collections Framework Overview](#1-collections-framework-overview)
-2. [Collection Hierarchy](#2-collection-hierarchy)
-3. [List Interface](#3-list-interface)
-4. [ArrayList](#4-arraylist)
-5. [LinkedList](#5-linkedlist)
-6. [ArrayList vs LinkedList](#6-arraylist-vs-linkedlist)
-7. [Vector and Stack](#7-vector-and-stack)
-8. [Set Interface](#8-set-interface)
-9. [HashSet](#9-hashset)
-10. [LinkedHashSet](#10-linkedhashset)
-11. [TreeSet](#11-treeset)
-12. [Map Interface](#12-map-interface)
-13. [HashMap — Internal Working](#13-hashmap--internal-working)
-14. [LinkedHashMap](#14-linkedhashmap)
-15. [TreeMap](#15-treemap)
-16. [Hashtable vs HashMap vs ConcurrentHashMap](#16-hashtable-vs-hashmap-vs-concurrenthashmap)
-17. [Queue Interface](#17-queue-interface)
-18. [PriorityQueue](#18-priorityqueue)
-19. [Deque Interface (ArrayDeque)](#19-deque-interface-arraydeque)
-20. [Comparable vs Comparator](#20-comparable-vs-comparator)
-21. [Collections Utility Class](#21-collections-utility-class)
-22. [Fail-Fast vs Fail-Safe Iterators](#22-fail-fast-vs-fail-safe-iterators)
-23. [Immutable / Unmodifiable Collections](#23-immutable--unmodifiable-collections)
-24. [Common Coding Problems](#24-common-coding-problems)
-25. [Interview Questions & Answers](#25-interview-questions--answers)
+1. [Collections Framework Overview](#collections-framework-overview)
+2. [Collection Hierarchy](#collection-hierarchy)
+3. [List Interface](#list-interface)
+4. [ArrayList](#arraylist)
+5. [LinkedList](#linkedlist)
+6. [ArrayList vs LinkedList](#arraylist-vs-linkedlist)
+7. [Vector and Stack](#vector-and-stack)
+8. [Set Interface](#set-interface)
+9. [HashSet](#hashset)
+10. [LinkedHashSet](#linkedhashset)
+11. [TreeSet](#treeset)
+12. [Map Interface](#map-interface)
+13. [HashMap — Internal Working](#hashmap-internal-working)
+14. [LinkedHashMap](#linkedhashmap)
+15. [TreeMap](#treemap)
+16. [Hashtable vs HashMap vs ConcurrentHashMap](#hashtable-vs-hashmap-vs-concurrenthashmap)
+17. [Queue Interface](#queue-interface)
+18. [PriorityQueue](#priorityqueue)
+19. [Deque Interface (ArrayDeque)](#deque-interface-arraydeque)
+20. [Comparable vs Comparator](#comparable-vs-comparator)
+21. [Collections Utility Class](#collections-utility-class)
+22. [Fail-Fast vs Fail-Safe Iterators](#fail-fast-vs-fail-safe-iterators)
+23. [Immutable / Unmodifiable Collections](#immutable-unmodifiable-collections)
+24. [Common Coding Challenges](#common-coding-challenges)
+25. [Key Topics & Explanations](#key-topics-explanations)
 
----
+--
 
 ## 1. Collections Framework Overview
 
@@ -42,7 +42,7 @@ The **Java Collections Framework (JCF)** provides a unified architecture for sto
 ### Key Components
 
 | Component | Description |
-|-----------|-------------|
+|------|-------|
 | **Interfaces** | Abstract data types (List, Set, Map, Queue) |
 | **Implementations** | Concrete classes (ArrayList, HashMap, etc.) |
 | **Algorithms** | Static methods in `Collections` class (sort, search, shuffle) |
@@ -50,7 +50,7 @@ The **Java Collections Framework (JCF)** provides a unified architecture for sto
 ### Why Collections over Arrays?
 
 | Feature | Array | Collection |
-|---------|-------|------------|
+|-----|----|------|
 | **Size** | Fixed | Dynamic (grows/shrinks) |
 | **Type** | Homogeneous | Homogeneous (with generics) |
 | **Primitives** | Yes | No (uses wrappers) |
@@ -58,7 +58,7 @@ The **Java Collections Framework (JCF)** provides a unified architecture for sto
 | **Performance** | Faster (no overhead) | Slightly slower (boxing, overhead) |
 | **Thread-safe** | No | Some implementations (Vector, ConcurrentHashMap) |
 
----
+--
 
 ## 2. Collection Hierarchy
 
@@ -85,14 +85,14 @@ The **Java Collections Framework (JCF)** provides a unified architecture for sto
 ### Key Interfaces
 
 | Interface | Ordered | Duplicates | Null | Key Feature |
-|-----------|---------|------------|------|-------------|
+|------|-----|------|---|-------|
 | `List` | Yes (indexed) | Yes | Yes | Positional access |
 | `Set` | Depends | No | Depends | Uniqueness |
 | `Queue` | Yes (FIFO) | Yes | Depends | Processing order |
 | `Deque` | Yes | Yes | No (ArrayDeque) | Double-ended |
 | `Map` | Depends | Keys: No, Values: Yes | Depends | Key-value pairs |
 
----
+--
 
 ## 3. List Interface
 
@@ -138,7 +138,7 @@ Object[] arr = list.toArray();
 String[] strArr = list.toArray(new String[0]);
 ```
 
----
+--
 
 ## 4. ArrayList
 
@@ -167,7 +167,7 @@ Capacity growth: 10 → 15 → 22 → 33 → 49 → 73 → ...
 ### Performance
 
 | Operation | Time Complexity | Notes |
-|-----------|----------------|-------|
+|------|--------|----|
 | `get(index)` | **O(1)** | Direct array access |
 | `add(element)` | **O(1)** amortized | O(n) when resizing |
 | `add(index, element)` | **O(n)** | Shifts elements right |
@@ -183,7 +183,7 @@ Capacity growth: 10 → 15 → 22 → 33 → 49 → 73 → ...
 - **Rare insertions/deletions** in the middle.
 - Most common `List` implementation — **use by default**.
 
----
+--
 
 ## 5. LinkedList
 
@@ -201,7 +201,7 @@ Each node contains: `prev` pointer, `element`, `next` pointer.
 ### Performance
 
 | Operation | Time Complexity | Notes |
-|-----------|----------------|-------|
+|------|--------|----|
 | `get(index)` | **O(n)** | Must traverse from head/tail |
 | `add(element)` | **O(1)** | Append to tail |
 | `add(index, element)` | **O(n)** | Traverse + O(1) insert |
@@ -228,12 +228,12 @@ deque.pollFirst();      // remove from head
 deque.pollLast();       // remove from tail
 ```
 
----
+--
 
 ## 6. ArrayList vs LinkedList
 
 | Feature | ArrayList | LinkedList |
-|---------|-----------|------------|
+|-----|------|------|
 | **Internal** | Dynamic array | Doubly-linked list |
 | **Random access** | O(1) ✅ | O(n) ❌ |
 | **Add at end** | O(1) amortized | O(1) |
@@ -247,7 +247,7 @@ deque.pollLast();       // remove from tail
 
 > **Rule of thumb:** Use `ArrayList` unless you specifically need `Deque` operations or frequent add/remove at the beginning.
 
----
+--
 
 ## 7. Vector and Stack
 
@@ -284,7 +284,7 @@ stack2.push(2);
 stack2.pop(); // 2
 ```
 
----
+--
 
 ## 8. Set Interface
 
@@ -293,14 +293,14 @@ A collection that contains **no duplicate elements**.
 ### Set Implementations Comparison
 
 | Feature | HashSet | LinkedHashSet | TreeSet |
-|---------|---------|---------------|---------|
+|-----|-----|--------|-----|
 | **Order** | No order | Insertion order | Sorted (natural/comparator) |
 | **Null** | 1 null allowed | 1 null allowed | No null (throws NPE) |
 | **Performance** | O(1) | O(1) | O(log n) |
 | **Internal** | HashMap | LinkedHashMap | TreeMap (Red-Black tree) |
 | **Thread-safe** | No | No | No |
 
----
+--
 
 ## 9. HashSet
 
@@ -379,7 +379,7 @@ System.out.println(set.size()); // 2 — NOT what we want
 // set.size() would be 1
 ```
 
----
+--
 
 ## 10. LinkedHashSet
 
@@ -399,7 +399,7 @@ System.out.println(set); // [Banana, Apple, Cherry] — insertion order preserve
 - Need **unique elements** + **insertion order**.
 - Slightly slower than `HashSet` due to maintaining linked list.
 
----
+--
 
 ## 11. TreeSet
 
@@ -447,7 +447,7 @@ set.add("hello"); // NOT added — comparator says they're equal
 System.out.println(set.size()); // 1
 ```
 
----
+--
 
 ## 12. Map Interface
 
@@ -499,11 +499,11 @@ map.merge("Rahul", 1, Integer::sum); // merge with existing value
 map.replaceAll((k, v) -> v + 1); // replace all values
 ```
 
----
+--
 
 ## 13. HashMap — Internal Working
 
-**Most important topic for interviews.** HashMap uses an **array of buckets** where each bucket is a **linked list** (or **tree** for large buckets).
+**Most important topic for technical reviews.** HashMap uses an **array of buckets** where each bucket is a **linked list** (or **tree** for large buckets).
 
 ### 13.1 How put() Works
 
@@ -597,7 +597,7 @@ class BadKey {
 - **Multiple null values**.
 - **Not thread-safe** — use `ConcurrentHashMap` for thread safety.
 
----
+--
 
 ## 14. LinkedHashMap
 
@@ -646,7 +646,7 @@ cache.put("D", 4);    // capacity exceeded → removes B (least recently used)
 System.out.println(cache); // {C=3, A=1, D=4}
 ```
 
----
+--
 
 ## 15. TreeMap
 
@@ -679,19 +679,19 @@ NavigableMap<String, Integer> reversed = map.descendingMap();
 ### Performance
 
 | Operation | Time Complexity |
-|-----------|----------------|
+|------|--------|
 | `put()` | O(log n) |
 | `get()` | O(log n) |
 | `remove()` | O(log n) |
 | `containsKey()` | O(log n) |
 | `firstKey/lastKey` | O(log n) |
 
----
+--
 
 ## 16. Hashtable vs HashMap vs ConcurrentHashMap
 
 | Feature | HashMap | Hashtable | ConcurrentHashMap |
-|---------|---------|-----------|-------------------|
+|-----|-----|------|----------|
 | **Thread-safe** | No | Yes (synchronized) | Yes (segment locking) |
 | **Null key** | 1 allowed | Not allowed | Not allowed |
 | **Null value** | Allowed | Not allowed | Not allowed |
@@ -727,7 +727,7 @@ map.forEach(1, (key, value) -> System.out.println(key + "=" + value));
 long count = map.mappingCount(); // preferred over size() for concurrent maps
 ```
 
----
+--
 
 ## 17. Queue Interface
 
@@ -736,7 +736,7 @@ long count = map.mappingCount(); // preferred over size() for concurrent maps
 ### Queue Methods — Two Flavors
 
 | Operation | Throws Exception | Returns Special Value |
-|-----------|-----------------|----------------------|
+|------|---------|-----------|
 | **Insert** | `add(e)` | `offer(e)` → returns false |
 | **Remove** | `remove()` | `poll()` → returns null |
 | **Examine** | `element()` | `peek()` → returns null |
@@ -755,7 +755,7 @@ System.out.println(queue.poll()); // C
 System.out.println(queue.poll()); // null (empty)
 ```
 
----
+--
 
 ## 18. PriorityQueue
 
@@ -800,14 +800,14 @@ System.out.println(byLength.poll()); // Fig (shortest)
 ### Performance
 
 | Operation | Time Complexity |
-|-----------|----------------|
+|------|--------|
 | `offer()` | O(log n) |
 | `poll()` | O(log n) |
 | `peek()` | O(1) |
 | `remove(Object)` | O(n) |
 | `contains()` | O(n) |
 
----
+--
 
 ## 19. Deque Interface (ArrayDeque)
 
@@ -858,14 +858,14 @@ queue.poll();     // 2
 ### Why ArrayDeque over LinkedList?
 
 | Feature | ArrayDeque | LinkedList |
-|---------|------------|------------|
+|-----|------|------|
 | **Internal** | Resizable circular array | Doubly-linked list |
 | **Memory** | Less (no node overhead) | More (prev + next pointers) |
 | **Cache** | Cache-friendly ✅ | Not cache-friendly |
 | **Null** | Not allowed | Allowed |
 | **Performance** | Faster in practice | Slower |
 
----
+--
 
 ## 20. Comparable vs Comparator
 
@@ -933,7 +933,7 @@ employees.sort(bySalaryDesc);
 ### Comparable vs Comparator
 
 | Feature | Comparable | Comparator |
-|---------|-----------|------------|
+|-----|------|------|
 | **Package** | `java.lang` | `java.util` |
 | **Method** | `compareTo(T o)` | `compare(T o1, T o2)` |
 | **Defined in** | The class itself | Separate class/lambda |
@@ -941,7 +941,7 @@ employees.sort(bySalaryDesc);
 | **Modifies class** | Yes | No |
 | **Usage** | `Collections.sort(list)` | `Collections.sort(list, comparator)` |
 
----
+--
 
 ## 21. Collections Utility Class
 
@@ -1002,7 +1002,7 @@ Collections.rotate(list, 2); // rotates right by 2 positions
 boolean disjoint = Collections.disjoint(list1, list2);
 ```
 
----
+--
 
 ## 22. Fail-Fast vs Fail-Safe Iterators
 
@@ -1065,13 +1065,13 @@ for (String s : cowList) {
 ### Comparison
 
 | Feature | Fail-Fast | Fail-Safe |
-|---------|-----------|-----------|
+|-----|------|------|
 | **Exception** | ConcurrentModificationException | No exception |
 | **Works on** | Original collection | Clone/snapshot |
 | **Memory** | No extra memory | Extra memory for clone |
 | **Examples** | ArrayList, HashMap, HashSet | ConcurrentHashMap, CopyOnWriteArrayList |
 
----
+--
 
 ## 23. Immutable / Unmodifiable Collections
 
@@ -1109,9 +1109,9 @@ System.out.println(unmodifiable); // [A, B, C] — changed!
 
 > **Important:** `Collections.unmodifiableList()` is a **view** — changes to the original affect it. `List.of()` and `List.copyOf()` create truly **independent** immutable copies.
 
----
+--
 
-## 24. Common Coding Problems
+## 24. Common Coding Challenges
 
 ### Problem 1: Find duplicates in a list
 
@@ -1242,53 +1242,53 @@ int findKthLargest(int[] nums, int k) {
 }
 ```
 
----
+--
 
-## 25. Interview Questions & Answers
+## 25. Key Topics & Explanations
 
-### Q1: What is the difference between ArrayList and LinkedList?
+### Topic 1: What is the difference between ArrayList and LinkedList?
 
 **Answer:** ArrayList uses a dynamic array internally — O(1) random access but O(n) for insertions/deletions in the middle. LinkedList uses a doubly-linked list — O(1) for add/remove at ends but O(n) for random access. ArrayList is more cache-friendly and uses less memory. Use ArrayList by default; use LinkedList only for Deque operations.
 
----
+--
 
-### Q2: How does HashMap work internally?
+### Topic 2: How does HashMap work internally?
 
 **Answer:** HashMap uses an array of buckets. When we put a key-value pair: (1) hashCode() of key is calculated, (2) bucket index is computed using `hash & (capacity-1)`, (3) if bucket is empty, a new Node is created, (4) if bucket has entries, it traverses the linked list/tree checking equals() for duplicate keys. If linked list exceeds 8 nodes and capacity >= 64, it converts to a Red-Black tree. When size exceeds `capacity * loadFactor (0.75)`, the map resizes to double capacity.
 
----
+--
 
-### Q3: What happens if two keys have the same hashCode in HashMap?
+### Topic 3: What happens if two keys have the same hashCode in HashMap?
 
 **Answer:** This is called a **hash collision**. Both entries go to the same bucket. They are stored as a linked list (or Red-Black tree if > 8 entries). During `get()`, the map traverses the list and uses `equals()` to find the exact key. This is why both `hashCode()` and `equals()` must be properly overridden.
 
----
+--
 
-### Q4: Why is the initial capacity of HashMap 16 and load factor 0.75?
+### Topic 4: Why is the initial capacity of HashMap 16 and load factor 0.75?
 
 **Answer:** 16 is a power of 2, which allows efficient bucket index calculation using bitwise AND (`hash & 15`) instead of modulo. Load factor 0.75 is a trade-off between space and time — lower values waste space, higher values increase collisions. At 0.75, on average each bucket has 0-1 entries, giving near O(1) performance.
 
----
+--
 
-### Q5: What is the difference between HashMap and ConcurrentHashMap?
+### Topic 5: What is the difference between HashMap and ConcurrentHashMap?
 
 **Answer:** HashMap is not thread-safe. ConcurrentHashMap is thread-safe using fine-grained locking (Java 8+ uses CAS + synchronized on individual buckets). ConcurrentHashMap does not allow null keys or values. It provides atomic operations like `putIfAbsent()`, `compute()`, `merge()`. It uses fail-safe iterators that don't throw ConcurrentModificationException.
 
----
+--
 
-### Q6: What is the difference between fail-fast and fail-safe iterators?
+### Topic 6: What is the difference between fail-fast and fail-safe iterators?
 
 **Answer:** Fail-fast iterators (ArrayList, HashMap) throw ConcurrentModificationException if the collection is modified during iteration. They use a `modCount` variable to detect changes. Fail-safe iterators (ConcurrentHashMap, CopyOnWriteArrayList) work on a clone/snapshot and don't throw exceptions, but may not reflect recent modifications.
 
----
+--
 
-### Q7: When should we use TreeMap over HashMap?
+### Topic 7: When should we use TreeMap over HashMap?
 
 **Answer:** Use TreeMap when you need sorted keys, range queries (headMap, tailMap, subMap), or navigation methods (firstKey, lastKey, lowerKey, higherKey). TreeMap has O(log n) for all operations vs HashMap's O(1). Use HashMap for general-purpose key-value storage where order doesn't matter.
 
----
+--
 
-### Q8: How to make a collection thread-safe?
+### Topic 8: How to make a collection thread-safe?
 
 **Answer:** Options:
 1. `Collections.synchronizedList/Map/Set()` — wraps with synchronized methods.
@@ -1297,34 +1297,34 @@ int findKthLargest(int[] nums, int k) {
 
 Prefer concurrent collections over synchronized wrappers for better performance.
 
----
+--
 
-### Q9: What is the difference between HashSet and TreeSet?
+### Topic 9: What is the difference between HashSet and TreeSet?
 
 **Answer:** HashSet is unordered with O(1) operations, backed by HashMap. TreeSet is sorted with O(log n) operations, backed by TreeMap (Red-Black tree). HashSet allows one null; TreeSet doesn't allow null. TreeSet provides navigation methods (first, last, lower, higher). Use HashSet for general uniqueness; TreeSet when you need sorted order.
 
----
+--
 
-### Q10: Can we use a mutable object as a HashMap key?
+### Topic 10: Can we use a mutable object as a HashMap key?
 
 **Answer:** Technically yes, but it's **dangerous**. If the key's hashCode changes after insertion (due to mutation), the entry becomes unreachable — `get()` will return null even though the entry exists. Always use **immutable objects** as HashMap keys (String, Integer, etc.) or ensure the fields used in hashCode/equals are never modified.
 
----
+--
 
-### Q11: What is the difference between `Collections.unmodifiableList()` and `List.of()`?
+### Topic 11: What is the difference between `Collections.unmodifiableList()` and `List.of()`?
 
 **Answer:**
 - `Collections.unmodifiableList()` creates a **view** — changes to the original list are reflected.
 - `List.of()` creates a truly **independent immutable** copy — no connection to any source.
 - Both throw `UnsupportedOperationException` on modification attempts.
 
----
+--
 
-### Q12: What is CopyOnWriteArrayList?
+### Topic 12: What is CopyOnWriteArrayList?
 
 **Answer:** A thread-safe variant of ArrayList where all mutative operations (add, set, remove) create a **new copy** of the underlying array. Reads are lock-free and fast. Writes are expensive (copy entire array). Ideal for scenarios with many reads and few writes (e.g., listener lists, configuration).
 
----
+--
 
 ## Quick Reference Cheat Sheet
 
@@ -1361,6 +1361,6 @@ Thread-safe alternatives:
 └── Queue → ConcurrentLinkedQueue / BlockingQueue implementations
 ```
 
----
+--
 
-> **Tip:** HashMap internal working is the **#1 most asked** collections topic in WITCH interviews. Make sure you can explain put(), get(), hashing, collision handling, treeification, and resizing. Also practice equals/hashCode contract and fail-fast vs fail-safe.
+> **Tip:** HashMap internal working is the **#1 most asked** collections topic in WITCH technical reviews. Make sure you can explain put(), get(), hashing, collision handling, treeification, and resizing. Also practice equals/hashCode contract and fail-fast vs fail-safe.
