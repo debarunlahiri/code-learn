@@ -1,7 +1,7 @@
 # Java Collections Framework - Complete Guide (Basics to Advanced)
 
-> **Target:** Interview preparation for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
-> **Covers:** List, Set, Map, Queue, Deque, internal workings, performance, and tricky interview scenarios.
+**Target:** Interview preparation for WITCH companies (Wipro, Infosys, TCS, Cognizant, HCL) and beyond.  
+**Covers:** List, Set, Map, Queue, Deque, internal workings, performance, and tricky interview scenarios.
 
 ---
 
