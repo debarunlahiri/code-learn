@@ -499,6 +499,8 @@ Coin change (canonical)? → Greedy (O(n))
 - Finding pairs/triplets
 - Merging sorted arrays
 - Container with most water
+- Three sum problems
+- Remove duplicates from sorted array
 
 **Pattern:**
 ```java
@@ -510,11 +512,20 @@ while (left < right) {
 }
 ```
 
+**Examples:**
+- Two Sum (sorted array): Find target sum
+- Three Sum: Sort + two pointers for each element
+- Container With Most Water: Max area between two lines
+- Remove Duplicates: Skip duplicates with two pointers
+- Merge Sorted Arrays: Merge in-place
+
 ### 2. Sliding Window
 **When to use:**
 - Subarray/substring problems
 - Fixed/variable window size
 - Longest/shortest with constraints
+- Count subarrays with given sum
+- Longest substring with unique characters
 
 **Pattern:**
 ```java
@@ -529,12 +540,20 @@ for (right = 0; right < n; right++) {
 }
 ```
 
+**Examples:**
+- Longest Substring Without Repeating Characters
+- Minimum Window Substring
+- Sliding Window Maximum
+- Count Subarrays with Sum = K
+- Longest Subarray with at most K distinct
+
 ### 3. Fast and Slow Pointers
 **When to use:**
 - Cycle detection
 - Find middle element
 - Find nth from end
 - Circular linked list
+- Happy number problem
 
 **Pattern:**
 ```java
@@ -545,11 +564,19 @@ while (fast != null && fast.next != null) {
 }
 ```
 
+**Examples:**
+- Linked List Cycle Detection
+- Find Middle of Linked List
+- Remove Nth Node From End
+- Happy Number (detect cycle in number transformation)
+- Circular Array Loop
+
 ### 4. Merge Intervals
 **When to use:**
 - Overlapping intervals
 - Meeting rooms
 - Schedule conflicts
+- Range operations
 
 **Pattern:**
 ```java
@@ -563,11 +590,19 @@ for (interval in intervals) {
 }
 ```
 
+**Examples:**
+- Merge Intervals
+- Insert Interval
+- Non-overlapping Intervals
+- Meeting Rooms I & II
+- Interval List Intersections
+
 ### 5. In-place Reversal
 **When to use:**
 - Reverse array/string
 - Reverse linked list
 - Reverse words in string
+- Reverse nodes in groups
 
 **Pattern:**
 ```java
@@ -578,12 +613,20 @@ while (left < right) {
 }
 ```
 
+**Examples:**
+- Reverse String
+- Reverse Words in String
+- Reverse Linked List
+- Reverse Nodes in k-Group
+- Rotate Array
+
 ### 6. Monotonic Stack
 **When to use:**
 - Next greater element
 - Largest rectangle in histogram
 - Trapping rain water
 - Temperature problems
+- Stock span problem
 
 **Pattern:**
 ```java
@@ -596,10 +639,18 @@ for (int i = 0; i < n; i++) {
 }
 ```
 
+**Examples:**
+- Next Greater Element I & II
+- Largest Rectangle in Histogram
+- Trapping Rain Water
+- Daily Temperatures
+- Stock Span Problem
+
 ### 7. Boyer-Moore Voting
 **When to use:**
 - Majority element (> n/2)
 - Find element appearing > n/3 times
+- Find all elements appearing more than n/k times
 
 **Pattern:**
 ```java
@@ -609,6 +660,418 @@ for (int num : nums) {
     count += (num == candidate) ? 1 : -1;
 }
 ```
+
+**Examples:**
+- Majority Element
+- Majority Element II (elements > n/3)
+- Find all majority elements (> n/k)
+
+### 8. Cyclic Sort
+**When to use:**
+- Array contains numbers 1 to n
+- Find missing numbers
+- Find duplicate numbers
+- Find the smallest missing positive
+
+**Pattern:**
+```java
+int i = 0;
+while (i < nums.length) {
+    int correctIdx = nums[i] - 1;
+    if (nums[i] != nums[correctIdx]) {
+        swap(nums, i, correctIdx);
+    } else {
+        i++;
+    }
+}
+```
+
+**Examples:**
+- Find the Missing Number
+- Find All Numbers Disappeared in an Array
+- Find the Duplicate Number
+- Find the First Missing Positive
+
+### 9. Topological Sort
+**When to use:**
+- Course scheduling
+- Task dependencies
+- Build order
+- Alien dictionary
+
+**Pattern:**
+```java
+// Kahn's Algorithm
+Queue<Integer> queue = new LinkedList<>();
+for (int node : nodes) {
+    if (inDegree[node] == 0) queue.offer(node);
+}
+
+while (!queue.isEmpty()) {
+    int node = queue.poll();
+    result.add(node);
+    for (int neighbor : graph[node]) {
+        inDegree[neighbor]--;
+        if (inDegree[neighbor] == 0) queue.offer(neighbor);
+    }
+}
+```
+
+**Examples:**
+- Course Schedule I & II
+- Topological Sort of DAG
+- Alien Dictionary
+- Minimum Height Trees
+
+### 10. Union-Find (Disjoint Set Union)
+**When to use:**
+- Connected components
+- Cycle detection in undirected graph
+- Dynamic connectivity
+- Kruskal's algorithm for MST
+
+**Pattern:**
+```java
+class DSU {
+    int[] parent, rank;
+    
+    DSU(int n) {
+        parent = new int[n];
+        rank = new int[n];
+        for (int i = 0; i < n; i++) parent[i] = i;
+    }
+    
+    int find(int x) {
+        if (parent[x] != x) parent[x] = find(parent[x]);
+        return parent[x];
+    }
+    
+    void union(int x, int y) {
+        int px = find(x), py = find(y);
+        if (px == py) return;
+        if (rank[px] < rank[py]) parent[px] = py;
+        else if (rank[py] < rank[px]) parent[py] = px;
+        else { parent[py] = px; rank[px]++; }
+    }
+}
+```
+
+**Examples:**
+- Number of Connected Components
+- Redundant Connection
+- Longest Consecutive Sequence
+- Accounts Merge
+
+### 11. Trie (Prefix Tree)
+**When to use:**
+- Word dictionary
+- Autocomplete
+- Word search II
+- Longest word in dictionary
+
+**Pattern:**
+```java
+class TrieNode {
+    TrieNode[] children = new TrieNode[26];
+    boolean isEnd;
+}
+
+class Trie {
+    TrieNode root = new TrieNode();
+    
+    void insert(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            int idx = c - 'a';
+            if (node.children[idx] == null) node.children[idx] = new TrieNode();
+            node = node.children[idx];
+        }
+        node.isEnd = true;
+    }
+}
+```
+
+**Examples:**
+- Implement Trie (Prefix Tree)
+- Word Dictionary
+- Word Search II
+- Longest Word in Dictionary
+
+### 12. Binary Search Variants
+**When to use:**
+- Search in rotated sorted array
+- Find peak element
+- Search in 2D matrix
+- Find first/last occurrence
+
+**Pattern:**
+```java
+int left = 0, right = n - 1;
+while (left <= right) {
+    int mid = left + (right - left) / 2;
+    if (condition(mid)) right = mid - 1;
+    else left = mid + 1;
+}
+```
+
+**Examples:**
+- Search in Rotated Sorted Array
+- Find Peak Element
+- Search a 2D Matrix
+- Find First and Last Position of Element
+
+### 13. Depth-First Search (DFS) Patterns
+**When to use:**
+- Tree traversals
+- Graph traversals
+- Path finding
+- Connected components
+
+**Pattern:**
+```java
+// Recursive DFS
+void dfs(TreeNode node) {
+    if (node == null) return;
+    // Process node
+    dfs(node.left);
+    dfs(node.right);
+}
+
+// Iterative DFS with stack
+Stack<TreeNode> stack = new Stack<>();
+stack.push(root);
+while (!stack.isEmpty()) {
+    TreeNode node = stack.pop();
+    // Process node
+    if (node.right != null) stack.push(node.right);
+    if (node.left != null) stack.push(node.left);
+}
+```
+
+**Examples:**
+- Binary Tree Traversals (Inorder, Preorder, Postorder)
+- Number of Islands
+- Path Sum
+- Clone Graph
+
+### 14. Breadth-First Search (BFS) Patterns
+**When to use:**
+- Shortest path in unweighted graph
+- Level order traversal
+- Word ladder
+- Minimum steps problems
+
+**Pattern:**
+```java
+Queue<Node> queue = new LinkedList<>();
+queue.offer(start);
+visited[start] = true;
+
+while (!queue.isEmpty()) {
+    int size = queue.size();
+    for (int i = 0; i < size; i++) {
+        Node node = queue.poll();
+        // Process node
+        for (Node neighbor : node.neighbors) {
+            if (!visited[neighbor]) {
+                visited[neighbor] = true;
+                queue.offer(neighbor);
+            }
+        }
+    }
+}
+```
+
+**Examples:**
+- Binary Tree Level Order Traversal
+- Word Ladder
+- Minimum Knight Moves
+- Shortest Path in Binary Matrix
+
+### 15. Dynamic Programming Patterns
+**When to use:**
+- Optimization problems
+- Counting problems
+- Path problems
+- Sequence problems
+
+**Pattern:**
+```java
+// Bottom-up DP
+int[] dp = new int[n + 1];
+dp[0] = 1; // Base case
+for (int i = 1; i <= n; i++) {
+    dp[i] = dp[i - 1] + dp[i - 2]; // Recurrence
+}
+
+// 2D DP
+int[][] dp = new int[m + 1][n + 1];
+for (int i = 1; i <= m; i++) {
+    for (int j = 1; j <= n; j++) {
+        dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+    }
+}
+```
+
+**Examples:**
+- Climbing Stairs
+- House Robber
+- Unique Paths
+- Longest Common Subsequence
+- Edit Distance
+
+### 16. Backtracking Patterns
+**When to use:**
+- Permutations
+- Combinations
+- Subsets
+- Constraint satisfaction problems
+
+**Pattern:**
+```java
+List<List<Integer>> result = new ArrayList<>();
+void backtrack(int[] nums, int start, List<Integer> path) {
+    result.add(new ArrayList<>(path));
+    for (int i = start; i < nums.length; i++) {
+        path.add(nums[i]);
+        backtrack(nums, i + 1, path);
+        path.remove(path.size() - 1);
+    }
+}
+```
+
+**Examples:**
+- Subsets
+- Permutations
+- Combinations
+- N-Queens
+- Sudoku Solver
+
+### 17. Greedy with Proof Patterns
+**When to use:**
+- Interval scheduling
+- Resource allocation
+- Optimization with local optimal choices
+
+**Pattern:**
+```java
+// Sort by some criteria
+Arrays.sort(items, (a, b) -> comparator(a, b));
+
+// Make greedy choices
+for (Item item : items) {
+    if (canChoose(item)) {
+        choose(item);
+        updateState();
+    }
+}
+```
+
+**Examples:**
+- Activity Selection
+- Fractional Knapsack
+- Job Sequencing
+- Huffman Coding
+
+### 18. Divide and Conquer Patterns
+**When to use:**
+- Merge sort
+- Quick sort
+- Binary search
+- Matrix multiplication
+
+**Pattern:**
+```java
+ResultType solve(Problem problem) {
+    if (problem.size() == 1) return baseCase(problem);
+    
+    Problem left = problem.splitLeft();
+    Problem right = problem.splitRight();
+    
+    ResultType leftResult = solve(left);
+    ResultType rightResult = solve(right);
+    
+    return combine(leftResult, rightResult);
+}
+```
+
+**Examples:**
+- Merge Sort
+- Quick Sort
+- Binary Search
+- Maximum Subarray (Divide and Conquer approach)
+
+### 19. Bit Manipulation Patterns
+**When to use:**
+- Single number problems
+- Power of two
+- Bit operations
+- Gray code
+
+**Pattern:**
+```java
+// XOR for finding unique element
+int result = 0;
+for (int num : nums) {
+    result ^= num;
+}
+
+// Check power of two
+boolean isPowerOfTwo(int n) {
+    return n > 0 && (n & (n - 1)) == 0;
+}
+
+// Count set bits
+int countSetBits(int n) {
+    int count = 0;
+    while (n > 0) {
+        count++;
+        n &= (n - 1);
+    }
+    return count;
+}
+```
+
+**Examples:**
+- Single Number
+- Single Number II
+- Power of Two
+- Counting Bits
+- Gray Code
+
+### 20. Mathematical Patterns
+**When to use:**
+- Number theory
+- Combinatorics
+- Probability
+- Geometry
+
+**Pattern:**
+```java
+// GCD using Euclidean algorithm
+int gcd(int a, int b) {
+    return b == 0 ? a : gcd(b, a % b);
+}
+
+// Modular exponentiation
+long power(long x, long n, long mod) {
+    long result = 1;
+    x = x % mod;
+    while (n > 0) {
+        if (n % 2 == 1) result = (result * x) % mod;
+        x = (x * x) % mod;
+        n /= 2;
+    }
+    return result;
+}
+```
+
+**Examples:**
+- GCD and LCM
+- Prime Numbers (Sieve)
+- Factorial
+- Pascal's Triangle
+- Combination Formula
 
 ---
 
@@ -885,22 +1348,103 @@ Array + Search → Binary Search (if sorted) or HashMap
 Array + Subarray → Prefix Sum or Sliding Window
 Array + Sort → Arrays.sort() (O(n log n))
 Array + Top-k → Heap (O(n log k))
+Array + Two Sum → HashMap (O(n)) or Two Pointers (if sorted)
+Array + Merge → Two Pointers (O(n+m))
+Array + Rotate → Three Pointers (O(n))
+Array + Product → Prefix/Suffix Products (O(n))
+Array + Range Sum → Prefix Sum (static) or BIT/Segment Tree (dynamic)
+
 String + Pattern → KMP or Rabin-Karp
 String + Unique → Sliding Window + HashMap
 String + Palindrome → Two Pointers
+String + Anagram → Frequency Array (O(1)) or HashMap
+String + Reverse → Two Pointers or StringBuilder
+String + Substring → Sliding Window
+String + Tokenize → Split() or manual parsing
+String + Compression → Count characters + StringBuilder
+
 LinkedList + Reverse → Three Pointers
 LinkedList + Cycle → Fast/Slow Pointers
-Tree + Traversal → DFS/Recursion
+LinkedList + Middle → Fast/Slow Pointers
+LinkedList + Merge → Two Pointers
+LinkedList + Remove Nth → Two Pointers with distance
+LinkedList + Palindrome → Fast/Slow + Reverse + Compare
+LinkedList + Intersection → HashSet or Two Pointers
+
+Tree + Traversal → DFS/Recursion or BFS/Queue
 Tree + BST → BST Properties
 Tree + LCA → Parent Pointers or Single Traversal
+Tree + Serialize → BFS/DFS with markers
+Tree + Validate BST → Inorder traversal check
+Tree + Balanced → Height calculation (O(n))
+Tree + Diameter → Two DFS traversals
+Tree + Maximum Path Sum → DFS with DP
+Tree + Lowest Common Ancestor → Parent pointers or recursion
+
 Graph + Shortest Path → BFS (unweighted) or Dijkstra (weighted)
 Graph + Connectivity → Union-Find or DFS
 Graph + Cycle → DFS with Parent Tracking
 Graph + Topological → Kahn's Algorithm
+Graph + MST → Kruskal (Union-Find) or Prim (Heap)
+Graph + Bipartite → BFS Coloring
+Graph + Strongly Connected → Kosaraju or Tarjan
+Graph + Clone → BFS/DFS with HashMap
+Graph + Path Count → DFS with DP
+
 Greedy + Intervals → Sort by End Time
+Greedy + Scheduling → Sort by End Time or Start Time
+Greedy + Knapsack (Fractional) → Sort by Value/Weight Ratio
+Greedy + Huffman → Min-Heap
+Greedy + Jump Game → Track Farthest Reach
+Greedy + Activity Selection → Sort by Finish Time
+Greedy + Coin Change → Largest denomination first (if canonical)
+
 DP + Optimization → Bottom-up Table with Space Optimization
+DP + Paths → DP Table with recurrence
+DP + Subsequence → DP with previous states
+DP + Partition → Subset Sum DP
+DP + Edit Distance → 2D DP Table
+DP + Longest Common → 2D DP Table
+DP + Palindrome → Expand from center or DP
+DP + House Robber → DP with two states
+DP + Stock Trading → DP with buy/sell states
+
 Recursion + Permutations → Backtracking
+Recursion + Combinations → Backtracking
+Recursion + Subsets → Backtracking
+Recursion + N-Queens → Backtracking
+Recursion + Sudoku → Backtracking
+Recursion + Generate Parentheses → Backtracking
+Recursion + Word Search → Backtracking
+Recursion + Phone Keypad → Backtracking
+
 Range Query → Prefix Sum (static) or BIT/Segment Tree (dynamic)
+Range Query + Updates → BIT/Segment Tree
+Range Query + 2D → 2D Prefix Sum
+Range Query + Min/Max → Sparse Table (static) or Segment Tree (dynamic)
+Range Query + Range Updates → Difference Array + BIT/Segment Tree
+
+Heap + Top-k → Min-Heap (for largest) or Max-Heap (for smallest)
+Heap + Median → Two Heaps approach
+Heap + Priority Queue → Custom Comparator
+Heap + Merge K Lists → Min-Heap
+Heap + Stream Processing → Heap with size limit
+Heap + Sliding Window Max → Deque or Heap
+
+Math + GCD/LCM → Euclidean Algorithm
+Math + Prime → Sieve of Eratosthenes
+Math + Factorial → Iterative or Recursive
+Math + Power → Binary Exponentiation
+Math + Mod Operations → Modular Arithmetic
+Math + Combinations → Pascal's Triangle or Formula
+Math + Probability → Counting principles
+
+Bit Manipulation + Single Number → XOR
+Bit Manipulation + Power of Two → n & (n-1)
+Bit Manipulation + Set Bits → Brian Kernighan's Algorithm
+Bit Manipulation + Swap → XOR swap
+Bit Manipulation + Gray Code → Binary to Gray conversion
+Bit Manipulation + Masks → Bit masking techniques
 ```
 
 ### Company Priority Matrix
