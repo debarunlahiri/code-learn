@@ -1,19 +1,35 @@
 # Algorithms in Java (Easy)
 
-Goal: Learn core algorithms with simple logic and easy Java code.
+Goal: Learn core algorithms with simple logic, clear intuition, and easy Java code.
 
 ---
 
 ## 1. Linear Search
 
-### Idea
-Check each element one by one until target is found.
+### What it does
+Scans the array from left to right until the target is found.
 
-### Use when
-Array is small or unsorted.
+### Why it matters
+- Simplest search algorithm
+- Works on unsorted data
+- Foundation for understanding search
+
+### Intuition
+Imagine looking for your friend in a line. You start from the first person and ask each one until you find your friend.
+
+### When to use
+- Array is small
+- Data is unsorted
+- Simplicity matters over speed
 
 ### Time complexity
 - Worst case: `O(n)`
+- Best case: `O(1)` (target at first position)
+
+### Edge cases
+- Empty array
+- Target not present
+- Multiple occurrences (returns first)
 
 ### Java code
 ```java
@@ -38,14 +54,30 @@ public class LinearSearch {
 
 ## 2. Binary Search
 
-### Idea
-Work on sorted array. Compare middle value and discard half each step.
+### What it does
+Works on sorted array. Compare middle value and discard half each step.
 
-### Use when
-Data is sorted and fast search is needed.
+### Why it matters
+- Extremely fast for sorted data
+- Logarithmic time complexity
+- Basis for many advanced algorithms
+
+### Intuition
+Think of finding a word in a dictionary. Open to the middle, see if your word comes before or after, then focus only on that half and repeat.
+
+### When to use
+- Data is sorted
+- Fast search is needed
+- No frequent insertions/deletions
 
 ### Time complexity
 - Worst case: `O(log n)`
+- Best case: `O(1)` (target at middle)
+
+### Edge cases
+- Empty array
+- Target smaller/larger than all elements
+- Integer overflow when calculating mid (use `mid = left + (right - left) / 2`)
 
 ### Java code
 ```java
@@ -55,7 +87,7 @@ public class BinarySearch {
         int right = arr.length - 1;
 
         while (left <= right) {
-            int mid = left + (right - left) / 2;
+            int mid = left + (right - left) / 2; // avoids overflow
 
             if (arr[mid] == target) return mid;
             if (arr[mid] < target) left = mid + 1;
@@ -76,8 +108,60 @@ public class BinarySearch {
 
 ## 3. Bubble Sort
 
-### Idea
+### What it does
 Repeatedly compare adjacent values and swap if wrong order.
+
+### Why it matters
+- Easiest sorting algorithm to understand
+- Demonstrates sorting concepts
+- Good for teaching, not for production
+
+### Intuition
+Imagine bubbles in water rising to the surface. In each pass, the largest unsorted element "bubbles up" to its correct position.
+
+### When to use
+- Educational purposes
+- Very small datasets
+- When simplicity is more important than performance
+
+### Time complexity
+- Worst case: `O(n²)`
+- Best case (already sorted): `O(n)` with optimization
+
+### Edge cases
+- Empty or single-element array
+- All elements equal
+- Already sorted (detect and stop early)
+
+### Java code
+```java
+public class BubbleSort {
+    static void sort(int[] arr) {
+        int n = arr.length;
+        boolean swapped;
+        for (int i = 0; i < n - 1; i++) {
+            swapped = false;
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    // swap
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                    swapped = true;
+                }
+            }
+            // If no swapping, array is sorted
+            if (!swapped) break;
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {64, 34, 25, 12, 22, 11, 90};
+        sort(arr);
+        System.out.println(java.util.Arrays.toString(arr)); // [11, 12, 22, 25, 34, 64, 90]
+    }
+}
+```
 
 ### Use when
 Learning sorting basics. Not good for large input.

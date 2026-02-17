@@ -9,12 +9,28 @@ Goal: Understand what each structure does, when to use it, and the simplest Java
 ### What it is
 An array stores values in a fixed-size box.
 
+### Why it matters
+- Fastest way to access by index (`O(1)`)
+- Memory layout is contiguous (cache-friendly)
+- Base for many other structures
+
+### Intuition
+Think of a row of numbered lockers. Each locker has a fixed position. You can instantly go to locker #5, but you can’t add more lockers once built.
+
 ### When to use
-Use it when size is known and you need fast index access.
+- Size is known beforehand
+- Need fast random access
+- No frequent insertions/deletions
 
 ### Time complexity
 - Read by index: `O(1)`
 - Search: `O(n)`
+- Insert/delete (except at end): `O(n)`
+
+### Edge cases
+- Empty array (`length = 0`)
+- Single element
+- Out-of-bounds access throws `ArrayIndexOutOfBoundsException`
 
 ### Java code
 ```java
@@ -38,13 +54,28 @@ public class ArrayExample {
 ### What it is
 A dynamic array. Size grows automatically.
 
+### Why it matters
+- You get array-like access without fixed size
+- Handles resizing internally
+- Most commonly used list in interviews
+
+### Intuition
+Imagine a stretchable bag. It starts small, but when you add too many items, it magically expands (by copying to a bigger bag).
+
 ### When to use
-Use when you do not know size in advance.
+- Do not know size in advance
+- Need fast index access
+- Frequent additions at the end
 
 ### Time complexity
-- Add at end: `O(1)` average
+- Add at end: `O(1)` average (amortized)
 - Read by index: `O(1)`
 - Remove by value/index: `O(n)`
+- Insert at middle: `O(n)`
+
+### Edge cases
+- Initial capacity matters if you know size (use `new ArrayList<>(n)`)
+- Removing while iterating can cause `ConcurrentModificationException`
 
 ### Java code
 ```java
@@ -71,12 +102,46 @@ public class ArrayListExample {
 ### What it is
 A chain of nodes. Each node points to the next node.
 
+### Why it matters
+- Fast insert/delete at both ends (`O(1)`)
+- No wasted capacity (unlike ArrayList)
+- Good for queues and deques
+
+### Intuition
+Think of a train. Each car knows only the next car. You can quickly add/remove cars at the ends, but to find the 10th car, you must walk through all previous cars.
+
 ### When to use
-Use when many insert/delete operations happen in middle or beginning.
+- Many insert/delete operations at beginning/end
+- Implementing queue/stack
+- No random access needed
 
 ### Time complexity
 - Access by index: `O(n)`
-- Insert/delete near known node: `O(1)`
+- Insert/delete at head/tail: `O(1)`
+- Insert/delete at middle: `O(n)` (need to traverse)
+
+### Edge cases
+- `get(index)` is slow; avoid in loops
+- `remove(Object)` needs traversal
+- Not cache-friendly (non-contiguous)
+
+### Java code
+```java
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class LinkedListExample {
+    public static void main(String[] args) {
+        LinkedList<Integer> list = new LinkedList<>();
+        list.addFirst(10);
+        list.addLast(20);
+        list.add(15);
+
+        System.out.println(list); // [10, 20, 15]
+        System.out.println(list.removeFirst()); // 10
+    }
+}
+```
 
 ### Java code (simple custom node)
 ```java
