@@ -2267,12 +2267,7 @@ If you have limited time (2–4 weeks prep), focus only on these:
 | Normal off-campus               | Easy + easy-medium + few medium                | 30–50                             | 70–90%                |
 | Elite/Prime/Digital track       | Easy-medium + medium + few medium-hard         | 60–120                            | 50–80% (competitive)  |
 
-If you want, I can now:
 
-- Give Java code + explanation + edge cases for any 5–10 problems from the list  
-- Provide a 2-week / 4-week preparation roadmap for WITCH  
-- Explain how to answer “explain time & space complexity” in interviews  
-- Share common follow-up questions they ask after these problems
 
 
 
