@@ -411,3 +411,293 @@ public class SegmentTree {
 }
 ```
 
+---
+
+## 5. 2D Prefix Sum (matrix range sum)
+
+### What it does
+Preprocess 2D matrix to answer rectangular range sum queries in O(1) time.
+
+### Why it matters
+- Fast range sum queries for static matrices
+- Used in image processing, game development
+- Foundation for 2D range query problems
+- Essential for submatrix sum problems
+
+### Intuition
+Store cumulative sums in 2D. Rectangle sum [r1,c1] to [r2,c2] = prefix[r2][c2] - prefix[r1-1][c2] - prefix[r2][c1-1] + prefix[r1-1][c1-1]. Like a running total in both dimensions.
+
+### When to use
+- Static matrices (no updates)
+- Multiple rectangular range sum queries
+- Submatrix sum problems
+- Image processing operations
+
+### Time complexity
+- Preprocessing: `O(m*n)`
+- Query: `O(1)`
+- Space: `O(m*n)`
+
+### Edge cases
+- Empty matrix
+- Single element matrix
+- Large sums (use long)
+- Boundary rectangles
+
+### Java code
+```java
+public class PrefixSum2D {
+    static int[][] build(int[][] matrix) {
+        if (matrix == null || matrix.length == 0) return new int[1][1];
+        int m = matrix.length, n = matrix[0].length;
+        int[][] pre = new int[m + 1][n + 1];
+        
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                pre[i][j] = pre[i - 1][j] + pre[i][j - 1] 
+                          - pre[i - 1][j - 1] + matrix[i - 1][j - 1];
+            }
+        }
+        return pre;
+    }
+
+    static int rangeSum(int[][] pre, int r1, int c1, int r2, int c2) {
+        if (pre == null || pre.length <= 1) return 0;
+        // Convert to 1-based indexing
+        r1++; c1++; r2++; c2++;
+        return pre[r2][c2] - pre[r1 - 1][c2] - pre[r2][c1 - 1] + pre[r1 - 1][c1 - 1];
+    }
+}
+```
+
+---
+
+## 6. Sparse Table (range min/max query)
+
+### What it does
+Preprocess array for static range minimum/maximum queries in O(1) time.
+
+### Why it matters
+- Fast range min/max queries for static arrays
+- Used in RMQ problems, LCA calculations
+- Better than Segment Tree for static queries
+- O(1) query time after O(n log n) preprocessing
+
+### Intuition
+Store precomputed min/max for ranges of size 2^k. Any range can be represented as union of two power-of-two ranges. Like having precomputed answers for all possible power-of-two lengths.
+
+### When to use
+- Static arrays (no updates)
+- Multiple range min/max queries
+- RMQ (Range Minimum Query) problems
+- LCA (Lowest Common Ancestor) preprocessing
+
+### Time complexity
+- Preprocessing: `O(n log n)`
+- Query: `O(1)`
+- Space: `O(n log n)`
+
+### Edge cases
+- Empty array
+- Single element range
+- Large values (use appropriate type)
+
+### Java code
+```java
+public class SparseTable {
+    static int[][] buildMin(int[] arr) {
+        if (arr == null || arr.length == 0) return new int[1][1];
+        int n = arr.length;
+        int log = (int) (Math.log(n) / Math.log(2)) + 1;
+        int[][] st = new int[n][log];
+        
+        // Initialize for range size 1
+        for (int i = 0; i < n; i++) st[i][0] = arr[i];
+        
+        // Build for powers of 2
+        for (int j = 1; (1 << j) <= n; j++) {
+            for (int i = 0; i + (1 << j) <= n; i++) {
+                st[i][j] = Math.min(st[i][j - 1], st[i + (1 << (j - 1))][j - 1]);
+            }
+        }
+        return st;
+    }
+
+    static int queryMin(int[][] st, int l, int r) {
+        if (st == null || st.length <= 1) return Integer.MAX_VALUE;
+        int j = (int) (Math.log(r - l + 1) / Math.log(2));
+        return Math.min(st[l][j], st[r - (1 << j) + 1][j]);
+    }
+}
+```
+
+---
+
+## 7. Mo's Algorithm (offline range queries)
+
+### What it does
+Answer multiple range queries offline in O((n+q)√n) time by processing queries in optimal order.
+
+### Why it matters
+- Handles range queries with updates
+- Better than naive O(nq) approach
+- Used in competitive programming
+- Foundation for advanced range query techniques
+
+### Intuition
+Sort queries in a special order (block size, then right endpoint) and maintain current answer while moving pointers. Like sliding window but for multiple queries in optimal order.
+
+### When to use
+- Multiple range queries on static array
+- No updates to array
+- Query count is large
+- O((n+q)√n) is acceptable
+
+### Time complexity
+- Sorting queries: `O(q log q)`
+- Processing: `O((n+q)√n)`
+- Space: `O(n)`
+
+### Edge cases
+- Empty array
+- Single element queries
+- Large query ranges
+
+### Java code
+```java
+import java.util.*;
+
+public class MoAlgorithm {
+    static class Query {
+        int l, r, idx, block;
+        Query(int l, int r, int idx, int blockSize) {
+            this.l = l; this.r = r; this.idx = idx;
+            this.block = l / blockSize;
+        }
+    }
+
+    static int[] answerQueries(int[] arr, Query[] queries) {
+        int blockSize = (int) Math.sqrt(arr.length);
+        
+        // Sort queries
+        Arrays.sort(queries, (a, b) -> {
+            if (a.block != b.block) return a.block - b.block;
+            return (a.block % 2 == 0) ? a.r - b.r : b.r - a.r;
+        });
+
+        int[] answers = new int[queries.length];
+        int currL = 0, currR = -1, currSum = 0;
+
+        for (Query q : queries) {
+            // Expand to the right
+            while (currR < q.r) currSum += arr[++currR];
+            // Shrink from the right
+            while (currR > q.r) currSum -= arr[currR--];
+            // Expand to the left
+            while (currL < q.l) currSum -= arr[currL++];
+            // Shrink from the left
+            while (currL > q.l) currSum += arr[--currL];
+            
+            answers[q.idx] = currSum;
+        }
+        return answers;
+    }
+}
+```
+
+---
+
+## 8. Wavelet Tree (range queries on arrays)
+
+### What it does
+Advanced data structure for range queries on arrays with small value ranges.
+
+### Why it matters
+- Handles various range queries efficiently
+- Used in advanced competitive programming
+- Better than Segment Tree for certain problems
+- Supports k-th order statistics
+
+### Intuition
+Recursively split array based on median, building a binary tree structure. Each level stores bitset indicating which elements go to right child. Like a binary search tree but for array positions.
+
+### When to use
+- Arrays with small value ranges
+- Range k-th smallest queries
+- Range counting queries
+- When O(log n) per operation is acceptable
+
+### Time complexity
+- Build: `O(n log V)` where V is value range
+- Query: `O(log V)`
+- Space: `O(n log V)`
+
+### Edge cases
+- Empty array
+- Large value ranges
+- Single element arrays
+
+### Java code
+```java
+public class WaveletTree {
+    static class Node {
+        int[] left;
+        int[] right;
+        Node leftChild, rightChild;
+        int lo, hi;
+        
+        Node(int[] arr, int lo, int hi) {
+            this.lo = lo; this.hi = hi;
+            if (lo == hi || arr.length == 0) return;
+            
+            int mid = (lo + hi) / 2;
+            left = new int[arr.length + 1];
+            right = new int[arr.length + 1];
+            
+            int[] leftArr = new int[arr.length];
+            int[] rightArr = new int[arr.length];
+            int leftCount = 0, rightCount = 0;
+            
+            for (int i = 0; i < arr.length; i++) {
+                left[i + 1] = left[i];
+                right[i + 1] = right[i];
+                
+                if (arr[i] <= mid) {
+                    left[i + 1]++;
+                    leftArr[leftCount++] = arr[i];
+                } else {
+                    right[i + 1]++;
+                    rightArr[rightCount++] = arr[i];
+                }
+            }
+            
+            leftChild = new Node(leftArr, lo, mid);
+            rightChild = new Node(rightArr, mid + 1, hi);
+        }
+    }
+}
+```
+
+---
+
+## Practice Problems
+
+### Easy
+1. **Range Sum Query - Immutable** (LeetCode 303)
+2. **Range Sum Query - Mutable** (LeetCode 307)
+3. **Minimum Size Subarray Sum** (LeetCode 209)
+
+### Medium
+1. **Range Sum Query 2D - Immutable** (LeetCode 304)
+2. **Falling Squares** (LeetCode 699)
+3. **Range Maximum Query** (Segment Tree)
+
+### Hard
+1. **Range Sum Query 2D - Mutable** (LeetCode 308)
+2. **Rectangle Area II** (LeetCode 850)
+3. **Maximum Sum of 3 Non-Overlapping Subarrays** (LeetCode 689)
+
+---
+
+**Remember:** Choose the right data structure based on whether you need updates, query types, and time/space constraints.
+
