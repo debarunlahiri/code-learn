@@ -21,6 +21,8 @@ This folder is a detailed AWS learning path from fundamentals to advanced archit
 15. `14-aws-migration-and-hybrid.md`
 16. `15-aws-data-ai-ml-and-big-data-overview.md`
 17. `16-aws-interview-questions-answers-advanced.md`
+18. `17-aws-advanced-interview-deep-dive.md`
+19. `18-aws-services-complete-reference.md`
 
 ## Study Method
 
