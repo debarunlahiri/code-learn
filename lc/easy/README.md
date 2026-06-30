@@ -22,6 +22,9 @@ Complete these before moving to `medium/`.
 - [063. Max Consecutive Ones](063-max-consecutive-ones.md)
 - [064. Next Greater Element I](064-next-greater-element-i.md)
 - [066. Relative Ranks](066-relative-ranks.md)
+- [073. Array Partition](073-array-partition.md)
+- [074. Reshape the Matrix](074-reshape-the-matrix.md)
+- [076. Maximum Product of Three Numbers](076-maximum-product-of-three-numbers.md)
 
 ## Strings
 
@@ -40,6 +43,8 @@ Complete these before moving to `medium/`.
 - [058. Repeated Substring Pattern](058-repeated-substring-pattern.md)
 - [062. License Key Formatting](062-license-key-formatting.md)
 - [065. Keyboard Row](065-keyboard-row.md)
+- [071. Detect Capital](071-detect-capital.md)
+- [072. Reverse Words in a String III](072-reverse-words-in-a-string-iii.md)
 
 ## Binary Search and Math
 
@@ -77,6 +82,7 @@ Complete these before moving to `medium/`.
 ## Greedy
 
 - [057. Assign Cookies](057-assign-cookies.md)
+- [075. Can Place Flowers](075-can-place-flowers.md)
 
 ## Dynamic Programming
 
@@ -94,3 +100,13 @@ Complete these before moving to `medium/`.
 - [068. Bear and Big Brother](068-codeforces-bear-and-big-brother.md)
 - [069. Boy or Girl](069-codeforces-boy-or-girl.md)
 - [070. Stones on the Table](070-codeforces-stones-on-the-table.md)
+- [079. Elephant](079-codeforces-elephant.md)
+- [080. Word](080-codeforces-word.md)
+
+## Binary Search Tree
+
+- [078. Two Sum IV - Input is a BST](078-two-sum-iv-input-is-a-bst.md)
+
+## Tree BFS
+
+- [077. Average of Levels in Binary Tree](077-average-of-levels-in-binary-tree.md)

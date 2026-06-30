@@ -102,6 +102,16 @@ Finish problems in this order:
 - [Codeforces: Bear and Big Brother](easy/068-codeforces-bear-and-big-brother.md)
 - [Codeforces: Boy or Girl](easy/069-codeforces-boy-or-girl.md)
 - [Codeforces: Stones on the Table](easy/070-codeforces-stones-on-the-table.md)
+- [Detect Capital](easy/071-detect-capital.md)
+- [Reverse Words in a String III](easy/072-reverse-words-in-a-string-iii.md)
+- [Array Partition](easy/073-array-partition.md)
+- [Reshape the Matrix](easy/074-reshape-the-matrix.md)
+- [Can Place Flowers](easy/075-can-place-flowers.md)
+- [Maximum Product of Three Numbers](easy/076-maximum-product-of-three-numbers.md)
+- [Average of Levels in Binary Tree](easy/077-average-of-levels-in-binary-tree.md)
+- [Two Sum IV - Input is a BST](easy/078-two-sum-iv-input-is-a-bst.md)
+- [Codeforces: Elephant](easy/079-codeforces-elephant.md)
+- [Codeforces: Word](easy/080-codeforces-word.md)
 
 ## Other Sheets
 
