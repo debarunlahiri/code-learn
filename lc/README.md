@@ -5,6 +5,8 @@ This folder is divided by difficulty:
 - `easy/` - start here and complete all easy problems first.
 - `medium/` - move here after the easy folder is comfortable.
 - `hard/` - advanced problems after medium practice.
+- `streamapis/` - Java Stream API coding questions from easy to hard.
+- `sql/` - SQL interview questions and full query answers from easy to hard.
 
 Each problem note follows this format:
 
@@ -116,3 +118,5 @@ Finish problems in this order:
 ## Other Sheets
 
 - [Blind 75 Tracker](blind-75.md)
+- [Java Stream API Coding Questions](streamapis/README.md)
+- [SQL Interview Questions](sql/README.md)
