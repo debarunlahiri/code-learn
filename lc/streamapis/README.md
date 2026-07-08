@@ -1122,3 +1122,184 @@ Map<String, List<Employee>> ans = employees.stream()
                 )
         ));
 ```
+
+## High Difficulty Employee-Focused Interview Questions
+
+121. Given `List<Employee> employees`, write a Stream API solution to find the
+     median salary in each department.
+
+```java
+Map<String, OptionalDouble> ans = employees.stream()
+        .collect(Collectors.groupingBy(
+                Employee::getDepartment,
+                Collectors.collectingAndThen(
+                        Collectors.mapping(Employee::getSalary, Collectors.toList()),
+                        salaries -> {
+                            List<Double> sorted = salaries.stream().sorted().toList();
+                            int size = sorted.size();
+                            if (size == 0) {
+                                return OptionalDouble.empty();
+                            }
+                            if (size % 2 == 1) {
+                                return OptionalDouble.of(sorted.get(size / 2));
+                            }
+                            return OptionalDouble.of((sorted.get(size / 2 - 1) + sorted.get(size / 2)) / 2.0);
+                        }
+                )
+        ));
+```
+
+122. Given `List<Employee> employees`, write a Stream API solution to find employees
+     earning more than their own department's average salary.
+
+```java
+Map<String, Double> avgSalaryByDept = employees.stream()
+        .collect(Collectors.groupingBy(
+                Employee::getDepartment,
+                Collectors.averagingDouble(Employee::getSalary)
+        ));
+
+List<Employee> ans = employees.stream()
+        .filter(e -> e.getSalary() > avgSalaryByDept.get(e.getDepartment()))
+        .toList();
+```
+
+123. Given `List<Employee> employees`, write a Stream API solution to return dense salary
+     ranks inside each department.
+
+```java
+Map<String, Map<Integer, List<Employee>>> ans = employees.stream()
+        .collect(Collectors.groupingBy(
+                Employee::getDepartment,
+                Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        list -> {
+                            List<Double> salaries = list.stream()
+                                    .map(Employee::getSalary)
+                                    .distinct()
+                                    .sorted(Comparator.reverseOrder())
+                                    .toList();
+
+                            return list.stream()
+                                    .collect(Collectors.groupingBy(e -> salaries.indexOf(e.getSalary()) + 1));
+                        }
+                )
+        ));
+```
+
+124. Given `List<Employee> employees`, write a Stream API solution to find the top `N`
+     highest-paid employees from each department.
+
+```java
+int n = 3;
+
+Map<String, List<Employee>> ans = employees.stream()
+        .collect(Collectors.groupingBy(
+                Employee::getDepartment,
+                Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        list -> list.stream()
+                                .sorted(Comparator.comparing(Employee::getSalary).reversed())
+                                .limit(n)
+                                .toList()
+                )
+        ));
+```
+
+125. Given `List<Employee> employees`, write a Stream API solution to find departments
+     where the salary gap between highest and lowest paid employee is more than `100000`.
+
+```java
+List<String> ans = employees.stream()
+        .collect(Collectors.groupingBy(
+                Employee::getDepartment,
+                Collectors.summarizingDouble(Employee::getSalary)
+        ))
+        .entrySet()
+        .stream()
+        .filter(e -> e.getValue().getMax() - e.getValue().getMin() > 100000)
+        .map(Map.Entry::getKey)
+        .toList();
+```
+
+126. Given `List<Employee> employees`, write a Stream API solution to find the highest-paid
+     employee in each department without returning `Optional`.
+
+```java
+Map<String, Employee> ans = employees.stream()
+        .collect(Collectors.toMap(
+                Employee::getDepartment,
+                Function.identity(),
+                BinaryOperator.maxBy(Comparator.comparing(Employee::getSalary))
+        ));
+```
+
+127. Given `List<Employee> employees`, write a Stream API solution to group employees by
+     department and then by salary band: `LOW`, `MID`, or `HIGH`.
+
+```java
+Map<String, Map<String, List<Employee>>> ans = employees.stream()
+        .collect(Collectors.groupingBy(
+                Employee::getDepartment,
+                Collectors.groupingBy(e -> {
+                    if (e.getSalary() < 60000) {
+                        return "LOW";
+                    }
+                    if (e.getSalary() < 120000) {
+                        return "MID";
+                    }
+                    return "HIGH";
+                })
+        ));
+```
+
+128. Given `List<Employee> employees`, write a Stream API solution to find each
+     department's salary share as a percentage of total company salary.
+
+```java
+double totalSalary = employees.stream()
+        .mapToDouble(Employee::getSalary)
+        .sum();
+
+Map<String, Double> ans = employees.stream()
+        .collect(Collectors.groupingBy(
+                Employee::getDepartment,
+                Collectors.summingDouble(Employee::getSalary)
+        ))
+        .entrySet()
+        .stream()
+        .collect(Collectors.toMap(
+                Map.Entry::getKey,
+                e -> totalSalary == 0 ? 0.0 : (e.getValue() * 100.0) / totalSalary
+        ));
+```
+
+129. Given `List<Employee> employees`, write a Stream API solution to find employee names
+     that appear in more than one department.
+
+```java
+List<String> ans = employees.stream()
+        .collect(Collectors.groupingBy(
+                Employee::getName,
+                Collectors.mapping(Employee::getDepartment, Collectors.toSet())
+        ))
+        .entrySet()
+        .stream()
+        .filter(e -> e.getValue().size() > 1)
+        .map(Map.Entry::getKey)
+        .toList();
+```
+
+130. Given `List<Employee> employees`, write a Stream API solution to build a report of
+     department to gender to average salary.
+
+```java
+Map<String, Map<String, Double>> ans = employees.stream()
+        .collect(Collectors.groupingBy(
+                Employee::getDepartment,
+                Collectors.groupingBy(
+                        Employee::getGender,
+                        Collectors.averagingDouble(Employee::getSalary)
+                )
+        ));
+```
