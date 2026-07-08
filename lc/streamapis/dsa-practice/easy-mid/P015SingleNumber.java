@@ -1,7 +1,7 @@
 import java.util.*;
 
 /**
- * P015. Single Number.  Given the input described by the method
+ * P015. Single Number. Given the input described by the method
  * signature, implement the
  * required operation efficiently and return the expected result. Handle normal
  * edge cases such as
@@ -19,7 +19,7 @@ public final class P015SingleNumber {
     public int singleNumber(int[] nums) {
         int ans = 0;
         for (int n : nums)
-    ans ^= n;
+            ans ^= n;
         return ans;
     }
 
