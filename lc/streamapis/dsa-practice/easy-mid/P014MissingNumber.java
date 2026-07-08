@@ -1,9 +1,7 @@
 import java.util.*;
 
 /**
- * P014. Missing Number. This is a easy-to-mid Java DSA coding problem commonly
- * practiced for service
- * based company coding rounds. Given the input described by the method
+ * P014. Missing Number.  Given the input described by the method
  * signature, implement the
  * required operation efficiently and return the expected result. Handle normal
  * edge cases such as

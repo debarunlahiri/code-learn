@@ -1,9 +1,7 @@
 import java.util.*;
 
 /**
- * P059. Combination Sum. This is a easy-to-mid Java DSA coding problem commonly
- * practiced for service
- * based company coding rounds. Given the input described by the method
+ * P059. Combination Sum.  Given the input described by the method
  * signature, implement the
  * required operation efficiently and return the expected result. Handle normal
  * edge cases such as

@@ -1,9 +1,7 @@
 import java.util.*;
 
 /**
- * P091. Merge Intervals. This is a easy-to-mid Java DSA coding problem commonly
- * practiced for service
- * based company coding rounds. Given the input described by the method
+ * P091. Merge Intervals.  Given the input described by the method
  * signature, implement the
  * required operation efficiently and return the expected result. Handle normal
  * edge cases such as

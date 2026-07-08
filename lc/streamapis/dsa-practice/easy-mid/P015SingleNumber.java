@@ -1,9 +1,7 @@
 import java.util.*;
 
 /**
- * P015. Single Number. This is a easy-to-mid Java DSA coding problem commonly
- * practiced for service
- * based company coding rounds. Given the input described by the method
+ * P015. Single Number.  Given the input described by the method
  * signature, implement the
  * required operation efficiently and return the expected result. Handle normal
  * edge cases such as
