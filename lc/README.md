@@ -7,6 +7,7 @@ This folder is divided by difficulty:
 - `hard/` - advanced problems after medium practice.
 - `streamapis/` - Java Stream API coding questions from easy to hard.
 - `sql/` - SQL interview questions and full query answers from easy to hard.
+- `real_life_examples/` - Java demos that connect classic algorithms and data structures (BFS, DFS, hashing, graphs, sorting, searching, DP, pattern matching, queues, stacks) to real-world use cases.
 
 Each problem note follows this format:
 
@@ -120,3 +121,7 @@ Finish problems in this order:
 - [Blind 75 Tracker](blind-75.md)
 - [Java Stream API Coding Questions](streamapis/README.md)
 - [SQL Interview Questions](sql/README.md)
+- [Real-Life BFS & DFS Examples](real_life_examples/RealLifeBfsAndDfs.java)
+- [Real-Life Hashing Examples](real_life_examples/RealLifeHashing.java)
+- [Real-Life Graph Algorithm Examples](real_life_examples/RealLifeGraphAlgorithms.java)
+- [Social Network: All Algorithms in One Place](real_life_examples/SocialNetwork.java)
