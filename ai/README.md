@@ -22,6 +22,7 @@ This folder is a practical revision guide for AI/ML engineering roles at roughly
 16. [Production troubleshooting](16-production-troubleshooting.md)
 17. [Project discussion guide](17-project-discussion-guide.md)
 18. [Extended questions and detailed answers](18-extended-questions.md)
+19. [Production LLM, RAG, and agent systems](19-production-llm-rag-agents.md)
 
 ## How to use the material
 
