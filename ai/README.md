@@ -23,6 +23,7 @@ This folder is a practical revision guide for AI/ML engineering roles at roughly
 17. [Project discussion guide](17-project-discussion-guide.md)
 18. [Extended questions and detailed answers](18-extended-questions.md)
 19. [Production LLM, RAG, and agent systems](19-production-llm-rag-agents.md)
+20. [Complete AI/ML success cheat sheet](20-ai-ml-complete-cheat-sheet.md)
 
 ## How to use the material
 
