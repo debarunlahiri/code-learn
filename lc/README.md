@@ -8,6 +8,7 @@ This folder is divided by difficulty:
 - `streamapis/` - Java Stream API coding questions from easy to hard.
 - `sql/` - SQL interview questions and full query answers from easy to hard.
 - `real_life_examples/` - Java demos that connect classic algorithms and data structures (BFS, DFS, hashing, graphs, sorting, searching, DP, pattern matching, queues, stacks) to real-world use cases.
+- `blind_75_java/` - the complete Blind 75 set with detailed questions, brute-force Java, and optimized Java solutions.
 
 Each problem note follows this format:
 
@@ -118,6 +119,7 @@ Finish problems in this order:
 
 ## Other Sheets
 
+- [Complete Blind 75 Java Guide](blind_75_java/README.md)
 - [Blind 75 Tracker](blind-75.md)
 - [Java Stream API Coding Questions](streamapis/README.md)
 - [SQL Interview Questions](sql/README.md)
