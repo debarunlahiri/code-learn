@@ -44,13 +44,25 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n²) time, O(1) space
 
 ```java
-public int missingNumber(int[] nums) {
-    for (int i = 0; i <= nums.length; i++) {
-        boolean found = false;
-        for (int n : nums) if (n == i) { found = true; break; }
-        if (!found) return i;
+import java.util.*;
+
+public class Solution {
+
+    public int missingNumber(int[] nums) {
+        for (int i = 0; i <= nums.length; i++) {
+            boolean found = false;
+            for (int n : nums) {
+                if (n == i) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                return i;
+            }
+        }
+        return -1;
     }
-    return -1;
 }
 ```
 
@@ -61,10 +73,18 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Gauss Formula) — O(n) time, O(1) space
 
 ```java
-public int missingNumber(int[] nums) {
-    int n = nums.length, sum = n * (n + 1) / 2;
-    for (int num : nums) sum -= num;
-    return sum;
+import java.util.*;
+
+public class Solution {
+
+    public int missingNumber(int[] nums) {
+        int n = nums.length,
+            sum = (n * (n + 1)) / 2;
+        for (int num : nums) {
+            sum -= num;
+        }
+        return sum;
+    }
 }
 ```
 

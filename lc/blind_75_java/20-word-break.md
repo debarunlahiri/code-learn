@@ -44,16 +44,26 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java (Recursion) — O(2ⁿ) time
 
 ```java
-public boolean wordBreak(String s, List<String> wordDict) {
-    Set<String> set = new HashSet<>(wordDict);
-    return wb(s, set, 0);
-}
-private boolean wb(String s, Set<String> dict, int start) {
-    if (start == s.length()) return true;
-    for (int end = start + 1; end <= s.length(); end++)
-        if (dict.contains(s.substring(start, end)) && wb(s, dict, end))
+import java.util.*;
+
+public class Solution {
+
+    public boolean wordBreak(String s, List<String> wordDict) {
+        Set<String> set = new HashSet<>(wordDict);
+        return wb(s, set, 0);
+    }
+
+    private boolean wb(String s, Set<String> dict, int start) {
+        if (start == s.length()) {
             return true;
-    return false;
+        }
+        for (int end = start + 1; end <= s.length(); end++) {
+            if (dict.contains(s.substring(start, end)) && wb(s, dict, end)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 ```
 
@@ -64,14 +74,24 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (DP) — O(n²) time, O(n) space
 
 ```java
-public boolean wordBreak(String s, List<String> wordDict) {
-    Set<String> set = new HashSet<>(wordDict);
-    boolean[] dp = new boolean[s.length() + 1];
-    dp[0] = true;
-    for (int i = 1; i <= s.length(); i++)
-        for (int j = 0; j < i; j++)
-            if (dp[j] && set.contains(s.substring(j, i))) { dp[i] = true; break; }
-    return dp[s.length()];
+import java.util.*;
+
+public class Solution {
+
+    public boolean wordBreak(String s, List<String> wordDict) {
+        Set<String> set = new HashSet<>(wordDict);
+        boolean[] dp = new boolean[s.length() + 1];
+        dp[0] = true;
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp[j] && set.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[s.length()];
+    }
 }
 ```
 

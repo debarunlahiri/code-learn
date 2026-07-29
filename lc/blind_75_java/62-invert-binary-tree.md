@@ -46,12 +46,43 @@ becomes too expensive near the upper input limits.
 For this problem, the straightforward correctness-first implementation uses the same core traversal shown below. It is presented first as the baseline; the following section explains the production interpretation and invariant.
 
 ```java
-public TreeNode invertTree(TreeNode root) {
-    if (root == null) return null;
-    TreeNode tmp = root.left;
-    root.left = invertTree(root.right);
-    root.right = invertTree(tmp);
-    return root;
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+public class Solution {
+
+    public TreeNode invertTree(TreeNode root) {
+        return createInvertedCopy(root);
+    }
+
+    private TreeNode createInvertedCopy(TreeNode node) {
+        if (node == null) {
+            return null;
+        }
+
+        TreeNode copy = new TreeNode(node.val);
+        copy.left = createInvertedCopy(node.right);
+        copy.right = createInvertedCopy(node.left);
+        return copy;
+    }
 }
 ```
 
@@ -62,12 +93,38 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Recursion) — O(n) time, O(h) space
 
 ```java
-public TreeNode invertTree(TreeNode root) {
-    if (root == null) return null;
-    TreeNode tmp = root.left;
-    root.left = invertTree(root.right);
-    root.right = invertTree(tmp);
-    return root;
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+public class Solution {
+
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        TreeNode tmp = root.left;
+        root.left = invertTree(root.right);
+        root.right = invertTree(tmp);
+        return root;
+    }
 }
 ```
 

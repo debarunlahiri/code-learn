@@ -46,20 +46,53 @@ becomes too expensive near the upper input limits.
 For this problem, the straightforward correctness-first implementation uses the same core traversal shown below. It is presented first as the baseline; the following section explains the production interpretation and invariant.
 
 ```java
-public boolean exist(char[][] board, String word) {
-    for (int i = 0; i < board.length; i++)
-        for (int j = 0; j < board[0].length; j++)
-            if (dfs(board, word, i, j, 0)) return true;
-    return false;
-}
-private boolean dfs(char[][] board, String word, int i, int j, int k) {
-    if (k == word.length()) return true;
-    if (i<0||i>=board.length||j<0||j>=board[0].length||board[i][j]!=word.charAt(k)) return false;
-    char tmp = board[i][j]; board[i][j] = '#';
-    boolean found = dfs(board,word,i+1,j,k+1)||dfs(board,word,i-1,j,k+1)||
-                    dfs(board,word,i,j+1,k+1)||dfs(board,word,i,j-1,k+1);
-    board[i][j] = tmp;
-    return found;
+import java.util.*;
+
+public class Solution {
+
+    public boolean exist(char[][] board, String word) {
+        for (int row = 0; row < board.length; row++) {
+            for (int column = 0; column < board[0].length; column++) {
+                boolean[][] visited = new boolean[board.length][board[0].length];
+                if (search(board, word, row, column, 0, visited)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean search(
+        char[][] board,
+        String word,
+        int row,
+        int column,
+        int index,
+        boolean[][] visited
+    ) {
+        if (index == word.length()) {
+            return true;
+        }
+        if (
+            row < 0 ||
+            row >= board.length ||
+            column < 0 ||
+            column >= board[0].length ||
+            visited[row][column] ||
+            board[row][column] != word.charAt(index)
+        ) {
+            return false;
+        }
+
+        visited[row][column] = true;
+        boolean found =
+            search(board, word, row + 1, column, index + 1, visited) ||
+            search(board, word, row - 1, column, index + 1, visited) ||
+            search(board, word, row, column + 1, index + 1, visited) ||
+            search(board, word, row, column - 1, index + 1, visited);
+        visited[row][column] = false;
+        return found;
+    }
 }
 ```
 
@@ -70,20 +103,44 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Backtracking DFS) — O(m×n×4^L) time
 
 ```java
-public boolean exist(char[][] board, String word) {
-    for (int i = 0; i < board.length; i++)
-        for (int j = 0; j < board[0].length; j++)
-            if (dfs(board, word, i, j, 0)) return true;
-    return false;
-}
-private boolean dfs(char[][] board, String word, int i, int j, int k) {
-    if (k == word.length()) return true;
-    if (i<0||i>=board.length||j<0||j>=board[0].length||board[i][j]!=word.charAt(k)) return false;
-    char tmp = board[i][j]; board[i][j] = '#';
-    boolean found = dfs(board,word,i+1,j,k+1)||dfs(board,word,i-1,j,k+1)||
-                    dfs(board,word,i,j+1,k+1)||dfs(board,word,i,j-1,k+1);
-    board[i][j] = tmp;
-    return found;
+import java.util.*;
+
+public class Solution {
+
+    public boolean exist(char[][] board, String word) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (dfs(board, word, i, j, 0)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean dfs(char[][] board, String word, int i, int j, int k) {
+        if (k == word.length()) {
+            return true;
+        }
+        if (
+            i < 0 ||
+            i >= board.length ||
+            j < 0 ||
+            j >= board[0].length ||
+            board[i][j] != word.charAt(k)
+        ) {
+            return false;
+        }
+        char tmp = board[i][j];
+        board[i][j] = '#';
+        boolean found =
+            dfs(board, word, i + 1, j, k + 1) ||
+            dfs(board, word, i - 1, j, k + 1) ||
+            dfs(board, word, i, j + 1, k + 1) ||
+            dfs(board, word, i, j - 1, k + 1);
+        board[i][j] = tmp;
+        return found;
+    }
 }
 ```
 

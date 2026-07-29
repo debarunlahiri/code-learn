@@ -41,47 +41,69 @@ understanding the search space, checking small examples by hand, and serving as
 a correctness oracle for randomized tests. Its weakness is repeated work, which
 becomes too expensive near the upper input limits.
 
-### Brute-Force Java / Optimal (Backtracking) — O(N^(T/M)) time
+### Brute-Force Java
 
 ```java
-public List<List<Integer>> combinationSum(int[] candidates, int target) {
-    List<List<Integer>> result = new ArrayList<>();
-    backtrack(candidates, target, 0, new ArrayList<>(), result);
-    return result;
-}
-private void backtrack(int[] candidates, int remain, int start,
-                       List<Integer> current, List<List<Integer>> result) {
-    if (remain == 0) { result.add(new ArrayList<>(current)); return; }
-    for (int i = start; i < candidates.length; i++) {
-        if (candidates[i] <= remain) {
-            current.add(candidates[i]);
-            backtrack(candidates, remain - candidates[i], i, current, result);
-            current.remove(current.size() - 1);
+import java.util.*;
+
+public class Solution {
+
+    public int combinationSum4(int[] nums, int target) {
+        return countSequences(nums, target);
+    }
+
+    private int countSequences(int[] nums, int remaining) {
+        if (remaining == 0) {
+            return 1;
         }
+
+        if (remaining < 0) {
+            return 0;
+        }
+
+        int total = 0;
+        for (int number : nums) {
+            total += countSequences(nums, remaining - number);
+        }
+        return total;
     }
 }
 ```
 
 ## Approach 2: Optimized
 
-The traversal shown above already has the best possible asymptotic bound because every relevant input item must be inspected. The optimized production version uses the same visited-state principle to prevent cycles and duplicate work.
+The optimized implementation removes unnecessary repeated searches or extra copies while preserving the same result.
 
 ### Optimized Java
 
 ```java
-public List<List<Integer>> combinationSum(int[] candidates, int target) {
-    List<List<Integer>> result = new ArrayList<>();
-    backtrack(candidates, target, 0, new ArrayList<>(), result);
-    return result;
-}
-private void backtrack(int[] candidates, int remain, int start,
-                       List<Integer> current, List<List<Integer>> result) {
-    if (remain == 0) { result.add(new ArrayList<>(current)); return; }
-    for (int i = start; i < candidates.length; i++) {
-        if (candidates[i] <= remain) {
-            current.add(candidates[i]);
-            backtrack(candidates, remain - candidates[i], i, current, result);
-            current.remove(current.size() - 1);
+import java.util.*;
+
+public class Solution {
+
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        backtrack(candidates, target, 0, new ArrayList<>(), result);
+        return result;
+    }
+
+    private void backtrack(
+        int[] candidates,
+        int remain,
+        int start,
+        List<Integer> current,
+        List<List<Integer>> result
+    ) {
+        if (remain == 0) {
+            result.add(new ArrayList<>(current));
+            return;
+        }
+        for (int i = start; i < candidates.length; i++) {
+            if (candidates[i] <= remain) {
+                current.add(candidates[i]);
+                backtrack(candidates, remain - candidates[i], i, current, result);
+                current.remove(current.size() - 1);
+            }
         }
     }
 }

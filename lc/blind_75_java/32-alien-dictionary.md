@@ -46,31 +46,77 @@ becomes too expensive near the upper input limits.
 For this problem, the straightforward correctness-first implementation uses the same core traversal shown below. It is presented first as the baseline; the following section explains the production interpretation and invariant.
 
 ```java
-public String alienOrder(String[] words) {
-    Map<Character, Set<Character>> adj = new LinkedHashMap<>();
-    Map<Character, Integer> inDegree = new HashMap<>();
-    for (String word : words)
-        for (char c : word.toCharArray()) { adj.putIfAbsent(c, new HashSet<>()); inDegree.putIfAbsent(c, 0); }
-    for (int i = 0; i < words.length - 1; i++) {
-        String w1 = words[i], w2 = words[i + 1];
-        if (w1.length() > w2.length() && w1.startsWith(w2)) return "";
-        for (int j = 0; j < Math.min(w1.length(), w2.length()); j++) {
-            if (w1.charAt(j) != w2.charAt(j)) {
-                if (adj.get(w1.charAt(j)).add(w2.charAt(j)))
-                    inDegree.merge(w2.charAt(j), 1, Integer::sum);
-                break;
+import java.util.*;
+
+public class Solution {
+
+    public String alienOrder(String[] words) {
+        Set<Character> characterSet = new TreeSet<>();
+        for (String word : words) {
+            for (char character : word.toCharArray()) {
+                characterSet.add(character);
             }
         }
+
+        List<Character> characters = new ArrayList<>(characterSet);
+        boolean[] used = new boolean[characters.size()];
+        StringBuilder candidate = new StringBuilder();
+        return findValidOrder(words, characters, used, candidate);
     }
-    Queue<Character> queue = new LinkedList<>();
-    for (char c : inDegree.keySet()) if (inDegree.get(c) == 0) queue.offer(c);
-    StringBuilder sb = new StringBuilder();
-    while (!queue.isEmpty()) {
-        char c = queue.poll(); sb.append(c);
-        for (char next : adj.get(c))
-            if (inDegree.merge(next, -1, Integer::sum) == 0) queue.offer(next);
+
+    private String findValidOrder(
+        String[] words,
+        List<Character> characters,
+        boolean[] used,
+        StringBuilder candidate
+    ) {
+        if (candidate.length() == characters.size()) {
+            String order = candidate.toString();
+            return wordsFollowOrder(words, order) ? order : "";
+        }
+
+        for (int i = 0; i < characters.size(); i++) {
+            if (!used[i]) {
+                used[i] = true;
+                candidate.append(characters.get(i));
+
+                String answer = findValidOrder(words, characters, used, candidate);
+                if (!answer.isEmpty()) {
+                    return answer;
+                }
+
+                candidate.deleteCharAt(candidate.length() - 1);
+                used[i] = false;
+            }
+        }
+        return "";
     }
-    return sb.length() == inDegree.size() ? sb.toString() : "";
+
+    private boolean wordsFollowOrder(String[] words, String order) {
+        int[] rank = new int[26];
+        for (int i = 0; i < order.length(); i++) {
+            rank[order.charAt(i) - 'a'] = i;
+        }
+
+        for (int i = 1; i < words.length; i++) {
+            if (compare(words[i - 1], words[i], rank) > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private int compare(String first, String second, int[] rank) {
+        int commonLength = Math.min(first.length(), second.length());
+        for (int i = 0; i < commonLength; i++) {
+            char left = first.charAt(i);
+            char right = second.charAt(i);
+            if (left != right) {
+                return Integer.compare(rank[left - 'a'], rank[right - 'a']);
+            }
+        }
+        return Integer.compare(first.length(), second.length());
+    }
 }
 ```
 
@@ -81,31 +127,52 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Topological Sort) — O(C) where C = total chars in words
 
 ```java
-public String alienOrder(String[] words) {
-    Map<Character, Set<Character>> adj = new LinkedHashMap<>();
-    Map<Character, Integer> inDegree = new HashMap<>();
-    for (String word : words)
-        for (char c : word.toCharArray()) { adj.putIfAbsent(c, new HashSet<>()); inDegree.putIfAbsent(c, 0); }
-    for (int i = 0; i < words.length - 1; i++) {
-        String w1 = words[i], w2 = words[i + 1];
-        if (w1.length() > w2.length() && w1.startsWith(w2)) return "";
-        for (int j = 0; j < Math.min(w1.length(), w2.length()); j++) {
-            if (w1.charAt(j) != w2.charAt(j)) {
-                if (adj.get(w1.charAt(j)).add(w2.charAt(j)))
-                    inDegree.merge(w2.charAt(j), 1, Integer::sum);
-                break;
+import java.util.*;
+
+public class Solution {
+
+    public String alienOrder(String[] words) {
+        Map<Character, Set<Character>> adj = new LinkedHashMap<>();
+        Map<Character, Integer> inDegree = new HashMap<>();
+        for (String word : words) {
+            for (char c : word.toCharArray()) {
+                adj.putIfAbsent(c, new HashSet<>());
+                inDegree.putIfAbsent(c, 0);
             }
         }
+        for (int i = 0; i < words.length - 1; i++) {
+            String w1 = words[i],
+                w2 = words[i + 1];
+            if (w1.length() > w2.length() && w1.startsWith(w2)) {
+                return "";
+            }
+            for (int j = 0; j < Math.min(w1.length(), w2.length()); j++) {
+                if (w1.charAt(j) != w2.charAt(j)) {
+                    if (adj.get(w1.charAt(j)).add(w2.charAt(j))) {
+                        inDegree.merge(w2.charAt(j), 1, Integer::sum);
+                    }
+                    break;
+                }
+            }
+        }
+        Queue<Character> queue = new LinkedList<>();
+        for (char c : inDegree.keySet()) {
+            if (inDegree.get(c) == 0) {
+                queue.offer(c);
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        while (!queue.isEmpty()) {
+            char c = queue.poll();
+            sb.append(c);
+            for (char next : adj.get(c)) {
+                if (inDegree.merge(next, -1, Integer::sum) == 0) {
+                    queue.offer(next);
+                }
+            }
+        }
+        return sb.length() == inDegree.size() ? sb.toString() : "";
     }
-    Queue<Character> queue = new LinkedList<>();
-    for (char c : inDegree.keySet()) if (inDegree.get(c) == 0) queue.offer(c);
-    StringBuilder sb = new StringBuilder();
-    while (!queue.isEmpty()) {
-        char c = queue.poll(); sb.append(c);
-        for (char next : adj.get(c))
-            if (inDegree.merge(next, -1, Integer::sum) == 0) queue.offer(next);
-    }
-    return sb.length() == inDegree.size() ? sb.toString() : "";
 }
 ```
 

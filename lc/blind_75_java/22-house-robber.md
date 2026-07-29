@@ -44,13 +44,20 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java (Recursion) — O(2ⁿ) time
 
 ```java
-public int rob(int[] nums) {
-    return robFrom(nums, 0);
-}
-private int robFrom(int[] nums, int i) {
-    if (i >= nums.length) return 0;
-    return Math.max(robFrom(nums, i + 1),
-                    nums[i] + robFrom(nums, i + 2));
+import java.util.*;
+
+public class Solution {
+
+    public int rob(int[] nums) {
+        return robFrom(nums, 0);
+    }
+
+    private int robFrom(int[] nums, int i) {
+        if (i >= nums.length) {
+            return 0;
+        }
+        return Math.max(robFrom(nums, i + 1), nums[i] + robFrom(nums, i + 2));
+    }
 }
 ```
 
@@ -61,13 +68,20 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java — O(n) time, O(1) space
 
 ```java
-public int rob(int[] nums) {
-    int prev2 = 0, prev1 = 0;
-    for (int num : nums) {
-        int curr = Math.max(prev1, prev2 + num);
-        prev2 = prev1; prev1 = curr;
+import java.util.*;
+
+public class Solution {
+
+    public int rob(int[] nums) {
+        int prev2 = 0,
+            prev1 = 0;
+        for (int num : nums) {
+            int curr = Math.max(prev1, prev2 + num);
+            prev2 = prev1;
+            prev1 = curr;
+        }
+        return prev1;
     }
-    return prev1;
 }
 ```
 

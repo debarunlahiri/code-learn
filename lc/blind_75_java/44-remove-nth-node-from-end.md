@@ -44,14 +44,41 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n) time, two passes
 
 ```java
-public ListNode removeNthFromEnd(ListNode head, int n) {
-    int len = 0;
-    for (ListNode tmp = head; tmp != null; tmp = tmp.next) len++;
-    ListNode dummy = new ListNode(0); dummy.next = head;
-    ListNode curr = dummy;
-    for (int i = 0; i < len - n; i++) curr = curr.next;
-    curr.next = curr.next.next;
-    return dummy.next;
+import java.util.*;
+
+class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode() {}
+
+    ListNode(int val) {
+        this.val = val;
+    }
+
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+public class Solution {
+
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        int len = 0;
+        for (ListNode tmp = head; tmp != null; tmp = tmp.next) {
+            len++;
+        }
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode curr = dummy;
+        for (int i = 0; i < len - n; i++) {
+            curr = curr.next;
+        }
+        curr.next = curr.next.next;
+        return dummy.next;
+    }
 }
 ```
 
@@ -62,13 +89,42 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (One Pass — Two Pointers) — O(n) time, O(1) space
 
 ```java
-public ListNode removeNthFromEnd(ListNode head, int n) {
-    ListNode dummy = new ListNode(0); dummy.next = head;
-    ListNode fast = dummy, slow = dummy;
-    for (int i = 0; i <= n; i++) fast = fast.next;
-    while (fast != null) { fast = fast.next; slow = slow.next; }
-    slow.next = slow.next.next;
-    return dummy.next;
+import java.util.*;
+
+class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode() {}
+
+    ListNode(int val) {
+        this.val = val;
+    }
+
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+public class Solution {
+
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode fast = dummy,
+            slow = dummy;
+        for (int i = 0; i <= n; i++) {
+            fast = fast.next;
+        }
+        while (fast != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        slow.next = slow.next.next;
+        return dummy.next;
+    }
 }
 ```
 

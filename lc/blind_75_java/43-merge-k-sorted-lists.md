@@ -44,13 +44,44 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — collect all, sort, rebuild — O(N log N) time
 
 ```java
-public ListNode mergeKLists(ListNode[] lists) {
-    List<Integer> vals = new ArrayList<>();
-    for (ListNode l : lists) while (l != null) { vals.add(l.val); l = l.next; }
-    Collections.sort(vals);
-    ListNode dummy = new ListNode(0), curr = dummy;
-    for (int v : vals) { curr.next = new ListNode(v); curr = curr.next; }
-    return dummy.next;
+import java.util.*;
+
+class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode() {}
+
+    ListNode(int val) {
+        this.val = val;
+    }
+
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+public class Solution {
+
+    public ListNode mergeKLists(ListNode[] lists) {
+        List<Integer> vals = new ArrayList<>();
+        for (ListNode l : lists) {
+            while (l != null) {
+                vals.add(l.val);
+                l = l.next;
+            }
+        }
+        Collections.sort(vals);
+        ListNode dummy = new ListNode(0),
+            curr = dummy;
+        for (int v : vals) {
+            curr.next = new ListNode(v);
+            curr = curr.next;
+        }
+        return dummy.next;
+    }
 }
 ```
 
@@ -61,16 +92,46 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Min-Heap) — O(N log k) time, O(k) space
 
 ```java
-public ListNode mergeKLists(ListNode[] lists) {
-    PriorityQueue<ListNode> heap = new PriorityQueue<>((a, b) -> a.val - b.val);
-    for (ListNode l : lists) if (l != null) heap.offer(l);
-    ListNode dummy = new ListNode(0), curr = dummy;
-    while (!heap.isEmpty()) {
-        ListNode node = heap.poll();
-        curr.next = node; curr = curr.next;
-        if (node.next != null) heap.offer(node.next);
+import java.util.*;
+
+class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode() {}
+
+    ListNode(int val) {
+        this.val = val;
     }
-    return dummy.next;
+
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+public class Solution {
+
+    public ListNode mergeKLists(ListNode[] lists) {
+        PriorityQueue<ListNode> heap = new PriorityQueue<>((a, b) -> a.val - b.val);
+        for (ListNode l : lists) {
+            if (l != null) {
+                heap.offer(l);
+            }
+        }
+        ListNode dummy = new ListNode(0),
+            curr = dummy;
+        while (!heap.isEmpty()) {
+            ListNode node = heap.poll();
+            curr.next = node;
+            curr = curr.next;
+            if (node.next != null) {
+                heap.offer(node.next);
+            }
+        }
+        return dummy.next;
+    }
 }
 ```
 

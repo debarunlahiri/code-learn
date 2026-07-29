@@ -44,15 +44,24 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n²) time, O(n²) extra space
 
 ```java
-public void rotate(int[][] matrix) {
-    int n = matrix.length;
-    int[][] copy = new int[n][n];
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
-            copy[i][j] = matrix[i][j];
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
-            matrix[j][n-1-i] = copy[i][j];
+import java.util.*;
+
+public class Solution {
+
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+        int[][] copy = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                copy[i][j] = matrix[i][j];
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                matrix[j][n - 1 - i] = copy[i][j];
+            }
+        }
+    }
 }
 ```
 
@@ -63,15 +72,32 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Transpose + Reverse) — O(n²) time, O(1) space
 
 ```java
-public void rotate(int[][] matrix) {
-    int n = matrix.length;
-    // Transpose
-    for (int i = 0; i < n; i++)
-        for (int j = i+1; j < n; j++) { int tmp = matrix[i][j]; matrix[i][j] = matrix[j][i]; matrix[j][i] = tmp; }
-    // Reverse each row
-    for (int i = 0; i < n; i++) {
-        int lo = 0, hi = n-1;
-        while (lo < hi) { int tmp = matrix[i][lo]; matrix[i][lo] = matrix[i][hi]; matrix[i][hi] = tmp; lo++; hi--; }
+import java.util.*;
+
+public class Solution {
+
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+        // Transpose
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int tmp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = tmp;
+            }
+        }
+        // Reverse each row
+        for (int i = 0; i < n; i++) {
+            int lo = 0,
+                hi = n - 1;
+            while (lo < hi) {
+                int tmp = matrix[i][lo];
+                matrix[i][lo] = matrix[i][hi];
+                matrix[i][hi] = tmp;
+                lo++;
+                hi--;
+            }
+        }
     }
 }
 ```

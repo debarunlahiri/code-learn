@@ -44,14 +44,23 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n log n) time, O(n) space
 
 ```java
-public int[] countBits(int n) {
-    int[] result = new int[n + 1];
-    for (int i = 0; i <= n; i++) {
-        int x = i, cnt = 0;
-        while (x > 0) { cnt += x & 1; x >>= 1; }
-        result[i] = cnt;
+import java.util.*;
+
+public class Solution {
+
+    public int[] countBits(int n) {
+        int[] result = new int[n + 1];
+        for (int i = 0; i <= n; i++) {
+            int x = i,
+                cnt = 0;
+            while (x > 0) {
+                cnt += x & 1;
+                x >>= 1;
+            }
+            result[i] = cnt;
+        }
+        return result;
     }
-    return result;
 }
 ```
 
@@ -62,11 +71,17 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (DP) — O(n) time, O(n) space
 
 ```java
-public int[] countBits(int n) {
-    int[] dp = new int[n + 1];
-    for (int i = 1; i <= n; i++)
-        dp[i] = dp[i >> 1] + (i & 1);
-    return dp;
+import java.util.*;
+
+public class Solution {
+
+    public int[] countBits(int n) {
+        int[] dp = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            dp[i] = dp[i >> 1] + (i & 1);
+        }
+        return dp;
+    }
 }
 ```
 

@@ -44,24 +44,44 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(V×(V+E)) cycle detection per vertex
 
 ```java
-// DFS for each node checking cycles (less efficient)
-public boolean canFinish(int numCourses, int[][] prerequisites) {
-    List<List<Integer>> adj = new ArrayList<>();
-    for (int i = 0; i < numCourses; i++) adj.add(new ArrayList<>());
-    for (int[] pre : prerequisites) adj.get(pre[0]).add(pre[1]);
-    int[] visited = new int[numCourses]; // 0=unvisited,1=visiting,2=done
-    for (int i = 0; i < numCourses; i++)
-        if (hasCycle(adj, visited, i)) return false;
-    return true;
-}
-private boolean hasCycle(List<List<Integer>> adj, int[] visited, int node) {
-    if (visited[node] == 1) return true;
-    if (visited[node] == 2) return false;
-    visited[node] = 1;
-    for (int neighbor : adj.get(node))
-        if (hasCycle(adj, visited, neighbor)) return true;
-    visited[node] = 2;
-    return false;
+import java.util.*;
+
+public class Solution {
+
+    // DFS for each node checking cycles (less efficient)
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            adj.add(new ArrayList<>());
+        }
+        for (int[] pre : prerequisites) {
+            adj.get(pre[0]).add(pre[1]);
+        }
+        int[] visited = new int[numCourses]; // 0=unvisited,1=visiting,2=done
+        for (int i = 0; i < numCourses; i++) {
+            if (hasCycle(adj, visited, i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean hasCycle(List<List<Integer>> adj, int[] visited, int node) {
+        if (visited[node] == 1) {
+            return true;
+        }
+        if (visited[node] == 2) {
+            return false;
+        }
+        visited[node] = 1;
+        for (int neighbor : adj.get(node)) {
+            if (hasCycle(adj, visited, neighbor)) {
+                return true;
+            }
+        }
+        visited[node] = 2;
+        return false;
+    }
 }
 ```
 
@@ -72,20 +92,38 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Topological Sort / Kahn's BFS) — O(V+E) time, O(V+E) space
 
 ```java
-public boolean canFinish(int numCourses, int[][] prerequisites) {
-    int[] inDegree = new int[numCourses];
-    List<List<Integer>> adj = new ArrayList<>();
-    for (int i = 0; i < numCourses; i++) adj.add(new ArrayList<>());
-    for (int[] pre : prerequisites) { adj.get(pre[1]).add(pre[0]); inDegree[pre[0]]++; }
-    Queue<Integer> queue = new LinkedList<>();
-    for (int i = 0; i < numCourses; i++) if (inDegree[i] == 0) queue.offer(i);
-    int count = 0;
-    while (!queue.isEmpty()) {
-        int course = queue.poll(); count++;
-        for (int next : adj.get(course))
-            if (--inDegree[next] == 0) queue.offer(next);
+import java.util.*;
+
+public class Solution {
+
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        int[] inDegree = new int[numCourses];
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            adj.add(new ArrayList<>());
+        }
+        for (int[] pre : prerequisites) {
+            adj.get(pre[1]).add(pre[0]);
+            inDegree[pre[0]]++;
+        }
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (inDegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+        int count = 0;
+        while (!queue.isEmpty()) {
+            int course = queue.poll();
+            count++;
+            for (int next : adj.get(course)) {
+                if (--inDegree[next] == 0) {
+                    queue.offer(next);
+                }
+            }
+        }
+        return count == numCourses;
     }
-    return count == numCourses;
 }
 ```
 

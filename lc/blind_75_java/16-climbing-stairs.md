@@ -44,9 +44,16 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java (Recursion) — O(2ⁿ) time, O(n) space
 
 ```java
-public int climbStairs(int n) {
-    if (n <= 2) return n;
-    return climbStairs(n - 1) + climbStairs(n - 2);
+import java.util.*;
+
+public class Solution {
+
+    public int climbStairs(int n) {
+        if (n <= 2) {
+            return n;
+        }
+        return climbStairs(n - 1) + climbStairs(n - 2);
+    }
 }
 ```
 
@@ -57,13 +64,23 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java — O(n) time, O(1) space
 
 ```java
-public int climbStairs(int n) {
-    if (n <= 2) return n;
-    int a = 1, b = 2;
-    for (int i = 3; i <= n; i++) {
-        int c = a + b; a = b; b = c;
+import java.util.*;
+
+public class Solution {
+
+    public int climbStairs(int n) {
+        if (n <= 2) {
+            return n;
+        }
+        int a = 1,
+            b = 2;
+        for (int i = 3; i <= n; i++) {
+            int c = a + b;
+            a = b;
+            b = c;
+        }
+        return b;
     }
-    return b;
 }
 ```
 

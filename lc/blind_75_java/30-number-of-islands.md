@@ -41,41 +41,91 @@ understanding the search space, checking small examples by hand, and serving as
 a correctness oracle for randomized tests. Its weakness is repeated work, which
 becomes too expensive near the upper input limits.
 
-### Brute-Force Java / Optimal (DFS) — O(m×n) time, O(m×n) space
+### Brute-Force Java
 
 ```java
-public int numIslands(char[][] grid) {
-    int count = 0;
-    for (int i = 0; i < grid.length; i++)
-        for (int j = 0; j < grid[0].length; j++)
-            if (grid[i][j] == '1') { dfs(grid, i, j); count++; }
-    return count;
-}
-private void dfs(char[][] grid, int i, int j) {
-    if (i<0||i>=grid.length||j<0||j>=grid[0].length||grid[i][j]!='1') return;
-    grid[i][j] = '0';
-    dfs(grid,i+1,j); dfs(grid,i-1,j); dfs(grid,i,j+1); dfs(grid,i,j-1);
+import java.util.*;
+
+public class Solution {
+
+    public int numIslands(char[][] grid) {
+        int rows = grid.length;
+        int columns = grid[0].length;
+        boolean[][] visited = new boolean[rows][columns];
+        int islands = 0;
+
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                if (grid[row][column] == '1' && !visited[row][column]) {
+                    islands++;
+                    markIsland(grid, visited, row, column);
+                }
+            }
+        }
+        return islands;
+    }
+
+    private void markIsland(char[][] grid, boolean[][] visited, int row, int column) {
+        if (
+            row < 0 ||
+            row >= grid.length ||
+            column < 0 ||
+            column >= grid[0].length ||
+            grid[row][column] == '0' ||
+            visited[row][column]
+        ) {
+            return;
+        }
+
+        visited[row][column] = true;
+        markIsland(grid, visited, row + 1, column);
+        markIsland(grid, visited, row - 1, column);
+        markIsland(grid, visited, row, column + 1);
+        markIsland(grid, visited, row, column - 1);
+    }
 }
 ```
 
 ## Approach 2: Optimized
 
-The traversal shown above already has the best possible asymptotic bound because every relevant input item must be inspected. The optimized production version uses the same visited-state principle to prevent cycles and duplicate work.
+The optimized implementation removes unnecessary repeated searches or extra copies while preserving the same result.
 
 ### Optimized Java
 
 ```java
-public int numIslands(char[][] grid) {
-    int count = 0;
-    for (int i = 0; i < grid.length; i++)
-        for (int j = 0; j < grid[0].length; j++)
-            if (grid[i][j] == '1') { dfs(grid, i, j); count++; }
-    return count;
-}
-private void dfs(char[][] grid, int i, int j) {
-    if (i<0||i>=grid.length||j<0||j>=grid[0].length||grid[i][j]!='1') return;
-    grid[i][j] = '0';
-    dfs(grid,i+1,j); dfs(grid,i-1,j); dfs(grid,i,j+1); dfs(grid,i,j-1);
+import java.util.*;
+
+public class Solution {
+
+    public int numIslands(char[][] grid) {
+        int count = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == '1') {
+                    dfs(grid, i, j);
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    private void dfs(char[][] grid, int i, int j) {
+        if (
+            i < 0 ||
+            i >= grid.length ||
+            j < 0 ||
+            j >= grid[0].length ||
+            grid[i][j] != '1'
+        ) {
+            return;
+        }
+        grid[i][j] = '0';
+        dfs(grid, i + 1, j);
+        dfs(grid, i - 1, j);
+        dfs(grid, i, j + 1);
+        dfs(grid, i, j - 1);
+    }
 }
 ```
 

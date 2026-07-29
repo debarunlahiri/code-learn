@@ -44,14 +44,25 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java (Recursion) — O(2ⁿ) time
 
 ```java
-public boolean canJump(int[] nums) {
-    return jump(nums, 0);
-}
-private boolean jump(int[] nums, int i) {
-    if (i >= nums.length - 1) return true;
-    for (int j = 1; j <= nums[i]; j++)
-        if (jump(nums, i + j)) return true;
-    return false;
+import java.util.*;
+
+public class Solution {
+
+    public boolean canJump(int[] nums) {
+        return jump(nums, 0);
+    }
+
+    private boolean jump(int[] nums, int i) {
+        if (i >= nums.length - 1) {
+            return true;
+        }
+        for (int j = 1; j <= nums[i]; j++) {
+            if (jump(nums, i + j)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 ```
 
@@ -62,25 +73,21 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Greedy) — O(n) time, O(1) space
 
 ```java
-public boolean canJump(int[] nums) {
-    int maxReach = 0;
-    for (int i = 0; i < nums.length; i++) {
-        if (i > maxReach) return false;
-        maxReach = Math.max(maxReach, i + nums[i]);
+import java.util.*;
+
+public class Solution {
+
+    public boolean canJump(int[] nums) {
+        int maxReach = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (i > maxReach) {
+                return false;
+            }
+            maxReach = Math.max(maxReach, i + nums[i]);
+        }
+        return true;
     }
-    return true;
 }
-```
-
----
-
-## Graph
-
-> Tree node and graph node definitions used throughout:
-
-```java
-class TreeNode { int val; TreeNode left, right; }
-class Node { int val; List<Node> neighbors; }
 ```
 
 ## Why the Optimized Approach Is Correct

@@ -46,19 +46,19 @@ becomes too expensive near the upper input limits.
 For this problem, the straightforward correctness-first implementation uses the same core traversal shown below. It is presented first as the baseline; the following section explains the production interpretation and invariant.
 
 ```java
-public boolean isValid(String s) {
-    Deque<Character> stack = new ArrayDeque<>();
-    for (char c : s.toCharArray()) {
-        if (c=='('||c=='['||c=='{') stack.push(c);
-        else {
-            if (stack.isEmpty()) return false;
-            char top = stack.pop();
-            if (c==')' && top!='(') return false;
-            if (c==']' && top!='[') return false;
-            if (c=='}' && top!='{') return false;
-        }
+import java.util.*;
+
+public class Solution {
+
+    public boolean isValid(String text) {
+        String previous;
+        do {
+            previous = text;
+            text = text.replace("()", "").replace("[]", "").replace("{}", "");
+        } while (!text.equals(previous));
+
+        return text.isEmpty();
     }
-    return stack.isEmpty();
 }
 ```
 
@@ -69,19 +69,33 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Stack) — O(n) time, O(n) space
 
 ```java
-public boolean isValid(String s) {
-    Deque<Character> stack = new ArrayDeque<>();
-    for (char c : s.toCharArray()) {
-        if (c=='('||c=='['||c=='{') stack.push(c);
-        else {
-            if (stack.isEmpty()) return false;
-            char top = stack.pop();
-            if (c==')' && top!='(') return false;
-            if (c==']' && top!='[') return false;
-            if (c=='}' && top!='{') return false;
+import java.util.*;
+
+public class Solution {
+
+    public boolean isValid(String s) {
+        Deque<Character> stack = new ArrayDeque<>();
+        for (char c : s.toCharArray()) {
+            if (c == '(' || c == '[' || c == '{') {
+                stack.push(c);
+            } else {
+                if (stack.isEmpty()) {
+                    return false;
+                }
+                char top = stack.pop();
+                if (c == ')' && top != '(') {
+                    return false;
+                }
+                if (c == ']' && top != '[') {
+                    return false;
+                }
+                if (c == '}' && top != '{') {
+                    return false;
+                }
+            }
         }
+        return stack.isEmpty();
     }
-    return stack.isEmpty();
 }
 ```
 

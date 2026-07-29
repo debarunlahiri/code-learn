@@ -44,7 +44,39 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n² log n) time
 
 ```java
-// Repeated merge passes until stable (not recommended)
+import java.util.*;
+
+public class Solution {
+
+    public int[][] merge(int[][] intervals) {
+        List<int[]> remaining = new ArrayList<>();
+        for (int[] interval : intervals) {
+            remaining.add(new int[] { interval[0], interval[1] });
+        }
+
+        boolean merged;
+        do {
+            merged = false;
+
+            for (int i = 0; i < remaining.size() && !merged; i++) {
+                for (int j = i + 1; j < remaining.size(); j++) {
+                    int[] first = remaining.get(i);
+                    int[] second = remaining.get(j);
+
+                    if (first[0] <= second[1] && second[0] <= first[1]) {
+                        first[0] = Math.min(first[0], second[0]);
+                        first[1] = Math.max(first[1], second[1]);
+                        remaining.remove(j);
+                        merged = true;
+                        break;
+                    }
+                }
+            }
+        } while (merged);
+
+        return remaining.toArray(new int[remaining.size()][]);
+    }
+}
 ```
 
 ## Approach 2: Optimized
@@ -54,16 +86,25 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java — O(n log n) time, O(n) space
 
 ```java
-public int[][] merge(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
-    List<int[]> result = new ArrayList<>();
-    for (int[] interval : intervals) {
-        if (result.isEmpty() || result.get(result.size()-1)[1] < interval[0])
-            result.add(interval);
-        else
-            result.get(result.size()-1)[1] = Math.max(result.get(result.size()-1)[1], interval[1]);
+import java.util.*;
+
+public class Solution {
+
+    public int[][] merge(int[][] intervals) {
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+        List<int[]> result = new ArrayList<>();
+        for (int[] interval : intervals) {
+            if (result.isEmpty() || result.get(result.size() - 1)[1] < interval[0]) {
+                result.add(interval);
+            } else {
+                result.get(result.size() - 1)[1] = Math.max(
+                    result.get(result.size() - 1)[1],
+                    interval[1]
+                );
+            }
+        }
+        return result.toArray(new int[0][]);
     }
-    return result.toArray(new int[0][]);
 }
 ```
 

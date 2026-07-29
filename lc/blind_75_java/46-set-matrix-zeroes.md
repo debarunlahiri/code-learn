@@ -44,14 +44,29 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java (Extra Space) — O(m×n) time, O(m+n) space (tracking set)
 
 ```java
-public void setZeroes(int[][] matrix) {
-    Set<Integer> rows = new HashSet<>(), cols = new HashSet<>();
-    for (int i = 0; i < matrix.length; i++)
-        for (int j = 0; j < matrix[0].length; j++)
-            if (matrix[i][j] == 0) { rows.add(i); cols.add(j); }
-    for (int i = 0; i < matrix.length; i++)
-        for (int j = 0; j < matrix[0].length; j++)
-            if (rows.contains(i) || cols.contains(j)) matrix[i][j] = 0;
+import java.util.*;
+
+public class Solution {
+
+    public void setZeroes(int[][] matrix) {
+        Set<Integer> rows = new HashSet<>(),
+            cols = new HashSet<>();
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j] == 0) {
+                    rows.add(i);
+                    cols.add(j);
+                }
+            }
+        }
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (rows.contains(i) || cols.contains(j)) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+    }
 }
 ```
 
@@ -62,18 +77,47 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (In-place markers) — O(m×n) time, O(1) space
 
 ```java
-public void setZeroes(int[][] matrix) {
-    boolean firstRow = false, firstCol = false;
-    for (int j = 0; j < matrix[0].length; j++) if (matrix[0][j] == 0) firstRow = true;
-    for (int i = 0; i < matrix.length; i++) if (matrix[i][0] == 0) firstCol = true;
-    for (int i = 1; i < matrix.length; i++)
-        for (int j = 1; j < matrix[0].length; j++)
-            if (matrix[i][j] == 0) { matrix[i][0] = 0; matrix[0][j] = 0; }
-    for (int i = 1; i < matrix.length; i++)
-        for (int j = 1; j < matrix[0].length; j++)
-            if (matrix[i][0] == 0 || matrix[0][j] == 0) matrix[i][j] = 0;
-    if (firstRow) Arrays.fill(matrix[0], 0);
-    if (firstCol) for (int i = 0; i < matrix.length; i++) matrix[i][0] = 0;
+import java.util.*;
+
+public class Solution {
+
+    public void setZeroes(int[][] matrix) {
+        boolean firstRow = false,
+            firstCol = false;
+        for (int j = 0; j < matrix[0].length; j++) {
+            if (matrix[0][j] == 0) {
+                firstRow = true;
+            }
+        }
+        for (int i = 0; i < matrix.length; i++) {
+            if (matrix[i][0] == 0) {
+                firstCol = true;
+            }
+        }
+        for (int i = 1; i < matrix.length; i++) {
+            for (int j = 1; j < matrix[0].length; j++) {
+                if (matrix[i][j] == 0) {
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                }
+            }
+        }
+        for (int i = 1; i < matrix.length; i++) {
+            for (int j = 1; j < matrix[0].length; j++) {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        if (firstRow) {
+            Arrays.fill(matrix[0], 0);
+        }
+        if (firstCol) {
+            for (int i = 0; i < matrix.length; i++) {
+                matrix[i][0] = 0;
+            }
+        }
+    }
 }
 ```
 

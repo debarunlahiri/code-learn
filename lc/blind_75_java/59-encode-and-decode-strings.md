@@ -41,6 +41,56 @@ understanding the search space, checking small examples by hand, and serving as
 a correctness oracle for randomized tests. Its weakness is repeated work, which
 becomes too expensive near the upper input limits.
 
+### Brute-Force Java (Escaped Delimiter) — O(n) time, O(n) space
+
+```java
+import java.util.*;
+
+public class Codec {
+
+    private static final char DELIMITER = ',';
+    private static final char ESCAPE = '\\';
+
+    public String encode(List<String> strings) {
+        StringBuilder encoded = new StringBuilder();
+
+        for (String string : strings) {
+            for (char character : string.toCharArray()) {
+                if (character == DELIMITER || character == ESCAPE) {
+                    encoded.append(ESCAPE);
+                }
+                encoded.append(character);
+            }
+            encoded.append(DELIMITER);
+        }
+
+        return encoded.toString();
+    }
+
+    public List<String> decode(String encoded) {
+        List<String> result = new ArrayList<>();
+        StringBuilder current = new StringBuilder();
+        boolean escaped = false;
+
+        for (char character : encoded.toCharArray()) {
+            if (escaped) {
+                current.append(character);
+                escaped = false;
+            } else if (character == ESCAPE) {
+                escaped = true;
+            } else if (character == DELIMITER) {
+                result.add(current.toString());
+                current.setLength(0);
+            } else {
+                current.append(character);
+            }
+        }
+
+        return result;
+    }
+}
+```
+
 ## Approach 2: Optimized
 
 The optimized solution removes repeated work while preserving the same correctness condition.
@@ -48,32 +98,30 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java — O(n) encode and decode
 
 ```java
+import java.util.*;
+
 public class Codec {
+
     public String encode(List<String> strs) {
         StringBuilder sb = new StringBuilder();
-        for (String s : strs) sb.append(s.length()).append('#').append(s);
+        for (String s : strs) {
+            sb.append(s.length()).append('#').append(s);
+        }
         return sb.toString();
     }
+
     public List<String> decode(String s) {
         List<String> result = new ArrayList<>();
         int i = 0;
         while (i < s.length()) {
             int j = s.indexOf('#', i);
             int len = Integer.parseInt(s.substring(i, j));
-            result.add(s.substring(j+1, j+1+len));
+            result.add(s.substring(j + 1, j + 1 + len));
             i = j + 1 + len;
         }
         return result;
     }
 }
-```
-
----
-
-## Tree
-
-```java
-class TreeNode { int val; TreeNode left, right; }
 ```
 
 ## Why the Optimized Approach Is Correct

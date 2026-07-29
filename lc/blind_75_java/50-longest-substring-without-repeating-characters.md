@@ -44,16 +44,23 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n³) time, O(min(n,m)) space
 
 ```java
-public int lengthOfLongestSubstring(String s) {
-    int max = 0;
-    for (int i = 0; i < s.length(); i++) {
-        Set<Character> set = new HashSet<>();
-        for (int j = i; j < s.length(); j++) {
-            if (!set.add(s.charAt(j))) break;
-            max = Math.max(max, j - i + 1);
+import java.util.*;
+
+public class Solution {
+
+    public int lengthOfLongestSubstring(String s) {
+        int max = 0;
+        for (int i = 0; i < s.length(); i++) {
+            Set<Character> set = new HashSet<>();
+            for (int j = i; j < s.length(); j++) {
+                if (!set.add(s.charAt(j))) {
+                    break;
+                }
+                max = Math.max(max, j - i + 1);
+            }
         }
+        return max;
     }
-    return max;
 }
 ```
 
@@ -64,16 +71,24 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Sliding Window) — O(n) time, O(min(n,m)) space
 
 ```java
-public int lengthOfLongestSubstring(String s) {
-    Map<Character, Integer> map = new HashMap<>();
-    int max = 0, left = 0;
-    for (int right = 0; right < s.length(); right++) {
-        char c = s.charAt(right);
-        if (map.containsKey(c)) left = Math.max(left, map.get(c) + 1);
-        map.put(c, right);
-        max = Math.max(max, right - left + 1);
+import java.util.*;
+
+public class Solution {
+
+    public int lengthOfLongestSubstring(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+        int max = 0,
+            left = 0;
+        for (int right = 0; right < s.length(); right++) {
+            char c = s.charAt(right);
+            if (map.containsKey(c)) {
+                left = Math.max(left, map.get(c) + 1);
+            }
+            map.put(c, right);
+            max = Math.max(max, right - left + 1);
+        }
+        return max;
     }
-    return max;
 }
 ```
 

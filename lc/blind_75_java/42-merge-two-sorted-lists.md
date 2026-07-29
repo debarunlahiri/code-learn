@@ -44,14 +44,46 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — collect, sort, rebuild — O(n log n) time
 
 ```java
-public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-    List<Integer> vals = new ArrayList<>();
-    while (l1 != null) { vals.add(l1.val); l1 = l1.next; }
-    while (l2 != null) { vals.add(l2.val); l2 = l2.next; }
-    Collections.sort(vals);
-    ListNode dummy = new ListNode(0), curr = dummy;
-    for (int v : vals) { curr.next = new ListNode(v); curr = curr.next; }
-    return dummy.next;
+import java.util.*;
+
+class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode() {}
+
+    ListNode(int val) {
+        this.val = val;
+    }
+
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+public class Solution {
+
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        List<Integer> vals = new ArrayList<>();
+        while (l1 != null) {
+            vals.add(l1.val);
+            l1 = l1.next;
+        }
+        while (l2 != null) {
+            vals.add(l2.val);
+            l2 = l2.next;
+        }
+        Collections.sort(vals);
+        ListNode dummy = new ListNode(0),
+            curr = dummy;
+        for (int v : vals) {
+            curr.next = new ListNode(v);
+            curr = curr.next;
+        }
+        return dummy.next;
+    }
 }
 ```
 
@@ -62,15 +94,43 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java — O(n+m) time, O(1) space
 
 ```java
-public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-    ListNode dummy = new ListNode(0), curr = dummy;
-    while (l1 != null && l2 != null) {
-        if (l1.val <= l2.val) { curr.next = l1; l1 = l1.next; }
-        else { curr.next = l2; l2 = l2.next; }
-        curr = curr.next;
+import java.util.*;
+
+class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode() {}
+
+    ListNode(int val) {
+        this.val = val;
     }
-    curr.next = (l1 != null) ? l1 : l2;
-    return dummy.next;
+
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+public class Solution {
+
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0),
+            curr = dummy;
+        while (l1 != null && l2 != null) {
+            if (l1.val <= l2.val) {
+                curr.next = l1;
+                l1 = l1.next;
+            } else {
+                curr.next = l2;
+                l2 = l2.next;
+            }
+            curr = curr.next;
+        }
+        curr.next = l1 != null ? l1 : l2;
+        return dummy.next;
+    }
 }
 ```
 

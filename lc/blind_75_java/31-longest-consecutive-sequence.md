@@ -44,18 +44,32 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n³) time, O(1) space
 
 ```java
-public int longestConsecutive(int[] nums) {
-    int max = 0;
-    for (int num : nums) {
-        int curr = num, streak = 1;
-        while (contains(nums, curr + 1)) { curr++; streak++; }
-        max = Math.max(max, streak);
+import java.util.*;
+
+public class Solution {
+
+    public int longestConsecutive(int[] nums) {
+        int max = 0;
+        for (int num : nums) {
+            int curr = num,
+                streak = 1;
+            while (contains(nums, curr + 1)) {
+                curr++;
+                streak++;
+            }
+            max = Math.max(max, streak);
+        }
+        return max;
     }
-    return max;
-}
-private boolean contains(int[] nums, int val) {
-    for (int n : nums) if (n == val) return true;
-    return false;
+
+    private boolean contains(int[] nums, int val) {
+        for (int n : nums) {
+            if (n == val) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 ```
 
@@ -66,18 +80,29 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java — O(n) time, O(n) space
 
 ```java
-public int longestConsecutive(int[] nums) {
-    Set<Integer> set = new HashSet<>();
-    for (int n : nums) set.add(n);
-    int max = 0;
-    for (int n : set) {
-        if (!set.contains(n - 1)) {
-            int curr = n, streak = 1;
-            while (set.contains(curr + 1)) { curr++; streak++; }
-            max = Math.max(max, streak);
+import java.util.*;
+
+public class Solution {
+
+    public int longestConsecutive(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        for (int n : nums) {
+            set.add(n);
         }
+        int max = 0;
+        for (int n : set) {
+            if (!set.contains(n - 1)) {
+                int curr = n,
+                    streak = 1;
+                while (set.contains(curr + 1)) {
+                    curr++;
+                    streak++;
+                }
+                max = Math.max(max, streak);
+            }
+        }
+        return max;
     }
-    return max;
 }
 ```
 

@@ -44,19 +44,33 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n³) time, O(1) space
 
 ```java
-public String longestPalindrome(String s) {
-    String res = "";
-    for (int i = 0; i < s.length(); i++)
-        for (int j = i; j < s.length(); j++) {
-            String sub = s.substring(i, j+1);
-            if (isPalin(sub) && sub.length() > res.length()) res = sub;
+import java.util.*;
+
+public class Solution {
+
+    public String longestPalindrome(String s) {
+        String res = "";
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = i; j < s.length(); j++) {
+                String sub = s.substring(i, j + 1);
+                if (isPalin(sub) && sub.length() > res.length()) {
+                    res = sub;
+                }
+            }
         }
-    return res;
-}
-private boolean isPalin(String s) {
-    int lo = 0, hi = s.length()-1;
-    while (lo < hi) if (s.charAt(lo++) != s.charAt(hi--)) return false;
-    return true;
+        return res;
+    }
+
+    private boolean isPalin(String s) {
+        int lo = 0,
+            hi = s.length() - 1;
+        while (lo < hi) {
+            if (s.charAt(lo++) != s.charAt(hi--)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 ```
 
@@ -67,18 +81,31 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Expand Around Center) — O(n²) time, O(1) space
 
 ```java
-public String longestPalindrome(String s) {
-    int start = 0, maxLen = 0;
-    for (int i = 0; i < s.length(); i++) {
-        for (int len : new int[]{expand(s,i,i), expand(s,i,i+1)}) {
-            if (len > maxLen) { maxLen = len; start = i - (len-1)/2; }
+import java.util.*;
+
+public class Solution {
+
+    public String longestPalindrome(String s) {
+        int start = 0,
+            maxLen = 0;
+        for (int i = 0; i < s.length(); i++) {
+            for (int len : new int[] { expand(s, i, i), expand(s, i, i + 1) }) {
+                if (len > maxLen) {
+                    maxLen = len;
+                    start = i - (len - 1) / 2;
+                }
+            }
         }
+        return s.substring(start, start + maxLen);
     }
-    return s.substring(start, start + maxLen);
-}
-private int expand(String s, int l, int r) {
-    while (l >= 0 && r < s.length() && s.charAt(l) == s.charAt(r)) { l--; r++; }
-    return r - l - 1;
+
+    private int expand(String s, int l, int r) {
+        while (l >= 0 && r < s.length() && s.charAt(l) == s.charAt(r)) {
+            l--;
+            r++;
+        }
+        return r - l - 1;
+    }
 }
 ```
 

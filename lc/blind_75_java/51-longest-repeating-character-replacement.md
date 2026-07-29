@@ -44,17 +44,26 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n² × 26) time
 
 ```java
-public int characterReplacement(String s, int k) {
-    int max = 0;
-    for (int i = 0; i < s.length(); i++) {
-        int[] count = new int[26]; int maxCount = 0;
-        for (int j = i; j < s.length(); j++) {
-            maxCount = Math.max(maxCount, ++count[s.charAt(j)-'A']);
-            if ((j - i + 1) - maxCount <= k) max = Math.max(max, j - i + 1);
-            else break;
+import java.util.*;
+
+public class Solution {
+
+    public int characterReplacement(String s, int k) {
+        int max = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int[] count = new int[26];
+            int maxCount = 0;
+            for (int j = i; j < s.length(); j++) {
+                maxCount = Math.max(maxCount, ++count[s.charAt(j) - 'A']);
+                if (j - i + 1 - maxCount <= k) {
+                    max = Math.max(max, j - i + 1);
+                } else {
+                    break;
+                }
+            }
         }
+        return max;
     }
-    return max;
 }
 ```
 
@@ -65,14 +74,24 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Sliding Window) — O(n) time, O(1) space
 
 ```java
-public int characterReplacement(String s, int k) {
-    int[] count = new int[26]; int maxCount = 0, max = 0, left = 0;
-    for (int right = 0; right < s.length(); right++) {
-        maxCount = Math.max(maxCount, ++count[s.charAt(right)-'A']);
-        if ((right - left + 1) - maxCount > k) count[s.charAt(left++)-'A']--;
-        max = Math.max(max, right - left + 1);
+import java.util.*;
+
+public class Solution {
+
+    public int characterReplacement(String s, int k) {
+        int[] count = new int[26];
+        int maxCount = 0,
+            max = 0,
+            left = 0;
+        for (int right = 0; right < s.length(); right++) {
+            maxCount = Math.max(maxCount, ++count[s.charAt(right) - 'A']);
+            if (right - left + 1 - maxCount > k) {
+                count[s.charAt(left++) - 'A']--;
+            }
+            max = Math.max(max, right - left + 1);
+        }
+        return max;
     }
-    return max;
 }
 ```
 

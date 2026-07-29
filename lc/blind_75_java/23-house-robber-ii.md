@@ -44,18 +44,30 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — same recursion as House Robber I applied twice
 
 ```java
-public int rob(int[] nums) {
-    if (nums.length == 1) return nums[0];
-    return Math.max(robRange(nums, 0, nums.length - 2),
-                    robRange(nums, 1, nums.length - 1));
-}
-private int robRange(int[] nums, int lo, int hi) {
-    int prev2 = 0, prev1 = 0;
-    for (int i = lo; i <= hi; i++) {
-        int curr = Math.max(prev1, prev2 + nums[i]);
-        prev2 = prev1; prev1 = curr;
+import java.util.*;
+
+public class Solution {
+
+    public int rob(int[] nums) {
+        if (nums.length == 1) {
+            return nums[0];
+        }
+        return Math.max(
+            robRange(nums, 0, nums.length - 2),
+            robRange(nums, 1, nums.length - 1)
+        );
     }
-    return prev1;
+
+    private int robRange(int[] nums, int lo, int hi) {
+        int prev2 = 0,
+            prev1 = 0;
+        for (int i = lo; i <= hi; i++) {
+            int curr = Math.max(prev1, prev2 + nums[i]);
+            prev2 = prev1;
+            prev1 = curr;
+        }
+        return prev1;
+    }
 }
 ```
 
@@ -63,10 +75,36 @@ private int robRange(int[] nums, int lo, int hi) {
 
 The optimized solution removes repeated work while preserving the same correctness condition.
 
-### Optimized Java — O(n) time, O(1) space (same pattern as above, already optimal)
+### Optimized Java — O(n) time, O(1) extra space
 
 ```java
-// Identical to brute force above — the two-pass approach IS optimal for this problem
+import java.util.*;
+
+public class Solution {
+
+    public int rob(int[] houses) {
+        if (houses.length == 1) {
+            return houses[0];
+        }
+
+        return Math.max(
+            robLinearRange(houses, 0, houses.length - 2),
+            robLinearRange(houses, 1, houses.length - 1)
+        );
+    }
+
+    private int robLinearRange(int[] houses, int start, int end) {
+        int twoHousesBack = 0;
+        int oneHouseBack = 0;
+
+        for (int i = start; i <= end; i++) {
+            int current = Math.max(oneHouseBack, twoHousesBack + houses[i]);
+            twoHousesBack = oneHouseBack;
+            oneHouseBack = current;
+        }
+        return oneHouseBack;
+    }
+}
 ```
 
 ## Why the Optimized Approach Is Correct

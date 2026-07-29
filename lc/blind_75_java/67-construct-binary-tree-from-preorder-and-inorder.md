@@ -46,19 +46,57 @@ becomes too expensive near the upper input limits.
 For this problem, the straightforward correctness-first implementation uses the same core traversal shown below. It is presented first as the baseline; the following section explains the production interpretation and invariant.
 
 ```java
-public TreeNode buildTree(int[] preorder, int[] inorder) {
-    Map<Integer, Integer> idx = new HashMap<>();
-    for (int i = 0; i < inorder.length; i++) idx.put(inorder[i], i);
-    return build(preorder, 0, 0, inorder.length-1, idx);
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
 }
-int[] preorder; // store as field or pass as param
-private TreeNode build(int[] pre, int preIdx, int inLeft, int inRight, Map<Integer,Integer> idx) {
-    if (inLeft > inRight) return null;
-    TreeNode root = new TreeNode(pre[preIdx]);
-    int mid = idx.get(pre[preIdx]);
-    root.left  = build(pre, preIdx + 1, inLeft, mid - 1, idx);
-    root.right = build(pre, preIdx + (mid - inLeft) + 1, mid + 1, inRight, idx);
-    return root;
+
+public class Solution {
+
+    private int preorderIndex;
+
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        preorderIndex = 0;
+        return build(preorder, inorder, 0, inorder.length - 1);
+    }
+
+    private TreeNode build(
+        int[] preorder,
+        int[] inorder,
+        int inorderStart,
+        int inorderEnd
+    ) {
+        if (inorderStart > inorderEnd) {
+            return null;
+        }
+
+        int rootValue = preorder[preorderIndex++];
+        int inorderRootIndex = inorderStart;
+        while (inorder[inorderRootIndex] != rootValue) {
+            inorderRootIndex++;
+        }
+
+        TreeNode root = new TreeNode(rootValue);
+        root.left = build(preorder, inorder, inorderStart, inorderRootIndex - 1);
+        root.right = build(preorder, inorder, inorderRootIndex + 1, inorderEnd);
+        return root;
+    }
 }
 ```
 
@@ -69,19 +107,55 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (HashMap index lookup) — O(n) time, O(n) space
 
 ```java
-public TreeNode buildTree(int[] preorder, int[] inorder) {
-    Map<Integer, Integer> idx = new HashMap<>();
-    for (int i = 0; i < inorder.length; i++) idx.put(inorder[i], i);
-    return build(preorder, 0, 0, inorder.length-1, idx);
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
 }
-int[] preorder; // store as field or pass as param
-private TreeNode build(int[] pre, int preIdx, int inLeft, int inRight, Map<Integer,Integer> idx) {
-    if (inLeft > inRight) return null;
-    TreeNode root = new TreeNode(pre[preIdx]);
-    int mid = idx.get(pre[preIdx]);
-    root.left  = build(pre, preIdx + 1, inLeft, mid - 1, idx);
-    root.right = build(pre, preIdx + (mid - inLeft) + 1, mid + 1, inRight, idx);
-    return root;
+
+public class Solution {
+
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        Map<Integer, Integer> idx = new HashMap<>();
+        for (int i = 0; i < inorder.length; i++) {
+            idx.put(inorder[i], i);
+        }
+        return build(preorder, 0, 0, inorder.length - 1, idx);
+    }
+
+    int[] preorder; // store as field or pass as param
+
+    private TreeNode build(
+        int[] pre,
+        int preIdx,
+        int inLeft,
+        int inRight,
+        Map<Integer, Integer> idx
+    ) {
+        if (inLeft > inRight) {
+            return null;
+        }
+        TreeNode root = new TreeNode(pre[preIdx]);
+        int mid = idx.get(pre[preIdx]);
+        root.left = build(pre, preIdx + 1, inLeft, mid - 1, idx);
+        root.right = build(pre, preIdx + (mid - inLeft) + 1, mid + 1, inRight, idx);
+        return root;
+    }
 }
 ```
 

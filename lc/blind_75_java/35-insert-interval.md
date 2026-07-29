@@ -46,18 +46,29 @@ becomes too expensive near the upper input limits.
 For this problem, the straightforward correctness-first implementation uses the same core traversal shown below. It is presented first as the baseline; the following section explains the production interpretation and invariant.
 
 ```java
-public int[][] insert(int[][] intervals, int[] newInterval) {
-    List<int[]> result = new ArrayList<>();
-    int i = 0, n = intervals.length;
-    while (i < n && intervals[i][1] < newInterval[0]) result.add(intervals[i++]);
-    while (i < n && intervals[i][0] <= newInterval[1]) {
-        newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
-        newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
-        i++;
+import java.util.*;
+
+public class Solution {
+
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        List<int[]> allIntervals = new ArrayList<>();
+        for (int[] interval : intervals) {
+            allIntervals.add(new int[] { interval[0], interval[1] });
+        }
+        allIntervals.add(new int[] { newInterval[0], newInterval[1] });
+        allIntervals.sort(Comparator.comparingInt(interval -> interval[0]));
+
+        List<int[]> merged = new ArrayList<>();
+        for (int[] interval : allIntervals) {
+            if (merged.isEmpty() || merged.get(merged.size() - 1)[1] < interval[0]) {
+                merged.add(interval);
+            } else {
+                int[] previous = merged.get(merged.size() - 1);
+                previous[1] = Math.max(previous[1], interval[1]);
+            }
+        }
+        return merged.toArray(new int[merged.size()][]);
     }
-    result.add(newInterval);
-    while (i < n) result.add(intervals[i++]);
-    return result.toArray(new int[0][]);
 }
 ```
 
@@ -68,18 +79,28 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java — O(n) time, O(n) space
 
 ```java
-public int[][] insert(int[][] intervals, int[] newInterval) {
-    List<int[]> result = new ArrayList<>();
-    int i = 0, n = intervals.length;
-    while (i < n && intervals[i][1] < newInterval[0]) result.add(intervals[i++]);
-    while (i < n && intervals[i][0] <= newInterval[1]) {
-        newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
-        newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
-        i++;
+import java.util.*;
+
+public class Solution {
+
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        List<int[]> result = new ArrayList<>();
+        int i = 0,
+            n = intervals.length;
+        while (i < n && intervals[i][1] < newInterval[0]) {
+            result.add(intervals[i++]);
+        }
+        while (i < n && intervals[i][0] <= newInterval[1]) {
+            newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
+            newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
+            i++;
+        }
+        result.add(newInterval);
+        while (i < n) {
+            result.add(intervals[i++]);
+        }
+        return result.toArray(new int[0][]);
     }
-    result.add(newInterval);
-    while (i < n) result.add(intervals[i++]);
-    return result.toArray(new int[0][]);
 }
 ```
 

@@ -44,16 +44,21 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n²) time, O(1) space
 
 ```java
-public int maxProduct(int[] nums) {
-    int max = Integer.MIN_VALUE;
-    for (int i = 0; i < nums.length; i++) {
-        int product = 1;
-        for (int j = i; j < nums.length; j++) {
-            product *= nums[j];
-            max = Math.max(max, product);
+import java.util.*;
+
+public class Solution {
+
+    public int maxProduct(int[] nums) {
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            int product = 1;
+            for (int j = i; j < nums.length; j++) {
+                product *= nums[j];
+                max = Math.max(max, product);
+            }
         }
+        return max;
     }
-    return max;
 }
 ```
 
@@ -64,15 +69,22 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java — O(n) time, O(1) space
 
 ```java
-public int maxProduct(int[] nums) {
-    int max = nums[0], min = nums[0], result = nums[0];
-    for (int i = 1; i < nums.length; i++) {
-        int temp = max;
-        max = Math.max(nums[i], Math.max(max * nums[i], min * nums[i]));
-        min = Math.min(nums[i], Math.min(temp * nums[i], min * nums[i]));
-        result = Math.max(result, max);
+import java.util.*;
+
+public class Solution {
+
+    public int maxProduct(int[] nums) {
+        int max = nums[0],
+            min = nums[0],
+            result = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            int temp = max;
+            max = Math.max(nums[i], Math.max(max * nums[i], min * nums[i]));
+            min = Math.min(nums[i], Math.min(temp * nums[i], min * nums[i]));
+            result = Math.max(result, max);
+        }
+        return result;
     }
-    return result;
 }
 ```
 

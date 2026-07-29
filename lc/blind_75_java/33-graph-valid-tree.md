@@ -46,20 +46,40 @@ becomes too expensive near the upper input limits.
 For this problem, the straightforward correctness-first implementation uses the same core traversal shown below. It is presented first as the baseline; the following section explains the production interpretation and invariant.
 
 ```java
-public boolean validTree(int n, int[][] edges) {
-    if (edges.length != n - 1) return false;
-    int[] parent = new int[n];
-    for (int i = 0; i < n; i++) parent[i] = i;
-    for (int[] e : edges) {
-        int a = find(parent, e[0]), b = find(parent, e[1]);
-        if (a == b) return false;
-        parent[a] = b;
+import java.util.*;
+
+public class Solution {
+
+    public boolean validTree(int n, int[][] edges) {
+        if (edges.length != n - 1) {
+            return false;
+        }
+
+        boolean[][] connected = new boolean[n][n];
+        for (int[] edge : edges) {
+            connected[edge[0]][edge[1]] = true;
+            connected[edge[1]][edge[0]] = true;
+        }
+
+        boolean[] visited = new boolean[n];
+        visit(0, connected, visited);
+
+        for (boolean wasVisited : visited) {
+            if (!wasVisited) {
+                return false;
+            }
+        }
+        return true;
     }
-    return true;
-}
-private int find(int[] parent, int x) {
-    if (parent[x] != x) parent[x] = find(parent, parent[x]);
-    return parent[x];
+
+    private void visit(int node, boolean[][] connected, boolean[] visited) {
+        visited[node] = true;
+        for (int neighbor = 0; neighbor < connected.length; neighbor++) {
+            if (connected[node][neighbor] && !visited[neighbor]) {
+                visit(neighbor, connected, visited);
+            }
+        }
+    }
 }
 ```
 
@@ -70,20 +90,35 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Union-Find) — O(n + e·α(n)) time
 
 ```java
-public boolean validTree(int n, int[][] edges) {
-    if (edges.length != n - 1) return false;
-    int[] parent = new int[n];
-    for (int i = 0; i < n; i++) parent[i] = i;
-    for (int[] e : edges) {
-        int a = find(parent, e[0]), b = find(parent, e[1]);
-        if (a == b) return false;
-        parent[a] = b;
+import java.util.*;
+
+public class Solution {
+
+    public boolean validTree(int n, int[][] edges) {
+        if (edges.length != n - 1) {
+            return false;
+        }
+        int[] parent = new int[n];
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+        }
+        for (int[] e : edges) {
+            int a = find(parent, e[0]),
+                b = find(parent, e[1]);
+            if (a == b) {
+                return false;
+            }
+            parent[a] = b;
+        }
+        return true;
     }
-    return true;
-}
-private int find(int[] parent, int x) {
-    if (parent[x] != x) parent[x] = find(parent, parent[x]);
-    return parent[x];
+
+    private int find(int[] parent, int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent, parent[x]);
+        }
+        return parent[x];
+    }
 }
 ```
 

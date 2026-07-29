@@ -46,10 +46,39 @@ becomes too expensive near the upper input limits.
 For this problem, the straightforward correctness-first implementation uses the same core traversal shown below. It is presented first as the baseline; the following section explains the production interpretation and invariant.
 
 ```java
-public boolean isSameTree(TreeNode p, TreeNode q) {
-    if (p == null && q == null) return true;
-    if (p == null || q == null || p.val != q.val) return false;
-    return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+public class Solution {
+
+    public boolean isSameTree(TreeNode first, TreeNode second) {
+        return serialize(first).equals(serialize(second));
+    }
+
+    private String serialize(TreeNode node) {
+        if (node == null) {
+            return "#";
+        }
+        return node.val + "," + serialize(node.left) + "," + serialize(node.right);
+    }
 }
 ```
 
@@ -60,10 +89,38 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Recursion) — O(n) time, O(h) space
 
 ```java
-public boolean isSameTree(TreeNode p, TreeNode q) {
-    if (p == null && q == null) return true;
-    if (p == null || q == null || p.val != q.val) return false;
-    return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+public class Solution {
+
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if (p == null && q == null) {
+            return true;
+        }
+        if (p == null || q == null || p.val != q.val) {
+            return false;
+        }
+        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+    }
 }
 ```
 

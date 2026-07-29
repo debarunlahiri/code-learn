@@ -41,6 +41,37 @@ understanding the search space, checking small examples by hand, and serving as
 a correctness oracle for randomized tests. Its weakness is repeated work, which
 becomes too expensive near the upper input limits.
 
+### Brute-Force Java — O(n²) time, O(1) space
+
+```java
+import java.util.*;
+
+public class Solution {
+
+    public int minMeetingRooms(int[][] intervals) {
+        int maximumRooms = 0;
+
+        for (int i = 0; i < intervals.length; i++) {
+            int rooms = 1;
+
+            for (int j = 0; j < intervals.length; j++) {
+                if (
+                    i != j &&
+                    intervals[j][0] <= intervals[i][0] &&
+                    intervals[i][0] < intervals[j][1]
+                ) {
+                    rooms++;
+                }
+            }
+
+            maximumRooms = Math.max(maximumRooms, rooms);
+        }
+
+        return maximumRooms;
+    }
+}
+```
+
 ## Approach 2: Optimized
 
 The optimized solution removes repeated work while preserving the same correctness condition.
@@ -48,23 +79,22 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Min-Heap) — O(n log n) time, O(n) space
 
 ```java
-public int minMeetingRooms(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
-    PriorityQueue<Integer> heap = new PriorityQueue<>();
-    for (int[] interval : intervals) {
-        if (!heap.isEmpty() && heap.peek() <= interval[0]) heap.poll();
-        heap.offer(interval[1]);
+import java.util.*;
+
+public class Solution {
+
+    public int minMeetingRooms(int[][] intervals) {
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+        PriorityQueue<Integer> heap = new PriorityQueue<>();
+        for (int[] interval : intervals) {
+            if (!heap.isEmpty() && heap.peek() <= interval[0]) {
+                heap.poll();
+            }
+            heap.offer(interval[1]);
+        }
+        return heap.size();
     }
-    return heap.size();
 }
-```
-
----
-
-## Linked List
-
-```java
-class ListNode { int val; ListNode next; }
 ```
 
 ## Why the Optimized Approach Is Correct

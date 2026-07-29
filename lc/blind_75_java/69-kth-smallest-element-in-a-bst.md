@@ -44,16 +44,43 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — collect inorder, return kth — O(n) time, O(n) space
 
 ```java
-public int kthSmallest(TreeNode root, int k) {
-    List<Integer> inorder = new ArrayList<>();
-    inorderTraversal(root, inorder);
-    return inorder.get(k - 1);
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
 }
-private void inorderTraversal(TreeNode node, List<Integer> list) {
-    if (node == null) return;
-    inorderTraversal(node.left, list);
-    list.add(node.val);
-    inorderTraversal(node.right, list);
+
+public class Solution {
+
+    public int kthSmallest(TreeNode root, int k) {
+        List<Integer> inorder = new ArrayList<>();
+        inorderTraversal(root, inorder);
+        return inorder.get(k - 1);
+    }
+
+    private void inorderTraversal(TreeNode node, List<Integer> list) {
+        if (node == null) {
+            return;
+        }
+        inorderTraversal(node.left, list);
+        list.add(node.val);
+        inorderTraversal(node.right, list);
+    }
 }
 ```
 
@@ -64,16 +91,45 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Iterative Inorder — early stop) — O(h + k) time, O(h) space
 
 ```java
-public int kthSmallest(TreeNode root, int k) {
-    Deque<TreeNode> stack = new ArrayDeque<>();
-    TreeNode curr = root;
-    while (curr != null || !stack.isEmpty()) {
-        while (curr != null) { stack.push(curr); curr = curr.left; }
-        curr = stack.pop();
-        if (--k == 0) return curr.val;
-        curr = curr.right;
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
     }
-    return -1;
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+public class Solution {
+
+    public int kthSmallest(TreeNode root, int k) {
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        TreeNode curr = root;
+        while (curr != null || !stack.isEmpty()) {
+            while (curr != null) {
+                stack.push(curr);
+                curr = curr.left;
+            }
+            curr = stack.pop();
+            if (--k == 0) {
+                return curr.val;
+            }
+            curr = curr.right;
+        }
+        return -1;
+    }
 }
 ```
 

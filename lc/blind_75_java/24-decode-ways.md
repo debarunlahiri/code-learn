@@ -44,18 +44,30 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java (Recursion) — O(2ⁿ) time
 
 ```java
-public int numDecodings(String s) {
-    return decode(s, 0);
-}
-private int decode(String s, int i) {
-    if (i == s.length()) return 1;
-    if (s.charAt(i) == '0') return 0;
-    int ways = decode(s, i + 1);
-    if (i + 1 < s.length()) {
-        int two = Integer.parseInt(s.substring(i, i + 2));
-        if (two >= 10 && two <= 26) ways += decode(s, i + 2);
+import java.util.*;
+
+public class Solution {
+
+    public int numDecodings(String s) {
+        return decode(s, 0);
     }
-    return ways;
+
+    private int decode(String s, int i) {
+        if (i == s.length()) {
+            return 1;
+        }
+        if (s.charAt(i) == '0') {
+            return 0;
+        }
+        int ways = decode(s, i + 1);
+        if (i + 1 < s.length()) {
+            int two = Integer.parseInt(s.substring(i, i + 2));
+            if (two >= 10 && two <= 26) {
+                ways += decode(s, i + 2);
+            }
+        }
+        return ways;
+    }
 }
 ```
 
@@ -66,18 +78,32 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (DP) — O(n) time, O(1) space
 
 ```java
-public int numDecodings(String s) {
-    int n = s.length(), dp1 = 1, dp2 = 0;
-    if (s.charAt(0) == '0') return 0;
-    dp2 = 1;
-    for (int i = 1; i < n; i++) {
-        int curr = 0;
-        if (s.charAt(i) != '0') curr = dp2;
-        int two = Integer.parseInt(s.substring(i - 1, i + 1));
-        if (two >= 10 && two <= 26) curr += dp1;
-        dp1 = dp2; dp2 = curr;
+import java.util.*;
+
+public class Solution {
+
+    public int numDecodings(String s) {
+        int n = s.length(),
+            dp1 = 1,
+            dp2 = 0;
+        if (s.charAt(0) == '0') {
+            return 0;
+        }
+        dp2 = 1;
+        for (int i = 1; i < n; i++) {
+            int curr = 0;
+            if (s.charAt(i) != '0') {
+                curr = dp2;
+            }
+            int two = Integer.parseInt(s.substring(i - 1, i + 1));
+            if (two >= 10 && two <= 26) {
+                curr += dp1;
+            }
+            dp1 = dp2;
+            dp2 = curr;
+        }
+        return dp2;
     }
-    return dp2;
 }
 ```
 

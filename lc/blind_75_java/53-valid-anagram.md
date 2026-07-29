@@ -44,10 +44,17 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n log n) time
 
 ```java
-public boolean isAnagram(String s, String t) {
-    char[] a = s.toCharArray(), b = t.toCharArray();
-    Arrays.sort(a); Arrays.sort(b);
-    return Arrays.equals(a, b);
+import java.util.*;
+
+public class Solution {
+
+    public boolean isAnagram(String s, String t) {
+        char[] a = s.toCharArray(),
+            b = t.toCharArray();
+        Arrays.sort(a);
+        Arrays.sort(b);
+        return Arrays.equals(a, b);
+    }
 }
 ```
 
@@ -58,12 +65,25 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java — O(n) time, O(1) space
 
 ```java
-public boolean isAnagram(String s, String t) {
-    if (s.length() != t.length()) return false;
-    int[] count = new int[26];
-    for (char c : s.toCharArray()) count[c-'a']++;
-    for (char c : t.toCharArray()) if (--count[c-'a'] < 0) return false;
-    return true;
+import java.util.*;
+
+public class Solution {
+
+    public boolean isAnagram(String s, String t) {
+        if (s.length() != t.length()) {
+            return false;
+        }
+        int[] count = new int[26];
+        for (char c : s.toCharArray()) {
+            count[c - 'a']++;
+        }
+        for (char c : t.toCharArray()) {
+            if (--count[c - 'a'] < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 ```
 

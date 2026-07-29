@@ -46,17 +46,57 @@ becomes too expensive near the upper input limits.
 For this problem, the straightforward correctness-first implementation uses the same core traversal shown below. It is presented first as the baseline; the following section explains the production interpretation and invariant.
 
 ```java
-int maxSum;
-public int maxPathSum(TreeNode root) {
-    maxSum = Integer.MIN_VALUE;
-    dfs(root); return maxSum;
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
 }
-private int dfs(TreeNode node) {
-    if (node == null) return 0;
-    int left = Math.max(0, dfs(node.left));
-    int right = Math.max(0, dfs(node.right));
-    maxSum = Math.max(maxSum, node.val + left + right);
-    return node.val + Math.max(left, right);
+
+public class Solution {
+
+    public int maxPathSum(TreeNode root) {
+        if (root == null) {
+            return Integer.MIN_VALUE;
+        }
+
+        int throughRoot =
+            root.val +
+            Math.max(0, bestDownwardPath(root.left)) +
+            Math.max(0, bestDownwardPath(root.right));
+
+        return Math.max(
+            throughRoot,
+            Math.max(maxPathSum(root.left), maxPathSum(root.right))
+        );
+    }
+
+    private int bestDownwardPath(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        return (
+            node.val +
+            Math.max(
+                0,
+                Math.max(bestDownwardPath(node.left), bestDownwardPath(node.right))
+            )
+        );
+    }
 }
 ```
 
@@ -67,17 +107,46 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (PostOrder DFS) — O(n) time, O(h) space
 
 ```java
-int maxSum;
-public int maxPathSum(TreeNode root) {
-    maxSum = Integer.MIN_VALUE;
-    dfs(root); return maxSum;
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
 }
-private int dfs(TreeNode node) {
-    if (node == null) return 0;
-    int left = Math.max(0, dfs(node.left));
-    int right = Math.max(0, dfs(node.right));
-    maxSum = Math.max(maxSum, node.val + left + right);
-    return node.val + Math.max(left, right);
+
+public class Solution {
+
+    int maxSum;
+
+    public int maxPathSum(TreeNode root) {
+        maxSum = Integer.MIN_VALUE;
+        dfs(root);
+        return maxSum;
+    }
+
+    private int dfs(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        int left = Math.max(0, dfs(node.left));
+        int right = Math.max(0, dfs(node.right));
+        maxSum = Math.max(maxSum, node.val + left + right);
+        return node.val + Math.max(left, right);
+    }
 }
 ```
 

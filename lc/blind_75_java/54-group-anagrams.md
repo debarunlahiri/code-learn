@@ -44,7 +44,49 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n² × k log k) time
 
 ```java
-// Compare all pairs — impractical for large inputs
+import java.util.*;
+
+public class Solution {
+
+    public List<List<String>> groupAnagrams(String[] strings) {
+        boolean[] grouped = new boolean[strings.length];
+        List<List<String>> result = new ArrayList<>();
+
+        for (int i = 0; i < strings.length; i++) {
+            if (grouped[i]) {
+                continue;
+            }
+
+            List<String> group = new ArrayList<>();
+            group.add(strings[i]);
+            grouped[i] = true;
+
+            for (int j = i + 1; j < strings.length; j++) {
+                if (!grouped[j] && areAnagrams(strings[i], strings[j])) {
+                    group.add(strings[j]);
+                    grouped[j] = true;
+                }
+            }
+
+            result.add(group);
+        }
+
+        return result;
+    }
+
+    private boolean areAnagrams(String first, String second) {
+        if (first.length() != second.length()) {
+            return false;
+        }
+
+        char[] firstCharacters = first.toCharArray();
+        char[] secondCharacters = second.toCharArray();
+        Arrays.sort(firstCharacters);
+        Arrays.sort(secondCharacters);
+
+        return Arrays.equals(firstCharacters, secondCharacters);
+    }
+}
 ```
 
 ## Approach 2: Optimized
@@ -54,14 +96,20 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java — O(n × k log k) time, O(n×k) space
 
 ```java
-public List<List<String>> groupAnagrams(String[] strs) {
-    Map<String, List<String>> map = new HashMap<>();
-    for (String s : strs) {
-        char[] arr = s.toCharArray(); Arrays.sort(arr);
-        String key = new String(arr);
-        map.computeIfAbsent(key, k -> new ArrayList<>()).add(s);
+import java.util.*;
+
+public class Solution {
+
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> map = new HashMap<>();
+        for (String s : strs) {
+            char[] arr = s.toCharArray();
+            Arrays.sort(arr);
+            String key = new String(arr);
+            map.computeIfAbsent(key, k -> new ArrayList<>()).add(s);
+        }
+        return new ArrayList<>(map.values());
     }
-    return new ArrayList<>(map.values());
 }
 ```
 

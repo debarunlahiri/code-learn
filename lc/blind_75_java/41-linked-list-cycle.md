@@ -44,13 +44,37 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n) time, O(n) space
 
 ```java
-public boolean hasCycle(ListNode head) {
-    Set<ListNode> seen = new HashSet<>();
-    while (head != null) {
-        if (!seen.add(head)) return true;
-        head = head.next;
+import java.util.*;
+
+class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode() {}
+
+    ListNode(int val) {
+        this.val = val;
     }
-    return false;
+
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+public class Solution {
+
+    public boolean hasCycle(ListNode head) {
+        Set<ListNode> seen = new HashSet<>();
+        while (head != null) {
+            if (!seen.add(head)) {
+                return true;
+            }
+            head = head.next;
+        }
+        return false;
+    }
 }
 ```
 
@@ -61,14 +85,39 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Floyd's Tortoise & Hare) — O(n) time, O(1) space
 
 ```java
-public boolean hasCycle(ListNode head) {
-    ListNode slow = head, fast = head;
-    while (fast != null && fast.next != null) {
-        slow = slow.next;
-        fast = fast.next.next;
-        if (slow == fast) return true;
+import java.util.*;
+
+class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode() {}
+
+    ListNode(int val) {
+        this.val = val;
     }
-    return false;
+
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+public class Solution {
+
+    public boolean hasCycle(ListNode head) {
+        ListNode slow = head,
+            fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 ```
 

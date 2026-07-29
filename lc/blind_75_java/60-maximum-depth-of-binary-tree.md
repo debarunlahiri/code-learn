@@ -41,25 +41,96 @@ understanding the search space, checking small examples by hand, and serving as
 a correctness oracle for randomized tests. Its weakness is repeated work, which
 becomes too expensive near the upper input limits.
 
-### Brute-Force Java / Optimal (Recursion) — O(n) time, O(h) space
+### Brute-Force Java
 
 ```java
-public int maxDepth(TreeNode root) {
-    if (root == null) return 0;
-    return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+public class Solution {
+
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        int depth = 0;
+
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
+            depth++;
+
+            for (int i = 0; i < levelSize; i++) {
+                TreeNode node = queue.poll();
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+        }
+        return depth;
+    }
 }
 ```
 
 ## Approach 2: Optimized
 
-The traversal shown above already has the best possible asymptotic bound because every relevant input item must be inspected. The optimized production version uses the same visited-state principle to prevent cycles and duplicate work.
+The optimized implementation removes unnecessary repeated searches or extra copies while preserving the same result.
 
 ### Optimized Java
 
 ```java
-public int maxDepth(TreeNode root) {
-    if (root == null) return 0;
-    return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+public class Solution {
+
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+    }
 }
 ```
 

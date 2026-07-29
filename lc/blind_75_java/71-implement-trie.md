@@ -46,39 +46,29 @@ becomes too expensive near the upper input limits.
 For this problem, the straightforward correctness-first implementation uses the same core traversal shown below. It is presented first as the baseline; the following section explains the production interpretation and invariant.
 
 ```java
-class Trie {
-    private TrieNode root = new TrieNode();
+import java.util.*;
 
-    class TrieNode {
-        TrieNode[] children = new TrieNode[26];
-        boolean isEnd;
-    }
+class Trie {
+
+    private final List<String> words = new ArrayList<>();
 
     public void insert(String word) {
-        TrieNode node = root;
-        for (char c : word.toCharArray()) {
-            if (node.children[c-'a'] == null) node.children[c-'a'] = new TrieNode();
-            node = node.children[c-'a'];
+        if (!words.contains(word)) {
+            words.add(word);
         }
-        node.isEnd = true;
     }
 
     public boolean search(String word) {
-        TrieNode node = root;
-        for (char c : word.toCharArray()) {
-            if (node.children[c-'a'] == null) return false;
-            node = node.children[c-'a'];
-        }
-        return node.isEnd;
+        return words.contains(word);
     }
 
     public boolean startsWith(String prefix) {
-        TrieNode node = root;
-        for (char c : prefix.toCharArray()) {
-            if (node.children[c-'a'] == null) return false;
-            node = node.children[c-'a'];
+        for (String word : words) {
+            if (word.startsWith(prefix)) {
+                return true;
+            }
         }
-        return true;
+        return false;
     }
 }
 ```
@@ -90,10 +80,14 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java — O(m) insert/search/startsWith where m = word length
 
 ```java
+import java.util.*;
+
 class Trie {
+
     private TrieNode root = new TrieNode();
 
     class TrieNode {
+
         TrieNode[] children = new TrieNode[26];
         boolean isEnd;
     }
@@ -101,8 +95,10 @@ class Trie {
     public void insert(String word) {
         TrieNode node = root;
         for (char c : word.toCharArray()) {
-            if (node.children[c-'a'] == null) node.children[c-'a'] = new TrieNode();
-            node = node.children[c-'a'];
+            if (node.children[c - 'a'] == null) {
+                node.children[c - 'a'] = new TrieNode();
+            }
+            node = node.children[c - 'a'];
         }
         node.isEnd = true;
     }
@@ -110,8 +106,10 @@ class Trie {
     public boolean search(String word) {
         TrieNode node = root;
         for (char c : word.toCharArray()) {
-            if (node.children[c-'a'] == null) return false;
-            node = node.children[c-'a'];
+            if (node.children[c - 'a'] == null) {
+                return false;
+            }
+            node = node.children[c - 'a'];
         }
         return node.isEnd;
     }
@@ -119,8 +117,10 @@ class Trie {
     public boolean startsWith(String prefix) {
         TrieNode node = root;
         for (char c : prefix.toCharArray()) {
-            if (node.children[c-'a'] == null) return false;
-            node = node.children[c-'a'];
+            if (node.children[c - 'a'] == null) {
+                return false;
+            }
+            node = node.children[c - 'a'];
         }
         return true;
     }

@@ -46,34 +46,52 @@ becomes too expensive near the upper input limits.
 For this problem, the straightforward correctness-first implementation uses the same core traversal shown below. It is presented first as the baseline; the following section explains the production interpretation and invariant.
 
 ```java
-public String serialize(TreeNode root) {
-    if (root == null) return "";
-    StringBuilder sb = new StringBuilder();
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
-    while (!q.isEmpty()) {
-        TreeNode node = q.poll();
-        if (node == null) { sb.append("null,"); continue; }
-        sb.append(node.val).append(',');
-        q.offer(node.left); q.offer(node.right);
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
     }
-    return sb.toString();
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
 }
-public TreeNode deserialize(String data) {
-    if (data.isEmpty()) return null;
-    String[] vals = data.split(",");
-    TreeNode root = new TreeNode(Integer.parseInt(vals[0]));
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
-    int i = 1;
-    while (!q.isEmpty() && i < vals.length) {
-        TreeNode node = q.poll();
-        if (!vals[i].equals("null")) { node.left = new TreeNode(Integer.parseInt(vals[i])); q.offer(node.left); }
-        i++;
-        if (i < vals.length && !vals[i].equals("null")) { node.right = new TreeNode(Integer.parseInt(vals[i])); q.offer(node.right); }
-        i++;
+
+public class Solution {
+
+    public String serialize(TreeNode root) {
+        if (root == null) {
+            return "#";
+        }
+        return root.val + "," + serialize(root.left) + "," + serialize(root.right);
     }
-    return root;
+
+    public TreeNode deserialize(String data) {
+        List<String> values = new ArrayList<>(Arrays.asList(data.split(",")));
+        return buildTree(values);
+    }
+
+    private TreeNode buildTree(List<String> values) {
+        String value = values.remove(0);
+        if (value.equals("#")) {
+            return null;
+        }
+
+        TreeNode node = new TreeNode(Integer.parseInt(value));
+        node.left = buildTree(values);
+        node.right = buildTree(values);
+        return node;
+    }
 }
 ```
 
@@ -84,34 +102,73 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (BFS) — O(n) time, O(n) space
 
 ```java
-public String serialize(TreeNode root) {
-    if (root == null) return "";
-    StringBuilder sb = new StringBuilder();
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
-    while (!q.isEmpty()) {
-        TreeNode node = q.poll();
-        if (node == null) { sb.append("null,"); continue; }
-        sb.append(node.val).append(',');
-        q.offer(node.left); q.offer(node.right);
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
     }
-    return sb.toString();
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
 }
-public TreeNode deserialize(String data) {
-    if (data.isEmpty()) return null;
-    String[] vals = data.split(",");
-    TreeNode root = new TreeNode(Integer.parseInt(vals[0]));
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
-    int i = 1;
-    while (!q.isEmpty() && i < vals.length) {
-        TreeNode node = q.poll();
-        if (!vals[i].equals("null")) { node.left = new TreeNode(Integer.parseInt(vals[i])); q.offer(node.left); }
-        i++;
-        if (i < vals.length && !vals[i].equals("null")) { node.right = new TreeNode(Integer.parseInt(vals[i])); q.offer(node.right); }
-        i++;
+
+public class Solution {
+
+    public String serialize(TreeNode root) {
+        if (root == null) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        while (!q.isEmpty()) {
+            TreeNode node = q.poll();
+            if (node == null) {
+                sb.append("null,");
+                continue;
+            }
+            sb.append(node.val).append(',');
+            q.offer(node.left);
+            q.offer(node.right);
+        }
+        return sb.toString();
     }
-    return root;
+
+    public TreeNode deserialize(String data) {
+        if (data.isEmpty()) {
+            return null;
+        }
+        String[] vals = data.split(",");
+        TreeNode root = new TreeNode(Integer.parseInt(vals[0]));
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        int i = 1;
+        while (!q.isEmpty() && i < vals.length) {
+            TreeNode node = q.poll();
+            if (!vals[i].equals("null")) {
+                node.left = new TreeNode(Integer.parseInt(vals[i]));
+                q.offer(node.left);
+            }
+            i++;
+            if (i < vals.length && !vals[i].equals("null")) {
+                node.right = new TreeNode(Integer.parseInt(vals[i]));
+                q.offer(node.right);
+            }
+            i++;
+        }
+        return root;
+    }
 }
 ```
 

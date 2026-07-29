@@ -44,8 +44,72 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(m×n×(m×n)) time — BFS from each cell
 
 ```java
-// Run BFS/DFS from each cell; check if both oceans reachable
-// Omitted for brevity — same logic as optimal but inverted direction
+import java.util.*;
+
+public class Solution {
+
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        List<List<Integer>> result = new ArrayList<>();
+
+        for (int row = 0; row < heights.length; row++) {
+            for (int column = 0; column < heights[0].length; column++) {
+                boolean[][] visited = new boolean[heights.length][heights[0].length];
+                boolean[] oceans = new boolean[2];
+                findOceans(heights, row, column, visited, oceans);
+
+                if (oceans[0] && oceans[1]) {
+                    result.add(Arrays.asList(row, column));
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private void findOceans(
+        int[][] heights,
+        int row,
+        int column,
+        boolean[][] visited,
+        boolean[] oceans
+    ) {
+        if (row < 0 || column < 0) {
+            oceans[0] = true;
+            return;
+        }
+        if (row == heights.length || column == heights[0].length) {
+            oceans[1] = true;
+            return;
+        }
+        if (visited[row][column] || (oceans[0] && oceans[1])) {
+            return;
+        }
+
+        visited[row][column] = true;
+        int currentHeight = heights[row][column];
+        int[][] directions = {
+            { 1, 0 },
+            { -1, 0 },
+            { 0, 1 },
+            { 0, -1 },
+        };
+
+        for (int[] direction : directions) {
+            int nextRow = row + direction[0];
+            int nextColumn = column + direction[1];
+
+            if (
+                nextRow < 0 ||
+                nextRow == heights.length ||
+                nextColumn < 0 ||
+                nextColumn == heights[0].length ||
+                heights[nextRow][nextColumn] <= currentHeight
+            ) {
+                findOceans(heights, nextRow, nextColumn, visited, oceans);
+            }
+        }
+    }
+}
 ```
 
 ## Approach 2: Optimized
@@ -55,27 +119,69 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Reverse BFS from oceans) — O(m×n) time, O(m×n) space
 
 ```java
-public List<List<Integer>> pacificAtlantic(int[][] heights) {
-    int m = heights.length, n = heights[0].length;
-    boolean[][] pac = new boolean[m][n], atl = new boolean[m][n];
-    Queue<int[]> pq = new LinkedList<>(), aq = new LinkedList<>();
-    for (int i = 0; i < m; i++) { pq.offer(new int[]{i,0}); pac[i][0]=true; aq.offer(new int[]{i,n-1}); atl[i][n-1]=true; }
-    for (int j = 0; j < n; j++) { pq.offer(new int[]{0,j}); pac[0][j]=true; aq.offer(new int[]{m-1,j}); atl[m-1][j]=true; }
-    bfs(heights, pq, pac); bfs(heights, aq, atl);
-    List<List<Integer>> result = new ArrayList<>();
-    for (int i = 0; i < m; i++)
-        for (int j = 0; j < n; j++)
-            if (pac[i][j] && atl[i][j]) result.add(Arrays.asList(i, j));
-    return result;
-}
-private void bfs(int[][] h, Queue<int[]> q, boolean[][] visited) {
-    int[][] dirs = {{0,1},{0,-1},{1,0},{-1,0}};
-    while (!q.isEmpty()) {
-        int[] cell = q.poll(); int r = cell[0], c = cell[1];
-        for (int[] d : dirs) {
-            int nr = r+d[0], nc = c+d[1];
-            if (nr<0||nr>=h.length||nc<0||nc>=h[0].length||visited[nr][nc]||h[nr][nc]<h[r][c]) continue;
-            visited[nr][nc] = true; q.offer(new int[]{nr,nc});
+import java.util.*;
+
+public class Solution {
+
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        int m = heights.length,
+            n = heights[0].length;
+        boolean[][] pac = new boolean[m][n],
+            atl = new boolean[m][n];
+        Queue<int[]> pq = new LinkedList<>(),
+            aq = new LinkedList<>();
+        for (int i = 0; i < m; i++) {
+            pq.offer(new int[] { i, 0 });
+            pac[i][0] = true;
+            aq.offer(new int[] { i, n - 1 });
+            atl[i][n - 1] = true;
+        }
+        for (int j = 0; j < n; j++) {
+            pq.offer(new int[] { 0, j });
+            pac[0][j] = true;
+            aq.offer(new int[] { m - 1, j });
+            atl[m - 1][j] = true;
+        }
+        bfs(heights, pq, pac);
+        bfs(heights, aq, atl);
+        List<List<Integer>> result = new ArrayList<>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (pac[i][j] && atl[i][j]) {
+                    result.add(Arrays.asList(i, j));
+                }
+            }
+        }
+        return result;
+    }
+
+    private void bfs(int[][] h, Queue<int[]> q, boolean[][] visited) {
+        int[][] dirs = {
+            { 0, 1 },
+            { 0, -1 },
+            { 1, 0 },
+            { -1, 0 },
+        };
+        while (!q.isEmpty()) {
+            int[] cell = q.poll();
+            int r = cell[0],
+                c = cell[1];
+            for (int[] d : dirs) {
+                int nr = r + d[0],
+                    nc = c + d[1];
+                if (
+                    nr < 0 ||
+                    nr >= h.length ||
+                    nc < 0 ||
+                    nc >= h[0].length ||
+                    visited[nr][nc] ||
+                    h[nr][nc] < h[r][c]
+                ) {
+                    continue;
+                }
+                visited[nr][nc] = true;
+                q.offer(new int[] { nr, nc });
+            }
         }
     }
 }

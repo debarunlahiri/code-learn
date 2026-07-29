@@ -46,31 +46,37 @@ becomes too expensive near the upper input limits.
 For this problem, the straightforward correctness-first implementation uses the same core traversal shown below. It is presented first as the baseline; the following section explains the production interpretation and invariant.
 
 ```java
+import java.util.*;
+
 class WordDictionary {
-    private TrieNode root = new TrieNode();
-    class TrieNode { TrieNode[] children = new TrieNode[26]; boolean isEnd; }
+
+    private final List<String> words = new ArrayList<>();
 
     public void addWord(String word) {
-        TrieNode node = root;
-        for (char c : word.toCharArray()) {
-            if (node.children[c-'a'] == null) node.children[c-'a'] = new TrieNode();
-            node = node.children[c-'a'];
-        }
-        node.isEnd = true;
+        words.add(word);
     }
 
-    public boolean search(String word) { return dfs(word, 0, root); }
+    public boolean search(String pattern) {
+        for (String word : words) {
+            if (matches(word, pattern)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-    private boolean dfs(String word, int i, TrieNode node) {
-        if (i == word.length()) return node.isEnd;
-        char c = word.charAt(i);
-        if (c == '.') {
-            for (TrieNode child : node.children)
-                if (child != null && dfs(word, i+1, child)) return true;
+    private boolean matches(String word, String pattern) {
+        if (word.length() != pattern.length()) {
             return false;
         }
-        if (node.children[c-'a'] == null) return false;
-        return dfs(word, i+1, node.children[c-'a']);
+
+        for (int i = 0; i < word.length(); i++) {
+            char expected = pattern.charAt(i);
+            if (expected != '.' && expected != word.charAt(i)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 ```
@@ -82,31 +88,50 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Trie + DFS for wildcards) — O(m) average, O(26^m) worst
 
 ```java
+import java.util.*;
+
 class WordDictionary {
+
     private TrieNode root = new TrieNode();
-    class TrieNode { TrieNode[] children = new TrieNode[26]; boolean isEnd; }
+
+    class TrieNode {
+
+        TrieNode[] children = new TrieNode[26];
+        boolean isEnd;
+    }
 
     public void addWord(String word) {
         TrieNode node = root;
         for (char c : word.toCharArray()) {
-            if (node.children[c-'a'] == null) node.children[c-'a'] = new TrieNode();
-            node = node.children[c-'a'];
+            if (node.children[c - 'a'] == null) {
+                node.children[c - 'a'] = new TrieNode();
+            }
+            node = node.children[c - 'a'];
         }
         node.isEnd = true;
     }
 
-    public boolean search(String word) { return dfs(word, 0, root); }
+    public boolean search(String word) {
+        return dfs(word, 0, root);
+    }
 
     private boolean dfs(String word, int i, TrieNode node) {
-        if (i == word.length()) return node.isEnd;
+        if (i == word.length()) {
+            return node.isEnd;
+        }
         char c = word.charAt(i);
         if (c == '.') {
-            for (TrieNode child : node.children)
-                if (child != null && dfs(word, i+1, child)) return true;
+            for (TrieNode child : node.children) {
+                if (child != null && dfs(word, i + 1, child)) {
+                    return true;
+                }
+            }
             return false;
         }
-        if (node.children[c-'a'] == null) return false;
-        return dfs(word, i+1, node.children[c-'a']);
+        if (node.children[c - 'a'] == null) {
+            return false;
+        }
+        return dfs(word, i + 1, node.children[c - 'a']);
     }
 }
 ```

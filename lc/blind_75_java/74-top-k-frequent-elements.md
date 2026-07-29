@@ -44,12 +44,23 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n log n) time — sort by frequency
 
 ```java
-public int[] topKFrequent(int[] nums, int k) {
-    Map<Integer,Integer> freq = new HashMap<>();
-    for (int n : nums) freq.merge(n, 1, Integer::sum);
-    return freq.entrySet().stream()
-        .sorted((a,b) -> b.getValue()-a.getValue())
-        .limit(k).mapToInt(Map.Entry::getKey).toArray();
+import java.util.*;
+
+public class Solution {
+
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> freq = new HashMap<>();
+        for (int n : nums) {
+            freq.merge(n, 1, Integer::sum);
+        }
+        return freq
+            .entrySet()
+            .stream()
+            .sorted((a, b) -> b.getValue() - a.getValue())
+            .limit(k)
+            .mapToInt(Map.Entry::getKey)
+            .toArray();
+    }
 }
 ```
 
@@ -60,36 +71,67 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Min-Heap) — O(n log k) time, O(n) space
 
 ```java
-public int[] topKFrequent(int[] nums, int k) {
-    Map<Integer,Integer> freq = new HashMap<>();
-    for (int n : nums) freq.merge(n, 1, Integer::sum);
-    PriorityQueue<Integer> heap = new PriorityQueue<>((a,b) -> freq.get(a)-freq.get(b));
-    for (int key : freq.keySet()) {
-        heap.offer(key);
-        if (heap.size() > k) heap.poll();
+import java.util.*;
+
+public class Solution {
+
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> freq = new HashMap<>();
+        for (int n : nums) {
+            freq.merge(n, 1, Integer::sum);
+        }
+        PriorityQueue<Integer> heap = new PriorityQueue<>(
+            (a, b) -> freq.get(a) - freq.get(b)
+        );
+        for (int key : freq.keySet()) {
+            heap.offer(key);
+            if (heap.size() > k) {
+                heap.poll();
+            }
+        }
+        int[] result = new int[k];
+        for (int i = k - 1; i >= 0; i--) {
+            result[i] = heap.poll();
+        }
+        return result;
     }
-    int[] result = new int[k];
-    for (int i = k-1; i >= 0; i--) result[i] = heap.poll();
-    return result;
 }
 ```
 
 **Most Optimal (Bucket Sort)** — O(n) time, O(n) space
 
 ```java
-public int[] topKFrequent(int[] nums, int k) {
-    Map<Integer,Integer> freq = new HashMap<>();
-    for (int n : nums) freq.merge(n, 1, Integer::sum);
-    List<Integer>[] buckets = new List[nums.length + 1];
-    for (int key : freq.keySet()) {
-        int f = freq.get(key);
-        if (buckets[f] == null) buckets[f] = new ArrayList<>();
-        buckets[f].add(key);
+import java.util.*;
+
+public class Solution {
+
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> freq = new HashMap<>();
+        for (int n : nums) {
+            freq.merge(n, 1, Integer::sum);
+        }
+        List<Integer>[] buckets = new List[nums.length + 1];
+        for (int key : freq.keySet()) {
+            int f = freq.get(key);
+            if (buckets[f] == null) {
+                buckets[f] = new ArrayList<>();
+            }
+            buckets[f].add(key);
+        }
+        int[] result = new int[k];
+        int idx = 0;
+        for (int i = buckets.length - 1; i >= 0 && idx < k; i--) {
+            if (buckets[i] != null) {
+                for (int n : buckets[i]) {
+                    result[idx++] = n;
+                    if (idx == k) {
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
     }
-    int[] result = new int[k]; int idx = 0;
-    for (int i = buckets.length-1; i >= 0 && idx < k; i--)
-        if (buckets[i] != null) for (int n : buckets[i]) { result[idx++] = n; if (idx==k) break; }
-    return result;
 }
 ```
 

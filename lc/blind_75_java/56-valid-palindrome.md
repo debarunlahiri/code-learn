@@ -44,9 +44,14 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n) time, O(n) space
 
 ```java
-public boolean isPalindrome(String s) {
-    String clean = s.toLowerCase().replaceAll("[^a-z0-9]","");
-    return clean.equals(new StringBuilder(clean).reverse().toString());
+import java.util.*;
+
+public class Solution {
+
+    public boolean isPalindrome(String s) {
+        String clean = s.toLowerCase().replaceAll("[^a-z0-9]", "");
+        return clean.equals(new StringBuilder(clean).reverse().toString());
+    }
 }
 ```
 
@@ -57,15 +62,31 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Two Pointers) — O(n) time, O(1) space
 
 ```java
-public boolean isPalindrome(String s) {
-    int lo = 0, hi = s.length()-1;
-    while (lo < hi) {
-        while (lo < hi && !Character.isLetterOrDigit(s.charAt(lo))) lo++;
-        while (lo < hi && !Character.isLetterOrDigit(s.charAt(hi))) hi--;
-        if (Character.toLowerCase(s.charAt(lo)) != Character.toLowerCase(s.charAt(hi))) return false;
-        lo++; hi--;
+import java.util.*;
+
+public class Solution {
+
+    public boolean isPalindrome(String s) {
+        int lo = 0,
+            hi = s.length() - 1;
+        while (lo < hi) {
+            while (lo < hi && !Character.isLetterOrDigit(s.charAt(lo))) {
+                lo++;
+            }
+            while (lo < hi && !Character.isLetterOrDigit(s.charAt(hi))) {
+                hi--;
+            }
+            if (
+                Character.toLowerCase(s.charAt(lo)) !=
+                Character.toLowerCase(s.charAt(hi))
+            ) {
+                return false;
+            }
+            lo++;
+            hi--;
+        }
+        return true;
     }
-    return true;
 }
 ```
 

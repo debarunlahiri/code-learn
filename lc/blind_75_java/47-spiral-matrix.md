@@ -46,18 +46,49 @@ becomes too expensive near the upper input limits.
 For this problem, the straightforward correctness-first implementation uses the same core traversal shown below. It is presented first as the baseline; the following section explains the production interpretation and invariant.
 
 ```java
-public List<Integer> spiralOrder(int[][] matrix) {
-    List<Integer> result = new ArrayList<>();
-    int top = 0, bottom = matrix.length-1, left = 0, right = matrix[0].length-1;
-    while (top <= bottom && left <= right) {
-        for (int j = left; j <= right; j++) result.add(matrix[top][j]);
-        top++;
-        for (int i = top; i <= bottom; i++) result.add(matrix[i][right]);
-        right--;
-        if (top <= bottom) { for (int j = right; j >= left; j--) result.add(matrix[bottom][j]); bottom--; }
-        if (left <= right) { for (int i = bottom; i >= top; i--) result.add(matrix[i][left]); left++; }
+import java.util.*;
+
+public class Solution {
+
+    public List<Integer> spiralOrder(int[][] matrix) {
+        int rows = matrix.length;
+        int columns = matrix[0].length;
+        boolean[][] visited = new boolean[rows][columns];
+        int[][] directions = {
+            { 0, 1 },
+            { 1, 0 },
+            { 0, -1 },
+            { -1, 0 },
+        };
+        List<Integer> result = new ArrayList<>();
+
+        int row = 0;
+        int column = 0;
+        int direction = 0;
+
+        for (int count = 0; count < rows * columns; count++) {
+            result.add(matrix[row][column]);
+            visited[row][column] = true;
+
+            int nextRow = row + directions[direction][0];
+            int nextColumn = column + directions[direction][1];
+            if (
+                nextRow < 0 ||
+                nextRow >= rows ||
+                nextColumn < 0 ||
+                nextColumn >= columns ||
+                visited[nextRow][nextColumn]
+            ) {
+                direction = (direction + 1) % directions.length;
+                nextRow = row + directions[direction][0];
+                nextColumn = column + directions[direction][1];
+            }
+
+            row = nextRow;
+            column = nextColumn;
+        }
+        return result;
     }
-    return result;
 }
 ```
 
@@ -68,18 +99,40 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java — O(m×n) time, O(1) space
 
 ```java
-public List<Integer> spiralOrder(int[][] matrix) {
-    List<Integer> result = new ArrayList<>();
-    int top = 0, bottom = matrix.length-1, left = 0, right = matrix[0].length-1;
-    while (top <= bottom && left <= right) {
-        for (int j = left; j <= right; j++) result.add(matrix[top][j]);
-        top++;
-        for (int i = top; i <= bottom; i++) result.add(matrix[i][right]);
-        right--;
-        if (top <= bottom) { for (int j = right; j >= left; j--) result.add(matrix[bottom][j]); bottom--; }
-        if (left <= right) { for (int i = bottom; i >= top; i--) result.add(matrix[i][left]); left++; }
+import java.util.*;
+
+public class Solution {
+
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> result = new ArrayList<>();
+        int top = 0,
+            bottom = matrix.length - 1,
+            left = 0,
+            right = matrix[0].length - 1;
+        while (top <= bottom && left <= right) {
+            for (int j = left; j <= right; j++) {
+                result.add(matrix[top][j]);
+            }
+            top++;
+            for (int i = top; i <= bottom; i++) {
+                result.add(matrix[i][right]);
+            }
+            right--;
+            if (top <= bottom) {
+                for (int j = right; j >= left; j--) {
+                    result.add(matrix[bottom][j]);
+                }
+                bottom--;
+            }
+            if (left <= right) {
+                for (int i = bottom; i >= top; i--) {
+                    result.add(matrix[i][left]);
+                }
+                left++;
+            }
+        }
+        return result;
     }
-    return result;
 }
 ```
 

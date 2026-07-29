@@ -44,12 +44,19 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n²) time, O(1) space
 
 ```java
-public int maxArea(int[] height) {
-    int max = 0;
-    for (int i = 0; i < height.length; i++)
-        for (int j = i + 1; j < height.length; j++)
-            max = Math.max(max, Math.min(height[i], height[j]) * (j - i));
-    return max;
+import java.util.*;
+
+public class Solution {
+
+    public int maxArea(int[] height) {
+        int max = 0;
+        for (int i = 0; i < height.length; i++) {
+            for (int j = i + 1; j < height.length; j++) {
+                max = Math.max(max, Math.min(height[i], height[j]) * (j - i));
+            }
+        }
+        return max;
+    }
 }
 ```
 
@@ -60,14 +67,24 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Two Pointers) — O(n) time, O(1) space
 
 ```java
-public int maxArea(int[] height) {
-    int lo = 0, hi = height.length - 1, max = 0;
-    while (lo < hi) {
-        max = Math.max(max, Math.min(height[lo], height[hi]) * (hi - lo));
-        if (height[lo] < height[hi]) lo++;
-        else hi--;
+import java.util.*;
+
+public class Solution {
+
+    public int maxArea(int[] height) {
+        int lo = 0,
+            hi = height.length - 1,
+            max = 0;
+        while (lo < hi) {
+            max = Math.max(max, Math.min(height[lo], height[hi]) * (hi - lo));
+            if (height[lo] < height[hi]) {
+                lo++;
+            } else {
+                hi--;
+            }
+        }
+        return max;
     }
-    return max;
 }
 ```
 

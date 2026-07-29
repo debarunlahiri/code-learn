@@ -44,15 +44,25 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java (Recursion) — O(2ⁿ) time, O(n) space
 
 ```java
-public int lengthOfLIS(int[] nums) {
-    return lis(nums, Integer.MIN_VALUE, 0);
-}
-private int lis(int[] nums, int prev, int idx) {
-    if (idx == nums.length) return 0;
-    int skip = lis(nums, prev, idx + 1);
-    int take = 0;
-    if (nums[idx] > prev) take = 1 + lis(nums, nums[idx], idx + 1);
-    return Math.max(skip, take);
+import java.util.*;
+
+public class Solution {
+
+    public int lengthOfLIS(int[] nums) {
+        return lis(nums, Integer.MIN_VALUE, 0);
+    }
+
+    private int lis(int[] nums, int prev, int idx) {
+        if (idx == nums.length) {
+            return 0;
+        }
+        int skip = lis(nums, prev, idx + 1);
+        int take = 0;
+        if (nums[idx] > prev) {
+            take = 1 + lis(nums, nums[idx], idx + 1);
+        }
+        return Math.max(skip, take);
+    }
 }
 ```
 
@@ -63,15 +73,25 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Patience Sorting / Binary Search) — O(n log n) time, O(n) space
 
 ```java
-public int lengthOfLIS(int[] nums) {
-    List<Integer> sub = new ArrayList<>();
-    for (int num : nums) {
-        int pos = Collections.binarySearch(sub, num);
-        if (pos < 0) pos = -(pos + 1);
-        if (pos == sub.size()) sub.add(num);
-        else sub.set(pos, num);
+import java.util.*;
+
+public class Solution {
+
+    public int lengthOfLIS(int[] nums) {
+        List<Integer> sub = new ArrayList<>();
+        for (int num : nums) {
+            int pos = Collections.binarySearch(sub, num);
+            if (pos < 0) {
+                pos = -(pos + 1);
+            }
+            if (pos == sub.size()) {
+                sub.add(num);
+            } else {
+                sub.set(pos, num);
+            }
+        }
+        return sub.size();
     }
-    return sub.size();
 }
 ```
 

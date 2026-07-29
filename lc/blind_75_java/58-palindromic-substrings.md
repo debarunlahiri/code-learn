@@ -44,16 +44,44 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n³) time, O(1) space
 
 ```java
-public int countSubstrings(String s) {
-    int count = 0;
-    for (int i = 0; i < s.length(); i++)
-        for (int j = i; j < s.length(); j++)
-            if (isPalin(s, i, j)) count++;
-    return count;
-}
-private boolean isPalin(String s, int l, int r) {
-    while (l < r) if (s.charAt(l++) != s.charAt(r--)) return false;
-    return true;
+import java.util.*;
+
+public class PalindromicSubstringsBruteForce {
+
+    public static int countSubstrings(String s) {
+        int count = 0;
+
+        for (int start = 0; start < s.length(); start++) {
+            for (int end = start; end < s.length(); end++) {
+                if (isPalindrome(s, start, end)) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    private static boolean isPalindrome(String s, int left, int right) {
+        while (left < right) {
+            if (s.charAt(left) != s.charAt(right)) {
+                return false;
+            }
+
+            left++;
+            right--;
+        }
+
+        return true;
+    }
+
+    public static void main(String[] args) {
+        String s = "aaa";
+        int result = countSubstrings(s);
+
+        System.out.println("Input: " + s);
+        System.out.println("Number of palindromic substrings: " + result);
+    }
 }
 ```
 
@@ -64,18 +92,40 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Expand Around Center) — O(n²) time, O(1) space
 
 ```java
-public int countSubstrings(String s) {
-    int count = 0;
-    for (int i = 0; i < s.length(); i++) {
-        count += expand(s, i, i);
-        count += expand(s, i, i+1);
+import java.util.*;
+
+public class PalindromicSubstringsOptimized {
+
+    public static int countSubstrings(String s) {
+        int count = 0;
+
+        for (int center = 0; center < s.length(); center++) {
+            count += expandAroundCenter(s, center, center);
+            count += expandAroundCenter(s, center, center + 1);
+        }
+
+        return count;
     }
-    return count;
-}
-private int expand(String s, int l, int r) {
-    int count = 0;
-    while (l >= 0 && r < s.length() && s.charAt(l--) == s.charAt(r++)) count++;
-    return count;
+
+    private static int expandAroundCenter(String s, int left, int right) {
+        int count = 0;
+
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            count++;
+            left--;
+            right++;
+        }
+
+        return count;
+    }
+
+    public static void main(String[] args) {
+        String s = "aaa";
+        int result = countSubstrings(s);
+
+        System.out.println("Input: " + s);
+        System.out.println("Number of palindromic substrings: " + result);
+    }
 }
 ```
 

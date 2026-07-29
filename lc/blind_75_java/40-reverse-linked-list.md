@@ -44,12 +44,39 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java (Extra Space) — O(n) time, O(n) space
 
 ```java
-public ListNode reverseList(ListNode head) {
-    List<Integer> vals = new ArrayList<>();
-    for (ListNode n = head; n != null; n = n.next) vals.add(n.val);
-    ListNode curr = head;
-    for (int i = vals.size()-1; i >= 0; i--) { curr.val = vals.get(i); curr = curr.next; }
-    return head;
+import java.util.*;
+
+class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode() {}
+
+    ListNode(int val) {
+        this.val = val;
+    }
+
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+public class Solution {
+
+    public ListNode reverseList(ListNode head) {
+        List<Integer> vals = new ArrayList<>();
+        for (ListNode n = head; n != null; n = n.next) {
+            vals.add(n.val);
+        }
+        ListNode curr = head;
+        for (int i = vals.size() - 1; i >= 0; i--) {
+            curr.val = vals.get(i);
+            curr = curr.next;
+        }
+        return head;
+    }
 }
 ```
 
@@ -60,15 +87,38 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Iterative) — O(n) time, O(1) space
 
 ```java
-public ListNode reverseList(ListNode head) {
-    ListNode prev = null, curr = head;
-    while (curr != null) {
-        ListNode next = curr.next;
-        curr.next = prev;
-        prev = curr;
-        curr = next;
+import java.util.*;
+
+class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode() {}
+
+    ListNode(int val) {
+        this.val = val;
     }
-    return prev;
+
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+public class Solution {
+
+    public ListNode reverseList(ListNode head) {
+        ListNode prev = null,
+            curr = head;
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
 }
 ```
 

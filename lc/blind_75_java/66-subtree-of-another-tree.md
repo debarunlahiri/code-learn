@@ -41,37 +41,96 @@ understanding the search space, checking small examples by hand, and serving as
 a correctness oracle for randomized tests. Its weakness is repeated work, which
 becomes too expensive near the upper input limits.
 
-### Brute-Force Java / Optimal — O(m×n) time, O(h) space
+### Brute-Force Java
 
 ```java
-public boolean isSubtree(TreeNode root, TreeNode subRoot) {
-    if (root == null) return false;
-    if (isSame(root, subRoot)) return true;
-    return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
 }
-private boolean isSame(TreeNode a, TreeNode b) {
-    if (a == null && b == null) return true;
-    if (a == null || b == null || a.val != b.val) return false;
-    return isSame(a.left, b.left) && isSame(a.right, b.right);
+
+public class Solution {
+
+    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+        String tree = serialize(root);
+        String candidate = serialize(subRoot);
+        return tree.contains(candidate);
+    }
+
+    private String serialize(TreeNode node) {
+        if (node == null) {
+            return ",#";
+        }
+        return ",N" + node.val + serialize(node.left) + serialize(node.right);
+    }
 }
 ```
 
 ## Approach 2: Optimized
 
-The traversal shown above already has the best possible asymptotic bound because every relevant input item must be inspected. The optimized production version uses the same visited-state principle to prevent cycles and duplicate work.
+The optimized implementation removes unnecessary repeated searches or extra copies while preserving the same result.
 
 ### Optimized Java
 
 ```java
-public boolean isSubtree(TreeNode root, TreeNode subRoot) {
-    if (root == null) return false;
-    if (isSame(root, subRoot)) return true;
-    return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
 }
-private boolean isSame(TreeNode a, TreeNode b) {
-    if (a == null && b == null) return true;
-    if (a == null || b == null || a.val != b.val) return false;
-    return isSame(a.left, b.left) && isSame(a.right, b.right);
+
+public class Solution {
+
+    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+        if (root == null) {
+            return false;
+        }
+        if (isSame(root, subRoot)) {
+            return true;
+        }
+        return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
+    }
+
+    private boolean isSame(TreeNode a, TreeNode b) {
+        if (a == null && b == null) {
+            return true;
+        }
+        if (a == null || b == null || a.val != b.val) {
+            return false;
+        }
+        return isSame(a.left, b.left) && isSame(a.right, b.right);
+    }
 }
 ```
 

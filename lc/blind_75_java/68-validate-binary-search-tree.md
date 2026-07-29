@@ -44,30 +44,97 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n²) time — check BST property for each node independently
 
 ```java
-public boolean isValidBST(TreeNode root) {
-    return validate(root, Long.MIN_VALUE, Long.MAX_VALUE);
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
 }
-private boolean validate(TreeNode node, long min, long max) {
-    if (node == null) return true;
-    if (node.val <= min || node.val >= max) return false;
-    return validate(node.left, min, node.val) && validate(node.right, node.val, max);
+
+public class Solution {
+
+    public boolean isValidBST(TreeNode root) {
+        List<Integer> values = new ArrayList<>();
+        inorder(root, values);
+
+        for (int i = 1; i < values.size(); i++) {
+            if (values.get(i) <= values.get(i - 1)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void inorder(TreeNode node, List<Integer> values) {
+        if (node == null) {
+            return;
+        }
+        inorder(node.left, values);
+        values.add(node.val);
+        inorder(node.right, values);
+    }
 }
 ```
 
 ## Approach 2: Optimized
 
-The traversal shown above already has the best possible asymptotic bound because every relevant input item must be inspected. The optimized production version uses the same visited-state principle to prevent cycles and duplicate work.
+The optimized implementation removes unnecessary repeated searches or extra copies while preserving the same result.
 
 ### Optimized Java
 
 ```java
-public boolean isValidBST(TreeNode root) {
-    return validate(root, Long.MIN_VALUE, Long.MAX_VALUE);
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
 }
-private boolean validate(TreeNode node, long min, long max) {
-    if (node == null) return true;
-    if (node.val <= min || node.val >= max) return false;
-    return validate(node.left, min, node.val) && validate(node.right, node.val, max);
+
+public class Solution {
+
+    public boolean isValidBST(TreeNode root) {
+        return validate(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+    private boolean validate(TreeNode node, long min, long max) {
+        if (node == null) {
+            return true;
+        }
+        if (node.val <= min || node.val >= max) {
+            return false;
+        }
+        return (
+            validate(node.left, min, node.val) && validate(node.right, node.val, max)
+        );
+    }
 }
 ```
 

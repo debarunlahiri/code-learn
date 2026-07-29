@@ -44,9 +44,14 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — Using Java's built-in (for reference)
 
 ```java
-// Using + operator is trivial; bit manipulation is the challenge itself
-public int getSum(int a, int b) {
-    return a + b; // trivial brute force
+import java.util.*;
+
+public class Solution {
+
+    // Using + operator is trivial; bit manipulation is the challenge itself
+    public int getSum(int a, int b) {
+        return a + b; // trivial brute force
+    }
 }
 ```
 
@@ -57,13 +62,18 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Bit Manipulation) — O(1) time, O(1) space
 
 ```java
-public int getSum(int a, int b) {
-    while (b != 0) {
-        int carry = (a & b) << 1;
-        a = a ^ b;
-        b = carry;
+import java.util.*;
+
+public class Solution {
+
+    public int getSum(int a, int b) {
+        while (b != 0) {
+            int carry = (a & b) << 1;
+            a = a ^ b;
+            b = carry;
+        }
+        return a;
     }
-    return a;
 }
 ```
 

@@ -44,13 +44,22 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n) insert, O(n log n) or O(n) find median
 
 ```java
+import java.util.*;
+
 class MedianFinder {
+
     List<Integer> data = new ArrayList<>();
-    public void addNum(int num) { data.add(num); }
+
+    public void addNum(int num) {
+        data.add(num);
+    }
+
     public double findMedian() {
         Collections.sort(data);
         int n = data.size();
-        return n%2==0 ? (data.get(n/2-1)+data.get(n/2))/2.0 : data.get(n/2);
+        return n % 2 == 0
+            ? (data.get(n / 2 - 1) + data.get(n / 2)) / 2.0
+            : data.get(n / 2);
     }
 }
 ```
@@ -62,14 +71,19 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Two Heaps) — O(log n) insert, O(1) findMedian
 
 ```java
+import java.util.*;
+
 class MedianFinder {
+
     PriorityQueue<Integer> lo = new PriorityQueue<>(Collections.reverseOrder()); // max-heap
     PriorityQueue<Integer> hi = new PriorityQueue<>(); // min-heap
 
     public void addNum(int num) {
         lo.offer(num);
         hi.offer(lo.poll());
-        if (lo.size() < hi.size()) lo.offer(hi.poll());
+        if (lo.size() < hi.size()) {
+            lo.offer(hi.poll());
+        }
     }
 
     public double findMedian() {

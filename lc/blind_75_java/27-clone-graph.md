@@ -41,53 +41,117 @@ understanding the search space, checking small examples by hand, and serving as
 a correctness oracle for randomized tests. Its weakness is repeated work, which
 becomes too expensive near the upper input limits.
 
-### Brute-Force Java / Optimal (BFS + HashMap) — O(V+E) time, O(V) space
+### Brute-Force Java
 
 ```java
-public Node cloneGraph(Node node) {
-    if (node == null) return null;
-    Map<Node, Node> map = new HashMap<>();
-    Queue<Node> queue = new LinkedList<>();
-    queue.offer(node);
-    map.put(node, new Node(node.val, new ArrayList<>()));
-    while (!queue.isEmpty()) {
-        Node curr = queue.poll();
-        for (Node neighbor : curr.neighbors) {
-            if (!map.containsKey(neighbor)) {
-                map.put(neighbor, new Node(neighbor.val, new ArrayList<>()));
-                queue.offer(neighbor);
-            }
-            map.get(curr).neighbors.add(map.get(neighbor));
-        }
+import java.util.*;
+
+class Node {
+
+    int val;
+    List<Node> neighbors;
+
+    Node() {
+        this(0, new ArrayList<>());
     }
-    return map.get(node);
+
+    Node(int val) {
+        this(val, new ArrayList<>());
+    }
+
+    Node(int val, List<Node> neighbors) {
+        this.val = val;
+        this.neighbors = neighbors;
+    }
+}
+
+public class Solution {
+
+    public Node cloneGraph(Node node) {
+        if (node == null) {
+            return null;
+        }
+
+        List<Node> originalNodes = new ArrayList<>();
+        List<Node> clonedNodes = new ArrayList<>();
+        return cloneWithLinearLookup(node, originalNodes, clonedNodes);
+    }
+
+    private Node cloneWithLinearLookup(
+        Node node,
+        List<Node> originalNodes,
+        List<Node> clonedNodes
+    ) {
+        for (int i = 0; i < originalNodes.size(); i++) {
+            if (originalNodes.get(i) == node) {
+                return clonedNodes.get(i);
+            }
+        }
+
+        Node copy = new Node(node.val, new ArrayList<>());
+        originalNodes.add(node);
+        clonedNodes.add(copy);
+
+        for (Node neighbor : node.neighbors) {
+            copy.neighbors.add(
+                cloneWithLinearLookup(neighbor, originalNodes, clonedNodes)
+            );
+        }
+        return copy;
+    }
 }
 ```
 
 ## Approach 2: Optimized
 
-The traversal shown above already has the best possible asymptotic bound because every relevant input item must be inspected. The optimized production version uses the same visited-state principle to prevent cycles and duplicate work.
+The optimized implementation removes unnecessary repeated searches or extra copies while preserving the same result.
 
 ### Optimized Java
 
 ```java
-public Node cloneGraph(Node node) {
-    if (node == null) return null;
-    Map<Node, Node> map = new HashMap<>();
-    Queue<Node> queue = new LinkedList<>();
-    queue.offer(node);
-    map.put(node, new Node(node.val, new ArrayList<>()));
-    while (!queue.isEmpty()) {
-        Node curr = queue.poll();
-        for (Node neighbor : curr.neighbors) {
-            if (!map.containsKey(neighbor)) {
-                map.put(neighbor, new Node(neighbor.val, new ArrayList<>()));
-                queue.offer(neighbor);
-            }
-            map.get(curr).neighbors.add(map.get(neighbor));
-        }
+import java.util.*;
+
+class Node {
+
+    int val;
+    List<Node> neighbors;
+
+    Node() {
+        this(0, new ArrayList<>());
     }
-    return map.get(node);
+
+    Node(int val) {
+        this(val, new ArrayList<>());
+    }
+
+    Node(int val, List<Node> neighbors) {
+        this.val = val;
+        this.neighbors = neighbors;
+    }
+}
+
+public class Solution {
+
+    public Node cloneGraph(Node node) {
+        if (node == null) {
+            return null;
+        }
+        Map<Node, Node> map = new HashMap<>();
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(node);
+        map.put(node, new Node(node.val, new ArrayList<>()));
+        while (!queue.isEmpty()) {
+            Node curr = queue.poll();
+            for (Node neighbor : curr.neighbors) {
+                if (!map.containsKey(neighbor)) {
+                    map.put(neighbor, new Node(neighbor.val, new ArrayList<>()));
+                    queue.offer(neighbor);
+                }
+                map.get(curr).neighbors.add(map.get(neighbor));
+            }
+        }
+        return map.get(node);
+    }
 }
 ```
 

@@ -44,15 +44,26 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java (Recursion) — O(S^n) time, O(n) space
 
 ```java
-public int coinChange(int[] coins, int amount) {
-    if (amount == 0) return 0;
-    if (amount < 0) return -1;
-    int min = Integer.MAX_VALUE;
-    for (int coin : coins) {
-        int res = coinChange(coins, amount - coin);
-        if (res >= 0 && res < min) min = res + 1;
+import java.util.*;
+
+public class Solution {
+
+    public int coinChange(int[] coins, int amount) {
+        if (amount == 0) {
+            return 0;
+        }
+        if (amount < 0) {
+            return -1;
+        }
+        int min = Integer.MAX_VALUE;
+        for (int coin : coins) {
+            int res = coinChange(coins, amount - coin);
+            if (res >= 0 && res < min) {
+                min = res + 1;
+            }
+        }
+        return min == Integer.MAX_VALUE ? -1 : min;
     }
-    return min == Integer.MAX_VALUE ? -1 : min;
 }
 ```
 
@@ -63,14 +74,23 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Bottom-Up DP) — O(amount × coins) time, O(amount) space
 
 ```java
-public int coinChange(int[] coins, int amount) {
-    int[] dp = new int[amount + 1];
-    Arrays.fill(dp, amount + 1);
-    dp[0] = 0;
-    for (int i = 1; i <= amount; i++)
-        for (int coin : coins)
-            if (coin <= i) dp[i] = Math.min(dp[i], dp[i - coin] + 1);
-    return dp[amount] > amount ? -1 : dp[amount];
+import java.util.*;
+
+public class Solution {
+
+    public int coinChange(int[] coins, int amount) {
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, amount + 1);
+        dp[0] = 0;
+        for (int i = 1; i <= amount; i++) {
+            for (int coin : coins) {
+                if (coin <= i) {
+                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                }
+            }
+        }
+        return dp[amount] > amount ? -1 : dp[amount];
+    }
 }
 ```
 

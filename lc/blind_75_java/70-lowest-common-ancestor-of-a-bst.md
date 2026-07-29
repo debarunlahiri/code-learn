@@ -44,26 +44,106 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n) time, find paths from root, compare
 
 ```java
-public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-    if (root == null) return null;
-    if (p.val < root.val && q.val < root.val) return lowestCommonAncestor(root.left, p, q);
-    if (p.val > root.val && q.val > root.val) return lowestCommonAncestor(root.right, p, q);
-    return root;
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+public class Solution {
+
+    public TreeNode lowestCommonAncestor(
+        TreeNode root,
+        TreeNode first,
+        TreeNode second
+    ) {
+        List<TreeNode> firstPath = pathTo(root, first.val);
+        List<TreeNode> secondPath = pathTo(root, second.val);
+        TreeNode answer = null;
+
+        int commonLength = Math.min(firstPath.size(), secondPath.size());
+        for (int i = 0; i < commonLength; i++) {
+            if (firstPath.get(i) != secondPath.get(i)) {
+                break;
+            }
+            answer = firstPath.get(i);
+        }
+        return answer;
+    }
+
+    private List<TreeNode> pathTo(TreeNode root, int target) {
+        List<TreeNode> path = new ArrayList<>();
+        TreeNode current = root;
+
+        while (current != null) {
+            path.add(current);
+            if (target == current.val) {
+                break;
+            }
+            current = target < current.val ? current.left : current.right;
+        }
+        return path;
+    }
 }
 ```
 
 ## Approach 2: Optimized
 
-The traversal shown above already has the best possible asymptotic bound because every relevant input item must be inspected. The optimized production version uses the same visited-state principle to prevent cycles and duplicate work.
+The optimized implementation removes unnecessary repeated searches or extra copies while preserving the same result.
 
 ### Optimized Java
 
 ```java
-public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-    if (root == null) return null;
-    if (p.val < root.val && q.val < root.val) return lowestCommonAncestor(root.left, p, q);
-    if (p.val > root.val && q.val > root.val) return lowestCommonAncestor(root.right, p, q);
-    return root;
+import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+public class Solution {
+
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null) {
+            return null;
+        }
+        if (p.val < root.val && q.val < root.val) {
+            return lowestCommonAncestor(root.left, p, q);
+        }
+        if (p.val > root.val && q.val > root.val) {
+            return lowestCommonAncestor(root.right, p, q);
+        }
+        return root;
+    }
 }
 ```
 

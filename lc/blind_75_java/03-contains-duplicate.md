@@ -44,11 +44,20 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n²) time, O(1) space
 
 ```java
-public boolean containsDuplicate(int[] nums) {
-    for (int i = 0; i < nums.length; i++)
-        for (int j = i + 1; j < nums.length; j++)
-            if (nums[i] == nums[j]) return true;
-    return false;
+import java.util.*;
+
+public class Solution {
+
+    public boolean containsDuplicate(int[] nums) {
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nums[i] == nums[j]) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
 ```
 
@@ -59,11 +68,19 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java — O(n) time, O(n) space
 
 ```java
-public boolean containsDuplicate(int[] nums) {
-    Set<Integer> set = new HashSet<>();
-    for (int n : nums)
-        if (!set.add(n)) return true;
-    return false;
+import java.util.*;
+
+public class Solution {
+
+    public boolean containsDuplicate(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        for (int n : nums) {
+            if (!set.add(n)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 ```
 

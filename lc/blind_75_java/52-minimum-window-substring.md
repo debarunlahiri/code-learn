@@ -44,22 +44,41 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n² × |charset|) time
 
 ```java
-public String minWindow(String s, String t) {
-    String result = "";
-    for (int i = 0; i < s.length(); i++)
-        for (int j = i; j < s.length(); j++) {
-            String sub = s.substring(i, j+1);
-            if (contains(sub, t) && (result.isEmpty() || sub.length() < result.length()))
-                result = sub;
+import java.util.*;
+
+public class Solution {
+
+    public String minWindow(String s, String t) {
+        String result = "";
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = i; j < s.length(); j++) {
+                String sub = s.substring(i, j + 1);
+                if (
+                    contains(sub, t) &&
+                    (result.isEmpty() || sub.length() < result.length())
+                ) {
+                    result = sub;
+                }
+            }
         }
-    return result;
-}
-private boolean contains(String window, String t) {
-    int[] count = new int[128];
-    for (char c : t.toCharArray()) count[c]++;
-    for (char c : window.toCharArray()) count[c]--;
-    for (int c : count) if (c > 0) return false;
-    return true;
+        return result;
+    }
+
+    private boolean contains(String window, String t) {
+        int[] count = new int[128];
+        for (char c : t.toCharArray()) {
+            count[c]++;
+        }
+        for (char c : window.toCharArray()) {
+            count[c]--;
+        }
+        for (int c : count) {
+            if (c > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 ```
 
@@ -70,21 +89,41 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Sliding Window) — O(n) time, O(|charset|) space
 
 ```java
-public String minWindow(String s, String t) {
-    int[] need = new int[128]; int have = 0, required = 0;
-    for (char c : t.toCharArray()) { if (need[c]++ == 0) required++; }
-    int left = 0, minLen = Integer.MAX_VALUE, start = 0;
-    int[] window = new int[128];
-    for (int right = 0; right < s.length(); right++) {
-        char c = s.charAt(right);
-        if (++window[c] == need[c]) have++;
-        while (have == required) {
-            if (right - left + 1 < minLen) { minLen = right - left + 1; start = left; }
-            if (--window[s.charAt(left)] < need[s.charAt(left)]) have--;
-            left++;
+import java.util.*;
+
+public class Solution {
+
+    public String minWindow(String s, String t) {
+        int[] need = new int[128];
+        int have = 0,
+            required = 0;
+        for (char c : t.toCharArray()) {
+            if (need[c]++ == 0) {
+                required++;
+            }
         }
+        int left = 0,
+            minLen = Integer.MAX_VALUE,
+            start = 0;
+        int[] window = new int[128];
+        for (int right = 0; right < s.length(); right++) {
+            char c = s.charAt(right);
+            if (++window[c] == need[c]) {
+                have++;
+            }
+            while (have == required) {
+                if (right - left + 1 < minLen) {
+                    minLen = right - left + 1;
+                    start = left;
+                }
+                if (--window[s.charAt(left)] < need[s.charAt(left)]) {
+                    have--;
+                }
+                left++;
+            }
+        }
+        return minLen == Integer.MAX_VALUE ? "" : s.substring(start, start + minLen);
     }
-    return minLen == Integer.MAX_VALUE ? "" : s.substring(start, start + minLen);
 }
 ```
 

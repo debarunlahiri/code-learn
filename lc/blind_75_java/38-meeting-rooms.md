@@ -46,11 +46,23 @@ becomes too expensive near the upper input limits.
 For this problem, the straightforward correctness-first implementation uses the same core traversal shown below. It is presented first as the baseline; the following section explains the production interpretation and invariant.
 
 ```java
-public boolean canAttendMeetings(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
-    for (int i = 1; i < intervals.length; i++)
-        if (intervals[i][0] < intervals[i-1][1]) return false;
-    return true;
+import java.util.*;
+
+public class Solution {
+
+    public boolean canAttendMeetings(int[][] intervals) {
+        for (int i = 0; i < intervals.length; i++) {
+            for (int j = i + 1; j < intervals.length; j++) {
+                boolean overlaps =
+                    intervals[i][0] < intervals[j][1] &&
+                    intervals[j][0] < intervals[i][1];
+                if (overlaps) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
 ```
 
@@ -61,11 +73,19 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java — O(n log n) time, O(1) space
 
 ```java
-public boolean canAttendMeetings(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
-    for (int i = 1; i < intervals.length; i++)
-        if (intervals[i][0] < intervals[i-1][1]) return false;
-    return true;
+import java.util.*;
+
+public class Solution {
+
+    public boolean canAttendMeetings(int[][] intervals) {
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i][0] < intervals[i - 1][1]) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 ```
 

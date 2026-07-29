@@ -46,38 +46,62 @@ becomes too expensive near the upper input limits.
 For this problem, the straightforward correctness-first implementation uses the same core traversal shown below. It is presented first as the baseline; the following section explains the production interpretation and invariant.
 
 ```java
-public List<String> findWords(char[][] board, String[] words) {
-    TrieNode root = buildTrie(words);
-    List<String> result = new ArrayList<>();
-    for (int i = 0; i < board.length; i++)
-        for (int j = 0; j < board[0].length; j++)
-            dfs(board, i, j, root, result);
-    return result;
-}
-private void dfs(char[][] board, int i, int j, TrieNode node, List<String> result) {
-    if (i<0||i>=board.length||j<0||j>=board[0].length||board[i][j]=='#') return;
-    char c = board[i][j];
-    TrieNode next = node.children[c-'a'];
-    if (next == null) return;
-    if (next.word != null) { result.add(next.word); next.word = null; }
-    board[i][j] = '#';
-    dfs(board,i+1,j,next,result); dfs(board,i-1,j,next,result);
-    dfs(board,i,j+1,next,result); dfs(board,i,j-1,next,result);
-    board[i][j] = c;
-}
-private TrieNode buildTrie(String[] words) {
-    TrieNode root = new TrieNode();
-    for (String w : words) {
-        TrieNode node = root;
-        for (char c : w.toCharArray()) {
-            if (node.children[c-'a'] == null) node.children[c-'a'] = new TrieNode();
-            node = node.children[c-'a'];
+import java.util.*;
+
+public class Solution {
+
+    public List<String> findWords(char[][] board, String[] words) {
+        List<String> foundWords = new ArrayList<>();
+        for (String word : words) {
+            if (exists(board, word)) {
+                foundWords.add(word);
+            }
         }
-        node.word = w;
+        return foundWords;
     }
-    return root;
+
+    private boolean exists(char[][] board, String word) {
+        for (int row = 0; row < board.length; row++) {
+            for (int column = 0; column < board[0].length; column++) {
+                if (search(board, word, row, column, 0)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean search(
+        char[][] board,
+        String word,
+        int row,
+        int column,
+        int index
+    ) {
+        if (index == word.length()) {
+            return true;
+        }
+        if (
+            row < 0 ||
+            row >= board.length ||
+            column < 0 ||
+            column >= board[0].length ||
+            board[row][column] != word.charAt(index)
+        ) {
+            return false;
+        }
+
+        char saved = board[row][column];
+        board[row][column] = '#';
+        boolean found =
+            search(board, word, row + 1, column, index + 1) ||
+            search(board, word, row - 1, column, index + 1) ||
+            search(board, word, row, column + 1, index + 1) ||
+            search(board, word, row, column - 1, index + 1);
+        board[row][column] = saved;
+        return found;
+    }
 }
-class TrieNode { TrieNode[] children = new TrieNode[26]; String word; }
 ```
 
 ## Approach 2: Optimized
@@ -87,38 +111,69 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Trie + Backtracking) — O(m × n × 4^L) time
 
 ```java
-public List<String> findWords(char[][] board, String[] words) {
-    TrieNode root = buildTrie(words);
-    List<String> result = new ArrayList<>();
-    for (int i = 0; i < board.length; i++)
-        for (int j = 0; j < board[0].length; j++)
-            dfs(board, i, j, root, result);
-    return result;
-}
-private void dfs(char[][] board, int i, int j, TrieNode node, List<String> result) {
-    if (i<0||i>=board.length||j<0||j>=board[0].length||board[i][j]=='#') return;
-    char c = board[i][j];
-    TrieNode next = node.children[c-'a'];
-    if (next == null) return;
-    if (next.word != null) { result.add(next.word); next.word = null; }
-    board[i][j] = '#';
-    dfs(board,i+1,j,next,result); dfs(board,i-1,j,next,result);
-    dfs(board,i,j+1,next,result); dfs(board,i,j-1,next,result);
-    board[i][j] = c;
-}
-private TrieNode buildTrie(String[] words) {
-    TrieNode root = new TrieNode();
-    for (String w : words) {
-        TrieNode node = root;
-        for (char c : w.toCharArray()) {
-            if (node.children[c-'a'] == null) node.children[c-'a'] = new TrieNode();
-            node = node.children[c-'a'];
+import java.util.*;
+
+public class Solution {
+
+    public List<String> findWords(char[][] board, String[] words) {
+        TrieNode root = buildTrie(words);
+        List<String> result = new ArrayList<>();
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                dfs(board, i, j, root, result);
+            }
         }
-        node.word = w;
+        return result;
     }
-    return root;
+
+    private void dfs(char[][] board, int i, int j, TrieNode node, List<String> result) {
+        if (
+            i < 0 ||
+            i >= board.length ||
+            j < 0 ||
+            j >= board[0].length ||
+            board[i][j] == '#'
+        ) {
+            return;
+        }
+        char c = board[i][j];
+        TrieNode next = node.children[c - 'a'];
+        if (next == null) {
+            return;
+        }
+        if (next.word != null) {
+            result.add(next.word);
+            next.word = null;
+        }
+        board[i][j] = '#';
+        dfs(board, i + 1, j, next, result);
+        dfs(board, i - 1, j, next, result);
+        dfs(board, i, j + 1, next, result);
+        dfs(board, i, j - 1, next, result);
+        board[i][j] = c;
+    }
+
+    private TrieNode buildTrie(String[] words) {
+        TrieNode root = new TrieNode();
+        for (String w : words) {
+            TrieNode node = root;
+            for (char c : w.toCharArray()) {
+                if (node.children[c - 'a'] == null) {
+                    node.children[c - 'a'] = new TrieNode();
+                }
+                node = node.children[c - 'a'];
+            }
+            node.word = w;
+        }
+        return root;
+    }
+
+    class TrieNode {
+
+        TrieNode[] children = new TrieNode[26];
+        String word;
+    }
 }
-class TrieNode { TrieNode[] children = new TrieNode[26]; String word; }
 ```
 
 ---

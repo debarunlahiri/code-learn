@@ -46,14 +46,44 @@ becomes too expensive near the upper input limits.
 For this problem, the straightforward correctness-first implementation uses the same core traversal shown below. It is presented first as the baseline; the following section explains the production interpretation and invariant.
 
 ```java
-public int eraseOverlapIntervals(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
-    int count = 0, end = Integer.MIN_VALUE;
-    for (int[] interval : intervals) {
-        if (interval[0] >= end) end = interval[1];
-        else count++;
+import java.util.*;
+
+public class Solution {
+
+    public int eraseOverlapIntervals(int[][] intervals) {
+        return (
+            intervals.length - largestCompatibleSubset(intervals, 0, new ArrayList<>())
+        );
     }
-    return count;
+
+    private int largestCompatibleSubset(
+        int[][] intervals,
+        int index,
+        List<int[]> selected
+    ) {
+        if (index == intervals.length) {
+            return selected.size();
+        }
+
+        int withoutCurrent = largestCompatibleSubset(intervals, index + 1, selected);
+
+        int withCurrent = 0;
+        if (doesNotOverlap(intervals[index], selected)) {
+            selected.add(intervals[index]);
+            withCurrent = largestCompatibleSubset(intervals, index + 1, selected);
+            selected.remove(selected.size() - 1);
+        }
+        return Math.max(withoutCurrent, withCurrent);
+    }
+
+    private boolean doesNotOverlap(int[] candidate, List<int[]> selected) {
+        for (int[] interval : selected) {
+            if (candidate[0] < interval[1] && interval[0] < candidate[1]) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 ```
 
@@ -64,14 +94,23 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Greedy) — O(n log n) time, O(1) space
 
 ```java
-public int eraseOverlapIntervals(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
-    int count = 0, end = Integer.MIN_VALUE;
-    for (int[] interval : intervals) {
-        if (interval[0] >= end) end = interval[1];
-        else count++;
+import java.util.*;
+
+public class Solution {
+
+    public int eraseOverlapIntervals(int[][] intervals) {
+        Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
+        int count = 0,
+            end = Integer.MIN_VALUE;
+        for (int[] interval : intervals) {
+            if (interval[0] >= end) {
+                end = interval[1];
+            } else {
+                count++;
+            }
+        }
+        return count;
     }
-    return count;
 }
 ```
 

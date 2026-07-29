@@ -44,16 +44,21 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n²) time, O(1) space
 
 ```java
-public int maxSubArray(int[] nums) {
-    int max = Integer.MIN_VALUE;
-    for (int i = 0; i < nums.length; i++) {
-        int sum = 0;
-        for (int j = i; j < nums.length; j++) {
-            sum += nums[j];
-            max = Math.max(max, sum);
+import java.util.*;
+
+public class Solution {
+
+    public int maxSubArray(int[] nums) {
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            int sum = 0;
+            for (int j = i; j < nums.length; j++) {
+                sum += nums[j];
+                max = Math.max(max, sum);
+            }
         }
+        return max;
     }
-    return max;
 }
 ```
 
@@ -64,13 +69,19 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Kadane's) — O(n) time, O(1) space
 
 ```java
-public int maxSubArray(int[] nums) {
-    int max = nums[0], curr = nums[0];
-    for (int i = 1; i < nums.length; i++) {
-        curr = Math.max(nums[i], curr + nums[i]);
-        max = Math.max(max, curr);
+import java.util.*;
+
+public class Solution {
+
+    public int maxSubArray(int[] nums) {
+        int max = nums[0],
+            curr = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            curr = Math.max(nums[i], curr + nums[i]);
+            max = Math.max(max, curr);
+        }
+        return max;
     }
-    return max;
 }
 ```
 

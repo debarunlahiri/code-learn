@@ -44,12 +44,19 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n²) time, O(1) space
 
 ```java
-public int maxProfit(int[] prices) {
-    int max = 0;
-    for (int i = 0; i < prices.length; i++)
-        for (int j = i + 1; j < prices.length; j++)
-            max = Math.max(max, prices[j] - prices[i]);
-    return max;
+import java.util.*;
+
+public class Solution {
+
+    public int maxProfit(int[] prices) {
+        int max = 0;
+        for (int i = 0; i < prices.length; i++) {
+            for (int j = i + 1; j < prices.length; j++) {
+                max = Math.max(max, prices[j] - prices[i]);
+            }
+        }
+        return max;
+    }
 }
 ```
 
@@ -60,13 +67,19 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java — O(n) time, O(1) space
 
 ```java
-public int maxProfit(int[] prices) {
-    int minPrice = Integer.MAX_VALUE, maxProfit = 0;
-    for (int price : prices) {
-        minPrice = Math.min(minPrice, price);
-        maxProfit = Math.max(maxProfit, price - minPrice);
+import java.util.*;
+
+public class Solution {
+
+    public int maxProfit(int[] prices) {
+        int minPrice = Integer.MAX_VALUE,
+            maxProfit = 0;
+        for (int price : prices) {
+            minPrice = Math.min(minPrice, price);
+            maxProfit = Math.max(maxProfit, price - minPrice);
+        }
+        return maxProfit;
     }
-    return maxProfit;
 }
 ```
 

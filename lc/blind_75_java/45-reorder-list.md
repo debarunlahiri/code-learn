@@ -44,17 +44,44 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — collect in array, reorder — O(n) time, O(n) space
 
 ```java
-public void reorderList(ListNode head) {
-    List<ListNode> nodes = new ArrayList<>();
-    for (ListNode n = head; n != null; n = n.next) nodes.add(n);
-    int lo = 0, hi = nodes.size() - 1;
-    while (lo < hi) {
-        nodes.get(lo).next = nodes.get(hi);
-        if (++lo == hi) break;
-        nodes.get(hi).next = nodes.get(lo);
-        hi--;
+import java.util.*;
+
+class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode() {}
+
+    ListNode(int val) {
+        this.val = val;
     }
-    nodes.get(lo).next = null;
+
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+public class Solution {
+
+    public void reorderList(ListNode head) {
+        List<ListNode> nodes = new ArrayList<>();
+        for (ListNode n = head; n != null; n = n.next) {
+            nodes.add(n);
+        }
+        int lo = 0,
+            hi = nodes.size() - 1;
+        while (lo < hi) {
+            nodes.get(lo).next = nodes.get(hi);
+            if (++lo == hi) {
+                break;
+            }
+            nodes.get(hi).next = nodes.get(lo);
+            hi--;
+        }
+        nodes.get(lo).next = null;
+    }
 }
 ```
 
@@ -65,19 +92,56 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Find Mid + Reverse + Merge) — O(n) time, O(1) space
 
 ```java
-public void reorderList(ListNode head) {
-    ListNode slow = head, fast = head;
-    while (fast.next != null && fast.next.next != null) { slow = slow.next; fast = fast.next.next; }
-    ListNode second = slow.next; slow.next = null;
-    // Reverse second half
-    ListNode prev = null, curr = second;
-    while (curr != null) { ListNode next = curr.next; curr.next = prev; prev = curr; curr = next; }
-    // Merge
-    ListNode first = head; second = prev;
-    while (second != null) {
-        ListNode tmp1 = first.next, tmp2 = second.next;
-        first.next = second; second.next = tmp1;
-        first = tmp1; second = tmp2;
+import java.util.*;
+
+class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode() {}
+
+    ListNode(int val) {
+        this.val = val;
+    }
+
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+public class Solution {
+
+    public void reorderList(ListNode head) {
+        ListNode slow = head,
+            fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        ListNode second = slow.next;
+        slow.next = null;
+        // Reverse second half
+        ListNode prev = null,
+            curr = second;
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        // Merge
+        ListNode first = head;
+        second = prev;
+        while (second != null) {
+            ListNode tmp1 = first.next,
+                tmp2 = second.next;
+            first.next = second;
+            second.next = tmp1;
+            first = tmp1;
+            second = tmp2;
+        }
     }
 }
 ```

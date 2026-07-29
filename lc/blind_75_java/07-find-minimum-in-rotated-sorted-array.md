@@ -44,10 +44,17 @@ becomes too expensive near the upper input limits.
 ### Brute-Force Java — O(n) time, O(1) space
 
 ```java
-public int findMin(int[] nums) {
-    int min = nums[0];
-    for (int n : nums) min = Math.min(min, n);
-    return min;
+import java.util.*;
+
+public class Solution {
+
+    public int findMin(int[] nums) {
+        int min = nums[0];
+        for (int n : nums) {
+            min = Math.min(min, n);
+        }
+        return min;
+    }
 }
 ```
 
@@ -58,14 +65,23 @@ The optimized solution removes repeated work while preserving the same correctne
 ### Optimized Java (Binary Search) — O(log n) time, O(1) space
 
 ```java
-public int findMin(int[] nums) {
-    int lo = 0, hi = nums.length - 1;
-    while (lo < hi) {
-        int mid = lo + (hi - lo) / 2;
-        if (nums[mid] > nums[hi]) lo = mid + 1;
-        else hi = mid;
+import java.util.*;
+
+public class Solution {
+
+    public int findMin(int[] nums) {
+        int lo = 0,
+            hi = nums.length - 1;
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] > nums[hi]) {
+                lo = mid + 1;
+            } else {
+                hi = mid;
+            }
+        }
+        return nums[lo];
     }
-    return nums[lo];
 }
 ```
 
