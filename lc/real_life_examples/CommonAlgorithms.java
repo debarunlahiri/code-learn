@@ -15,11 +15,20 @@ import java.util.Queue;
 import java.util.Set;
 
 /**
- * A self-contained reference for common data structures and algorithms.
+ * Beginner-friendly examples of common algorithms.
  *
- * <p>Every method is a working implementation. The small examples in
- * {@link #main(String[])} make the file directly runnable while keeping each
- * algorithm reusable from another class.</p>
+ * <p>You do not need to understand this entire file at once. Pick one section,
+ * run its example from {@link #main(String[])}, and then read that method.
+ * Each public method is independent, so it can also be copied into a small
+ * practice program.</p>
+ *
+ * <p>Useful words used in this file:</p>
+ * <ul>
+ *   <li><b>Time complexity</b>: how the running time grows as the input grows.</li>
+ *   <li><b>Space complexity</b>: how much extra memory an algorithm needs.</li>
+ *   <li><b>Vertex</b>: a point in a graph, such as a city or a user.</li>
+ *   <li><b>Edge</b>: a connection between two vertices, such as a road.</li>
+ * </ul>
  */
 public final class CommonAlgorithms {
 
@@ -29,19 +38,23 @@ public final class CommonAlgorithms {
     }
 
     public static void main(String[] args) {
+        System.out.println("\n--- Number theory ---");
         System.out.println("Primes up to 30: " + sieveOfEratosthenes(30));
         System.out.println("GCD of 48 and 18: " + gcd(48, 18));
         System.out.println("2^10: " + fastPower(2, 10));
 
+        System.out.println("\n--- Searching and sorting ---");
         int[] values = {7, 2, 9, 1, 5};
         mergeSort(values);
         System.out.println("Merge sort: " + Arrays.toString(values));
         System.out.println("Binary search for 5: " + binarySearch(values, 5));
 
+        System.out.println("\n--- Arrays and strings ---");
         int[] gains = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
         System.out.println("Maximum subarray sum: " + kadane(gains));
         System.out.println("KMP matches: " + kmpSearch("ABABDABACDABABCABAB", "ABABCABAB"));
 
+        System.out.println("\n--- Graphs ---");
         WeightedGraph graph = new WeightedGraph(5, false);
         graph.addEdge(0, 1, 4);
         graph.addEdge(0, 2, 1);
@@ -53,6 +66,7 @@ public final class CommonAlgorithms {
         System.out.println("Dijkstra distances: " + Arrays.toString(dijkstra(graph, 0)));
         System.out.println("Prim MST weight: " + primMstWeight(graph));
 
+        System.out.println("\n--- Dynamic programming and backtracking ---");
         System.out.println("0/1 knapsack: "
                 + zeroOneKnapsack(new int[]{2, 3, 4}, new int[]{4, 5, 7}, 5));
         System.out.println("LCS length: " + longestCommonSubsequence("AGGTAB", "GXTXAYB"));
@@ -60,10 +74,16 @@ public final class CommonAlgorithms {
     }
 
     // ---------------------------------------------------------------------
-    // Number theory
+    // Number theory: algorithms that work with whole numbers.
     // ---------------------------------------------------------------------
 
-    /** Sieve of Eratosthenes. Time: O(n log log n), space: O(n). */
+    /**
+     * Finds every prime number from 2 through {@code limit}.
+     *
+     * <p>Idea: begin with every number available. When a prime is found, mark
+     * all of its multiples as composite. The unmarked numbers are prime.</p>
+     * Time: O(n log log n), space: O(n).
+     */
     public static List<Integer> sieveOfEratosthenes(int limit) {
         if (limit < 2) {
             return Collections.emptyList();
@@ -87,7 +107,11 @@ public final class CommonAlgorithms {
         return primes;
     }
 
-    /** Euclidean algorithm. Time: O(log(min(a, b))). */
+    /**
+     * Finds the greatest common divisor using repeated division.
+     * Example: gcd(48, 18) eventually becomes gcd(6, 0), so the answer is 6.
+     * Time: O(log(min(a, b))).
+     */
     public static long gcd(long a, long b) {
         a = Math.abs(a);
         b = Math.abs(b);
@@ -99,7 +123,10 @@ public final class CommonAlgorithms {
         return a;
     }
 
-    /** Returns [gcd, x, y], where a*x + b*y = gcd(a, b). */
+    /**
+     * Returns {@code [gcd, x, y]} where {@code a*x + b*y = gcd(a, b)}.
+     * This extended form is useful for modular arithmetic and cryptography.
+     */
     public static long[] extendedGcd(long a, long b) {
         if (b == 0) {
             return new long[]{Math.abs(a), a < 0 ? -1 : 1, 0};
@@ -108,7 +135,10 @@ public final class CommonAlgorithms {
         return new long[]{next[0], next[2], next[1] - (a / b) * next[2]};
     }
 
-    /** Binary exponentiation for a non-negative exponent. Time: O(log exponent). */
+    /**
+     * Calculates a power by repeatedly squaring the base.
+     * This needs about log(exponent) steps instead of exponent steps.
+     */
     public static long fastPower(long base, long exponent) {
         if (exponent < 0) {
             throw new IllegalArgumentException("Exponent must be non-negative");
@@ -125,7 +155,7 @@ public final class CommonAlgorithms {
     }
 
     // ---------------------------------------------------------------------
-    // Searching and sorting
+    // Searching and sorting: finding values and putting them in order.
     // ---------------------------------------------------------------------
 
     public static int linearSearch(int[] values, int target) {
@@ -137,7 +167,10 @@ public final class CommonAlgorithms {
         return -1;
     }
 
-    /** Requires a sorted array. */
+    /**
+     * Finds a value by repeatedly discarding half of a sorted array.
+     * Returns its index, or -1 when it is absent. The array must be sorted.
+     */
     public static int binarySearch(int[] values, int target) {
         int left = 0;
         int right = values.length - 1;
@@ -156,6 +189,7 @@ public final class CommonAlgorithms {
     }
 
     public static void bubbleSort(int[] values) {
+        // After each pass, the largest remaining value has "bubbled" to end.
         for (int end = values.length - 1; end > 0; end--) {
             boolean swapped = false;
             for (int index = 0; index < end; index++) {
@@ -171,6 +205,7 @@ public final class CommonAlgorithms {
     }
 
     public static void selectionSort(int[] values) {
+        // Select the smallest remaining value and place it at the front.
         for (int index = 0; index < values.length - 1; index++) {
             int minimum = index;
             for (int candidate = index + 1; candidate < values.length; candidate++) {
@@ -183,6 +218,7 @@ public final class CommonAlgorithms {
     }
 
     public static void insertionSort(int[] values) {
+        // Grow a sorted left side by inserting one value at a time.
         for (int index = 1; index < values.length; index++) {
             int current = values[index];
             int position = index - 1;
@@ -206,18 +242,26 @@ public final class CommonAlgorithms {
         int middle = left + (right - left) / 2;
         mergeSort(values, buffer, left, middle);
         mergeSort(values, buffer, middle + 1, right);
-        int first = left;
-        int second = middle + 1;
-        int write = left;
-        while (first <= middle && second <= right) {
-            buffer[write++] = values[first] <= values[second]
-                    ? values[first++] : values[second++];
+        int leftIndex = left;
+        int rightIndex = middle + 1;
+        int bufferIndex = left;
+
+        // Merge the two sorted halves into the temporary buffer.
+        while (leftIndex <= middle && rightIndex <= right) {
+            if (values[leftIndex] <= values[rightIndex]) {
+                buffer[bufferIndex] = values[leftIndex];
+                leftIndex++;
+            } else {
+                buffer[bufferIndex] = values[rightIndex];
+                rightIndex++;
+            }
+            bufferIndex++;
         }
-        while (first <= middle) {
-            buffer[write++] = values[first++];
+        while (leftIndex <= middle) {
+            buffer[bufferIndex++] = values[leftIndex++];
         }
-        while (second <= right) {
-            buffer[write++] = values[second++];
+        while (rightIndex <= right) {
+            buffer[bufferIndex++] = values[rightIndex++];
         }
         for (int index = left; index <= right; index++) {
             values[index] = buffer[index];
@@ -298,10 +342,13 @@ public final class CommonAlgorithms {
     }
 
     // ---------------------------------------------------------------------
-    // Arrays
+    // Arrays: common techniques for processing a sequence of values.
     // ---------------------------------------------------------------------
 
-    /** Kadane's algorithm. The array must not be empty. */
+    /**
+     * Finds the largest sum made by consecutive values.
+     * At each position, either start a new subarray or extend the old one.
+     */
     public static int kadane(int[] values) {
         requireNonEmpty(values);
         int bestEndingHere = values[0];
@@ -313,7 +360,10 @@ public final class CommonAlgorithms {
         return best;
     }
 
-    /** Dutch National Flag algorithm for an array containing only 0, 1 and 2. */
+    /**
+     * Sorts an array containing only 0, 1, and 2 in one pass.
+     * Values before {@code low} are 0; values after {@code high} are 2.
+     */
     public static void dutchNationalFlag(int[] values) {
         int low = 0;
         int middle = 0;
@@ -331,7 +381,10 @@ public final class CommonAlgorithms {
         }
     }
 
-    /** Two pointers on a sorted array; returns the pair's indexes or [-1, -1]. */
+    /**
+     * Finds two values that make {@code target} in a sorted array.
+     * A small sum moves the left pointer; a large sum moves the right pointer.
+     */
     public static int[] twoPointerPairSum(int[] sortedValues, int target) {
         int left = 0;
         int right = sortedValues.length - 1;
@@ -349,7 +402,10 @@ public final class CommonAlgorithms {
         return new int[]{-1, -1};
     }
 
-    /** Sliding-window maximum sum of exactly windowSize consecutive values. */
+    /**
+     * Finds the largest sum of exactly {@code windowSize} consecutive values.
+     * The window moves by adding one new value and removing one old value.
+     */
     public static long maximumWindowSum(int[] values, int windowSize) {
         if (windowSize <= 0 || windowSize > values.length) {
             throw new IllegalArgumentException("Invalid window size");
@@ -366,7 +422,10 @@ public final class CommonAlgorithms {
         return best;
     }
 
-    /** prefix[i] stores the sum of values[0..i-1]. */
+    /**
+     * Precalculates running totals. {@code prefix[i]} contains the sum before
+     * index {@code i}, allowing later range-sum queries to take constant time.
+     */
     public static long[] prefixSums(int[] values) {
         long[] prefix = new long[values.length + 1];
         for (int index = 0; index < values.length; index++) {
@@ -384,10 +443,14 @@ public final class CommonAlgorithms {
     }
 
     // ---------------------------------------------------------------------
-    // String and pattern matching algorithms
+    // Strings: finding a smaller pattern inside a larger piece of text.
     // ---------------------------------------------------------------------
 
-    /** Knuth-Morris-Pratt pattern matching. Time: O(text + pattern). */
+    /**
+     * Finds every starting index of {@code pattern} inside {@code text}.
+     * KMP remembers how much of the pattern still matches after a mismatch,
+     * so it never moves backward through the text.
+     */
     public static List<Integer> kmpSearch(String text, String pattern) {
         if (pattern.isEmpty()) {
             return Collections.singletonList(0);
@@ -428,7 +491,10 @@ public final class CommonAlgorithms {
         return lps;
     }
 
-    /** Rabin-Karp using a rolling hash, with character verification on a hash match. */
+    /**
+     * Finds a pattern by comparing numeric fingerprints called hashes.
+     * The rolling hash cheaply removes the old character and adds the new one.
+     */
     public static List<Integer> rabinKarp(String text, String pattern) {
         List<Integer> matches = new ArrayList<>();
         if (pattern.isEmpty()) {
@@ -466,7 +532,10 @@ public final class CommonAlgorithms {
         return matches;
     }
 
-    /** Z algorithm. z[i] is the prefix-match length beginning at i. */
+    /**
+     * For every index, records how many characters match the string's prefix.
+     * For example, the Z values help find repeated prefixes and patterns.
+     */
     public static int[] zAlgorithm(String value) {
         int[] z = new int[value.length()];
         int left = 0;
@@ -488,7 +557,7 @@ public final class CommonAlgorithms {
     }
 
     // ---------------------------------------------------------------------
-    // Linked list
+    // Linked list: nodes connected one after another.
     // ---------------------------------------------------------------------
 
     public static final class ListNode {
@@ -500,7 +569,10 @@ public final class CommonAlgorithms {
         }
     }
 
-    /** Floyd's tortoise-and-hare cycle detection. */
+    /**
+     * Detects a loop with a slow pointer and a fast pointer.
+     * If a loop exists, the faster pointer eventually catches the slower one.
+     */
     public static boolean hasCycle(ListNode head) {
         ListNode slow = head;
         ListNode fast = head;
@@ -515,7 +587,7 @@ public final class CommonAlgorithms {
     }
 
     // ---------------------------------------------------------------------
-    // Graphs, shortest paths, connectivity and topological sorting
+    // Graphs: points (vertices) connected by weighted links (edges).
     // ---------------------------------------------------------------------
 
     public static final class Edge {
@@ -575,6 +647,7 @@ public final class CommonAlgorithms {
         Queue<Integer> queue = new ArrayDeque<>();
         visited[start] = true;
         queue.offer(start);
+        // A queue makes us visit nearby vertices before distant vertices.
         while (!queue.isEmpty()) {
             int vertex = queue.poll();
             order.add(vertex);
@@ -598,6 +671,7 @@ public final class CommonAlgorithms {
 
     private static void dfs(WeightedGraph graph, int vertex, boolean[] visited,
                             List<Integer> order) {
+        // Visit this vertex, then explore each unvisited neighbour completely.
         visited[vertex] = true;
         order.add(vertex);
         for (Edge edge : graph.adjacency.get(vertex)) {
@@ -607,7 +681,11 @@ public final class CommonAlgorithms {
         }
     }
 
-    /** Dijkstra requires non-negative edge weights. */
+    /**
+     * Finds the shortest distance from one vertex to every other vertex.
+     * The priority queue always gives us the closest unfinished vertex.
+     * All edge weights must be non-negative.
+     */
     public static long[] dijkstra(WeightedGraph graph, int source) {
         graph.validateVertex(source);
         long[] distance = new long[graph.size()];
@@ -635,7 +713,11 @@ public final class CommonAlgorithms {
         return distance;
     }
 
-    /** Returns null if a negative cycle is reachable from the source. */
+    /**
+     * Finds shortest paths even when edges have negative weights.
+     * Returns {@code null} when a reachable negative cycle makes a shortest
+     * distance impossible to define.
+     */
     public static long[] bellmanFord(WeightedGraph graph, int source) {
         graph.validateVertex(source);
         long[] distance = new long[graph.size()];
@@ -678,6 +760,7 @@ public final class CommonAlgorithms {
                 distance[from][edge.to] = Math.min(distance[from][edge.to], edge.weight);
             }
         }
+        // Try allowing each vertex as an intermediate stop.
         for (int through = 0; through < size; through++) {
             for (int from = 0; from < size; from++) {
                 for (int to = 0; to < size; to++) {
@@ -692,6 +775,7 @@ public final class CommonAlgorithms {
     }
 
     public static long kruskalMstWeight(WeightedGraph graph) {
+        // Take the cheapest edge that does not create a cycle.
         List<Edge> edges = new ArrayList<>(graph.edges);
         edges.sort(Comparator.comparingInt(edge -> edge.weight));
         DisjointSet disjointSet = new DisjointSet(graph.size());
@@ -718,6 +802,7 @@ public final class CommonAlgorithms {
         queue.offer(new Edge(-1, 0, 0));
         long weight = 0;
         int visited = 0;
+        // Grow one connected tree by repeatedly taking its cheapest next edge.
         while (!queue.isEmpty() && visited < graph.size()) {
             Edge edge = queue.poll();
             if (included[edge.to]) {
@@ -829,7 +914,7 @@ public final class CommonAlgorithms {
     }
 
     // ---------------------------------------------------------------------
-    // Trees
+    // Trees: hierarchical data such as folders, menus, or family relationships.
     // ---------------------------------------------------------------------
 
     public static final class TreeNode {
@@ -849,6 +934,7 @@ public final class CommonAlgorithms {
         }
         Queue<TreeNode> queue = new ArrayDeque<>();
         queue.offer(root);
+        // The queue visits the tree one level at a time, from top to bottom.
         while (!queue.isEmpty()) {
             TreeNode node = queue.poll();
             order.add(node.value);
@@ -904,7 +990,11 @@ public final class CommonAlgorithms {
         }
     }
 
-    /** Morris inorder traversal. Time: O(n), extra space: O(1). */
+    /**
+     * Performs inorder traversal without recursion or an extra stack.
+     * It temporarily links a node's predecessor back to that node and removes
+     * the link after using it. Time: O(n), extra space: O(1).
+     */
     public static List<Integer> morrisInorder(TreeNode root) {
         List<Integer> order = new ArrayList<>();
         TreeNode current = root;
@@ -931,13 +1021,14 @@ public final class CommonAlgorithms {
     }
 
     // ---------------------------------------------------------------------
-    // Dynamic programming
+    // Dynamic programming: save smaller answers and reuse them.
     // ---------------------------------------------------------------------
 
     public static int zeroOneKnapsack(int[] weights, int[] values, int capacity) {
         if (weights.length != values.length || capacity < 0) {
             throw new IllegalArgumentException("Invalid knapsack input");
         }
+        // best[c] is the highest value possible with capacity c.
         int[] best = new int[capacity + 1];
         for (int item = 0; item < weights.length; item++) {
             if (weights[item] <= 0) {
@@ -952,6 +1043,7 @@ public final class CommonAlgorithms {
     }
 
     public static int longestCommonSubsequence(String first, String second) {
+        // length[i][j] is the answer for the first i and j characters.
         int[][] length = new int[first.length() + 1][second.length() + 1];
         for (int i = 1; i <= first.length(); i++) {
             for (int j = 1; j <= second.length(); j++) {
@@ -965,7 +1057,11 @@ public final class CommonAlgorithms {
         return length[first.length()][second.length()];
     }
 
-    /** Longest increasing subsequence in O(n log n). */
+    /**
+     * Returns the length of the longest strictly increasing subsequence.
+     * {@code tails[i]} stores the smallest ending value found for a sequence
+     * of length {@code i + 1}. Time: O(n log n).
+     */
     public static int longestIncreasingSubsequence(int[] values) {
         int[] tails = new int[values.length];
         int size = 0;
@@ -993,6 +1089,7 @@ public final class CommonAlgorithms {
             return 0;
         }
         int matrices = dimensions.length - 1;
+        // cost[left][right] stores the cheapest way to multiply that range.
         long[][] cost = new long[matrices][matrices];
         for (int length = 2; length <= matrices; length++) {
             for (int left = 0; left + length <= matrices; left++) {
@@ -1010,7 +1107,7 @@ public final class CommonAlgorithms {
     }
 
     // ---------------------------------------------------------------------
-    // Greedy algorithms
+    // Greedy algorithms: choose the best-looking option at each step.
     // ---------------------------------------------------------------------
 
     public static final class Activity {
@@ -1026,6 +1123,7 @@ public final class CommonAlgorithms {
     }
 
     public static List<Activity> activitySelection(List<Activity> activities) {
+        // Finishing early leaves the most room for later activities.
         List<Activity> sorted = new ArrayList<>(activities);
         sorted.sort(Comparator.comparingInt(activity -> activity.finish));
         List<Activity> selected = new ArrayList<>();
@@ -1039,7 +1137,10 @@ public final class CommonAlgorithms {
         return selected;
     }
 
-    /** Returns a prefix-free binary code for each character. */
+    /**
+     * Builds short binary codes for frequent characters and longer codes for
+     * rare characters. No result code is the prefix of another result code.
+     */
     public static Map<Character, String> huffmanCodes(Map<Character, Integer> frequencies) {
         PriorityQueue<HuffmanNode> queue = new PriorityQueue<>(
                 Comparator.comparingInt(node -> node.frequency));
@@ -1073,10 +1174,13 @@ public final class CommonAlgorithms {
     }
 
     // ---------------------------------------------------------------------
-    // Backtracking
+    // Backtracking: try a choice, undo it if needed, and try another choice.
     // ---------------------------------------------------------------------
 
-    /** Each solution contains the column selected for every row. */
+    /**
+     * Places queens so none share a row, column, or diagonal.
+     * Each solution stores one chosen column for every row.
+     */
     public static List<List<Integer>> solveNQueens(int size) {
         List<List<Integer>> solutions = new ArrayList<>();
         if (size < 0) {
@@ -1109,12 +1213,15 @@ public final class CommonAlgorithms {
             int ascending = row + column;
             if (!usedColumns[column] && !descendingDiagonal[descending]
                     && !ascendingDiagonal[ascending]) {
+                // Choose this square.
                 columns[row] = column;
                 usedColumns[column] = true;
                 descendingDiagonal[descending] = true;
                 ascendingDiagonal[ascending] = true;
                 solveNQueens(row + 1, columns, usedColumns, descendingDiagonal,
                         ascendingDiagonal, solutions);
+
+                // Undo the choice before trying the next column.
                 usedColumns[column] = false;
                 descendingDiagonal[descending] = false;
                 ascendingDiagonal[ascending] = false;
@@ -1122,7 +1229,10 @@ public final class CommonAlgorithms {
         }
     }
 
-    /** Solves a 9x9 Sudoku board in place; zero represents an empty cell. */
+    /**
+     * Solves a 9-by-9 Sudoku board in place; zero means an empty cell.
+     * For the first empty cell, try each valid number and backtrack on failure.
+     */
     public static boolean solveSudoku(int[][] board) {
         validateSudokuBoard(board);
         for (int row = 0; row < 9; row++) {
@@ -1174,10 +1284,13 @@ public final class CommonAlgorithms {
     }
 
     // ---------------------------------------------------------------------
-    // Caches
+    // Caches: keep recently or frequently used data ready for quick access.
     // ---------------------------------------------------------------------
 
-    /** Least Recently Used cache. get and put are O(1). */
+    /**
+     * Removes the item that has gone unused for the longest time.
+     * LinkedHashMap already maintains the required access order.
+     */
     public static final class LruCache<K, V> extends LinkedHashMap<K, V> {
         private final int capacity;
 
@@ -1192,7 +1305,10 @@ public final class CommonAlgorithms {
         }
     }
 
-    /** Least Frequently Used cache with LRU tie-breaking. get and put are O(1). */
+    /**
+     * Removes the least frequently accessed item. If frequencies tie, it
+     * removes the least recently used item among them. Get and put are O(1).
+     */
     public static final class LfuCache<K, V> {
         private final int capacity;
         private int minimumFrequency;
@@ -1249,10 +1365,13 @@ public final class CommonAlgorithms {
     }
 
     // ---------------------------------------------------------------------
-    // Bit manipulation
+    // Bit manipulation: work directly with the binary form of an integer.
     // ---------------------------------------------------------------------
 
-    /** Brian Kernighan's algorithm: counts set bits in O(number of set bits). */
+    /**
+     * Counts the 1s in an integer's binary representation.
+     * {@code value & (value - 1)} removes the lowest remaining 1 each time.
+     */
     public static int countSetBits(int value) {
         int count = 0;
         while (value != 0) {
